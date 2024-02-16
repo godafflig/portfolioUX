@@ -921,6 +921,7 @@ li a:hover {
 	.photo {
 		width: 280px;
 		height: 280px;
+		background-size: contain;
 	}
 
 	.bio {
