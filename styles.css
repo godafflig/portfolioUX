@@ -501,6 +501,14 @@ li a:hover {
 		width: 75%;
 	}
 }
+.li.sql:after {
+	animation-name: sql;
+}
+@keyframes sql {
+	to {
+		width: 50%;
+	}
+}
 
 .li.ng:after {
 	animation-name: ng;
