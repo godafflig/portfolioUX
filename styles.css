@@ -378,10 +378,19 @@ li a:hover {
 }
 
 .photo {
-	width: 150px;
-	height: 150px;
-	padding: 10px;
+    width: 100%;
+    max-width: 150px;
+    height: auto;
+    padding: 10px;
+    border-radius: 50%;
 }
+/* Améliorations pour les SVG */
+.svg2, .svg4, .svg5, .svg6, .svg7, .svg8, .svg9, .svg10, .svg11 {
+    max-width: 100%;
+    height: auto;
+    position: absolute;
+}
+
 
 .bio {
 	position: absolute;
@@ -410,6 +419,7 @@ li a:hover {
 .imp {
 	color: hotpink;
 	padding-left: 25px;
+	
 }
 
 .imp2 {
@@ -581,11 +591,16 @@ li a:hover {
 
 .projects-container {
 	width: 100%;
-	height: 25%;
+	height: 10%;
 	z-index: 1;
 	position: absolute;
-	top: 20%;
+	top: 10%;
 	left: 0;
+}
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
 }
 
 .project {
@@ -598,13 +613,14 @@ li a:hover {
 }
 
 .pro-img {
-	border-radius: 20px;
-	width: 300px;
-	height: 300px;
-	box-shadow: 0px 8px 15px rgba(0, 0, 0, .4);
-	background-size: contain;
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, .4);
+    background-size: cover;
+    margin: 0 auto;
 }
-
 .pos2 {
 	position: absolute;
 	bottom: 5%;
@@ -1122,4 +1138,330 @@ li a:hover {
 		font-size: 60px;
 		line-height: 100px;
 	}
+}
+/* Mobile */
+@media screen and (max-width: 1020px) {
+    .pro-img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .photo {
+        max-width: 100px;
+        height: auto;
+    }
+
+    .svg2, .svg4, .svg5, .svg6, .svg7, .svg8, .svg9, .svg10, .svg11 {
+        width: 80%;
+        height: auto;
+    }
+
+    .projects-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .project {
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .contact-me {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .footer-social-icons ul {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .footer-social-icons ul li a {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        line-height: 50px;
+    }
+}
+
+/* Très petits écrans */
+@media screen and (max-width: 480px) {
+    h1 {
+        font-size: 40px;
+    }
+
+    h2, h3, h4, p {
+        font-size: 16px;
+    }
+
+    .nav-btn {
+        font-size: 14px;
+        padding: 5px 15px;
+    }
+
+    .pro-img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .photo {
+        max-width: 80px;
+        height: auto;
+    }
+
+    .projects-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .project {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .footer-link {
+        font-size: 14px;
+    }
+
+    .footer-social-icons ul li a {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+        line-height: 40px;
+		
+        transition: background-color 0.3s;
+        border-radius: 5px;
+        
+    }
+}
+/* Global Styles */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "lato", sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+a:hover {
+    color: hotpink;
+    transform: scale(1.05);
+}
+
+/* Header */
+.header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 15%;
+    height: 9%;
+    background-color: pink;
+    text-align: center;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.header:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+.nav {
+    position: absolute;
+    top: 0;
+    right: 2%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-btn {
+    color: #fff;
+    background-color: black;
+    border-radius: 30px;
+    padding: 8px 25px;
+    text-align: center;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    line-height: 26px;
+    font-size: 18px;
+    font-family: "commissioner";
+    border-color: black;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, .4);
+    margin-top: 15px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.nav-btn:hover {
+    transform: translateY(-5px);
+    opacity: 0.8;
+}
+
+/* Landing Page */
+.title {
+    position: absolute;
+    top: 20%;
+    left: 40%;
+    text-align: left;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.title:hover {
+    transform: translateY(-10px);
+    opacity: 0.9;
+}
+
+.para {
+    position: absolute;
+    top: 70%;
+    left: 35%;
+    text-align: left;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.para:hover {
+    transform: translateY(-5px);
+    opacity: 0.8;
+}
+
+/* About Section */
+.box {
+    position: absolute;
+    top: 30%;
+    left: 20%;
+    width: 50%;
+    height: 60%;
+    border: 3px solid black;
+    background-color: transparent;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.box:hover {
+    transform: scale(1.02);
+    opacity: 0.9;
+}
+
+/* Projects Section */
+.project {
+    width: 30%;
+    height: auto;
+    padding: 15px;
+    display: inline-block;
+    text-align: center;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.project:hover {
+    transform: translateY(-10px);
+    opacity: 0.9;
+}
+
+.pro-img {
+    border-radius: 20px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, .4);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.pro-img:hover {
+    transform: scale(1.05);
+    opacity: 0.8;
+}
+
+/* Footer */
+.footer-link {
+    font-size: 16px;
+    margin: 0 10px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.footer-link:hover {
+    transform: translateY(-5px);
+    opacity: 0.8;
+}
+
+.footer-social-icons ul li a {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    line-height: 50px;
+    background: black;
+    border-radius: 50%;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, .4);
+    color: #666;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.footer-social-icons ul li a:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+    color: hotpink;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1020px) {
+    .project {
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .pro-img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .footer-social-icons ul {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .footer-social-icons ul li a {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+        line-height: 40px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    h1 {
+        font-size: 40px;
+    }
+
+    h2, h3, h4, p {
+        font-size: 16px;
+    }
+
+    .nav-btn {
+        font-size: 14px;
+        padding: 5px 15px;
+    }
+
+    .project {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .footer-link {
+        font-size: 14px;
+    }
+
+    .footer-social-icons ul li a {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+        line-height: 30px;
+    }
 }
