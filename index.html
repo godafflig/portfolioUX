@@ -13,8 +13,10 @@
 </head>
 
 <body>
+    
     <!-- Ajout du conteneur principal pour Locomotive Scroll -->
     <div data-scroll-container>
+        
         <div class="loader">
             <div class="intro">
                 <h3 class="intro-title">Tom Benat</h3>
@@ -53,10 +55,10 @@
             </div>
         </section>
         <section id="about" data-scroll-section>
-            <div class="topbar" data-scroll data-scroll-sticky data-scroll-target="#about">
+            <div class="topbar" data-scroll >
                 <h3 >Résumé</h3>
             </div>
-            <div class="box" data-scroll data-scroll-speed="1" data-scroll-class="fade-in">
+            <div class="box" data-scroll data-scroll-speed="1" >
                 <h4>J'ai entamé mon périple dans le royaume de l'informatique suite à une reconversion professionnelle et je
                     poursuis actuellement mes études en licence sur le campus @lyonynov. Les mystères des
                     technologies frontend, tels que JavaScript, exaltent ma créativité en donnant forme à mes idées. Mon
@@ -113,7 +115,7 @@
         </section>
         <section id="projects" data-scroll-section>
             <div class="cover" data-scroll data-scroll-speed="1"></div>
-            <h3 class="project-title" data-scroll data-scroll-class="fade-in">Projets</h3>
+            <h3 class="project-title" data-scroll >Projets</h3>
             <div class="projects-container">
                 <div class="project" data-scroll data-scroll-speed="2">
                     <img class="pro-img" src="img/freecodecamp.png">
@@ -178,31 +180,55 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            const loader = document.querySelector(".loader");
+            const headerSpans = document.querySelectorAll(".header h3 span");
+        
+            // Masquer le loader après un délai (par exemple, 3 secondes)
+            window.addEventListener("load", function () {
+                setTimeout(() => {
+                    loader.classList.add("hidden");
+        
+                    // Déclencher l'animation des spans après que le loader soit masqué
+                    headerSpans.forEach((span, index) => {
+                        setTimeout(() => {
+                            span.classList.add("animate");
+                        }, index * 100); // Ajoute un délai entre chaque lettre (100ms ici)
+                    });
+                }, 3000); // 3 secondes pour le loader
+            });
+        
+            // Initialisation de Locomotive Scroll
             const scroll = new LocomotiveScroll({
                 el: document.querySelector("[data-scroll-container]"),
                 smooth: true,
                 multiplier: 1.5
             });
-
+        
+            // Forcer le scroll à démarrer en haut
+            scroll.scrollTo(0, {
+                duration: 0, // Pas d'animation
+                disableLerp: true // Désactive l'effet de lissage
+            });
+        
             // Gestion de la popup
             const popup = document.getElementById("popup");
             const openPopup = document.getElementById("open-popup");
             const closePopup = document.querySelector(".close-btn");
-
+        
             openPopup.addEventListener("click", function (e) {
                 e.preventDefault();
                 popup.style.display = "flex";
                 document.body.style.overflow = "hidden";
                 scroll.stop();
             });
-
+        
             closePopup.addEventListener("click", function () {
                 popup.style.display = "none";
                 document.body.style.overflow = "auto";
                 scroll.start();
             });
-        });
-        document.addEventListener("DOMContentLoaded", function () {
+        
+            // Gestion du menu burger
             const hamburger = document.createElement("div");
             hamburger.classList.add("hamburger");
             hamburger.innerHTML = `
@@ -211,19 +237,17 @@
                 <span></span>
             `;
             document.querySelector(".header").appendChild(hamburger);
-
+        
             const nav = document.querySelector(".nav");
-
-            // Gestion du clic sur le menu burger
+        
             hamburger.addEventListener("click", function () {
                 hamburger.classList.toggle("active");
                 nav.classList.toggle("active");
             });
-
+        
             // Gestion du redimensionnement de la fenêtre
             window.addEventListener("resize", function () {
                 if (window.innerWidth > 768) {
-                    // Supprime les classes actives sur laptop
                     hamburger.classList.remove("active");
                     nav.classList.remove("active");
                 }
