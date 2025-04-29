@@ -43,7 +43,7 @@ h3 {
     font-size: 40px;
 }
 /* Styles pour la section Éducation */
-.education {
+.education , .experience, .skills-set {
     margin: 20px 0;
     padding: 10px;
     background-color: var(--background-light);
@@ -205,13 +205,18 @@ a:hover {
     .title-line span {
         font-size: 2rem; /* Réduit la taille du texte sur mobile */
     }
+    .projects-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
     
 }
 
 /* LANDING PAGE */
 #landingPage, #about, #skills, #projects, #contacts {
     width: 100%;
-    min-height: 100vh;
+    min-height: 75vh;
     position: relative;
     text-align: center;
 }
@@ -256,9 +261,7 @@ a:hover {
 }
 
 .projects-container {
-    position: absolute;
-    top: 10%;
-    width: 100%;
+    
 }
 
 .pro-img {
@@ -490,12 +493,9 @@ transform: scale(.9);
     .header, .sidebar, .sidebar2 {
         width: 100%;
     }
-    .projects-container {
-        flex-direction: column;
-        align-items: center;
-    }
+    
     .project {
-        width: 80%;
+        width: 30%;
         margin: 20px auto;
     }
 
@@ -525,11 +525,9 @@ transform: scale(.9);
     }
 
     .projects-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 20px;
+       
     }
+    
     .nav {
         display: flex;
         flex-direction: row;
