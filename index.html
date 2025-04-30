@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" >
 
 <head>
     <meta charset="UTF-8">
@@ -12,9 +12,10 @@
     <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
 </head>
 
-<body data-scroll-container>
-    <section id="landingPage" >
-        <div class="header">
+<body >
+    <div data-scroll-container>
+    <section id="landingPage" data-scroll-section> 
+        <div class="header" >
             <h3>Tom.B</h3>
             <div></div>
             <div class="nav">
@@ -28,21 +29,18 @@
         </div>
         <div class="sidebar">
             <div class="title">
-                <h1 class="title-line" data-scroll data-scroll-speed="3">
-                    <span>W</span><span>E</span><span>B</span><span>S</span><span>I</span><span>T</span><span>E</span>
-                </h1>
-                <h1 class="title-line" data-scroll data-scroll-speed="2">
-                    <span>D</span><span>E</span><span>S</span><span>I</span><span>G</span><span>N</span>
-                </h1>
-                <h1 class="title-line" data-scroll data-scroll-speed="1">
-                    <span>P</span><span>O</span><span>R</span><span>T</span><span>F</span><span>O</span><span>L</span><span>I</span><span>O</span>
-                </h1>
+                <p class="title-line" data-scroll data-scroll-speed="3">Bienvenue à vous</p>
             </div>
-            <div class="strip"></div>
+            
+            <div class="strip" data-scroll data-scroll-speed="8"></div>
+
+            <div class="strip5" data-scroll data-scroll-speed="3"></div>
         </div>
         <div class="para">
             <h2>Mon nom est Tom Benat, je suis Développeur UX/UI.</h2>
         </div>
+        <div class="strip5" data-scroll data-scroll-speed="3"></div>
+
     </section>
 
     <section id="about" data-scroll-section>
@@ -69,15 +67,18 @@
     <section id="skills" data-scroll-section>
         <div class="strip3">
             <img class="photo" src="img/TomBenat.jpg">
+            
             <div class="bio">
-                <h4 class="h2">Benat Tom</h4>
-                <h4 class="h2">Lyon</h4>
-                <h4 class="h4 non">25 ans</h4>
-                <h4 class="h4">Développeur Web</h4>
-                <h4 class="h4">Designer UI/UX</h4>
+                <h4 class="h2" data-scroll data-scroll-speed="1">Benat Tom</h4>
+                <h4 class="h2" data-scroll data-scroll-speed="1">Lyon</h4>
+                <h4 class="h4" data-scroll data-scroll-speed="1">25 ans</h4>
+                <h4 class="h4" data-scroll data-scroll-speed="1">Développeur Web</h4>
+                <h4 class="h4" data-scroll data-scroll-speed="1">Designer UI/UX</h4>
             </div>
         </div>
-        <div class="education">
+        <div class="strip6" data-scroll data-scroll-speed="9"></div>
+
+        <div class="education" data-scroll data-scroll-speed="1">
             <h4 class="h4 imp2">YNOV - Lyon</h4>
             <h4 class="h4 imp">Bachelor informatique</h4>
             <h4 class="h4 imp2">2022 - 2024</h4>
@@ -87,14 +88,14 @@
             <h4 class="h4 imp2">2024 - 2025</h4>
             <br>
         </div>
-        <div class="experience">
+        <div class="experience" data-scroll data-scroll-speed="3">
             <h3 class="h3">Expérience</h3>
             <h4 class="h4 imp">Développeur Web</h4>
             <h4 class="h4 imp2">Stage de Développeur (6mois)</h4>
             <h4 class="h4 imp2">Freelance Développeur</h4>
             <h4 class="h4 imp2">Alternance en UX/UI (1an)</h4>
         </div>
-        <div class="skills-set">
+        <div class="skills-set" data-scroll data-scroll-speed="1">
             <h3 class="h2">Compétences</h3>
             <ul class="ul">
                 <li class="html li">HTML / CSS</li>
@@ -105,9 +106,12 @@
         </div>
     </section>
 
-    <section id="projects">
-        <div class="cover" data-scroll data-scroll-speed="2">
-            <h3 class="project-title" data-scroll>Projets</h3>
+    <section id="projects" data-scroll-section>
+        <h3 class="project-title" data-scroll-speed="1" data-scroll>Projets</h3>
+        <div class="cover" data-scroll data-scroll-speed="1">
+            <h2 class="cover-title">Mes projets</h2>
+            <h4 class="cover-tagline">Voici quelques projets sur lesquels j'ai travaillé.</h4>
+            <h4 class="cover-tagline">Cliquez sur l'image pour voir le projet.</h4>
         </div>
         <div class="projects-container">
             <div class="project" data-scroll data-scroll-speed="2">
@@ -146,17 +150,17 @@
             <a class="nav-btn" href="mailto:tombenat99@hotmail.fr">ENVOYER VOTRE MESSAGE</a>
         </div>
 
-    <section id="footer">
+    <section id="footer" data-scroll-section>
         
         <div class="scroll-indicator">
-            <a href="#landingPage"><i class="fa fa-arrow-up"></i></a>
+            <a href="#landingPage" data-scroll data-scroll-speed="4"><i class="fa fa-arrow-up"></i></a>
         </div>
-        <div class="link">
+        <div class="link" data-scroll data-scroll-speed="1">
             <a class="footer-link" href="#about">À propos</a>
             <a class="footer-link" href="#skills">Compétences</a>
             <a class="footer-link" href="#projects">Projets</a>
         </div>
-        <div class="footer-social-icons">
+        <div class="footer-social-icons" >
             <ul>
                 <li><a href="https://github.com/godafflig"><i class="fa fa-github" aria-hidden="true"></i></a></li>
                 <li><a href="https://www.linkedin.com/in/tom-benat-764a171a1/"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
@@ -164,12 +168,14 @@
             </ul>
         </div>
         <div class="sidebar2">
-            <p>© 2024. Tous droits réservés.</p>
             <div class="strip2"></div>
         </div>
+        </div>
+
     </section>
 
     <script>
+        
         document.addEventListener("DOMContentLoaded", function () {
             const loader = document.querySelector(".loader");
             const headerSpans = document.querySelectorAll(".header h3 span");
@@ -188,7 +194,7 @@
             const scroll = new LocomotiveScroll({
                 el: document.querySelector("[data-scroll-container]"),
                 smooth: true,
-                multiplier: 1.5
+                multiplier: 1
             });
 
             scroll.scrollTo(0, {
