@@ -42,31 +42,7 @@ h3 {
     font-family: var(--font-accent);
     font-size: 40px;
 }
-/* Styles pour la section Éducation */
-.education , .experience, .skills-set {
-    margin: 50px auto; /* Centrer horizontalement avec un espacement vertical */
-    padding: 20px; /* Espacement interne */
-    background-color: var(--background-light);
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
 
-.education h4 {
-    margin: 5px 0;
-    font-family: var(--font-primary);
-    font-size: 18px;
-    color: var(--secondary-color);
-}
-
-.education h4.imp {
-    font-weight: bold;
-    color: var(--primary-color); /* Couleur principale */
-}
-
-.education h4.imp2 {
-    font-style: italic;
-    color: var(--secondary-color); /* Couleur secondaire */
-}
 p {
     padding-top: 20%;
 }
@@ -137,9 +113,9 @@ a:hover {
 /* NAVIGATION */
 .nav {
     display: flex;
-    justify-content: center; /* Centre horizontalement */
-    align-items: center; /* Centre verticalement */
-    gap: 20px; /* Espacement entre les éléments */
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
 }
 
 .nav ul {
@@ -184,34 +160,32 @@ a:hover {
 /* Mobile Styles */
 @media (max-width: 768px) {
     .nav {
-        flex-direction: column; /* Passe en colonne sur mobile */
-        gap: 15px; /* Espacement entre les éléments */
+        flex-direction: column;
+        gap: 15px;
     }
 
     .nav ul {
-        flex-direction: column; /* Les liens passent en colonne */
+        flex-direction: column;
         align-items: center;
     }
 
     .nav ul li {
-        padding: 20px 15px; /* Espacement vertical entre les liens */
+        padding: 20px 15px;
     }
-    /* Responsive pour les téléphones */
 
     .title {
-        padding-left: 5%; /* Réduit l'espace à gauche sur mobile */
+        padding-left: 5%;
     }
 
     .title-line span {
-        font-size: 2rem; /* Réduit la taille du texte sur mobile */
+        font-size: 2rem;
     }
+
     .projects-container {
         display: flex;
         flex-direction: column;
         align-items: center;
     }
-    
-    
 }
 
 /* LANDING PAGE */
@@ -221,6 +195,12 @@ a:hover {
     min-height: 75vh;
     position: relative;
     text-align: center;
+    
+}
+#landingPage a i{
+    height: 250px;
+    width: 250px;
+    color: var(--secondary-color);
 }
 
 .title, .para {
@@ -228,15 +208,36 @@ a:hover {
     text-align: left;
 }
 
-
-
 .para {
     top: 70%;
     right: 10%;
 }
 
-/* SECTIONS */
+/* SHARED STYLES FOR SECTIONS */
+.education, .experience, .skills-set {
+    margin: 50px auto;
+    padding: 20px;
+    background-color: var(--background-light);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
+.education h4 {
+    margin: 5px 0;
+    font-family: var(--font-primary);
+    font-size: 18px;
+    color: var(--secondary-color);
+}
+
+.education h4.imp {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.education h4.imp2 {
+    font-style: italic;
+    color: var(--secondary-color);
+}
 
 .education, .experience, .skills-set {
     background-color: #f9f9f9;
@@ -411,11 +412,12 @@ transform: scale(.9);
 
 #footer .link a {
     font-family: var(--font-secondary);
-    font-size: 16px;
+    font-size: 1.2rem;
     color: var(--secondary-color);
     text-decoration: none;
     transition: color 0.3s ease;
 }
+
 .nav ul li a {
     font-family: var(--font-secondary);
     font-size: 18px;
@@ -483,6 +485,7 @@ transform: scale(.9);
 
 /* Responsive Design */
 @media (min-width: 767px) {
+    
 
     .header h3 span {
         display: inline-block;
@@ -497,7 +500,7 @@ transform: scale(.9);
         transform: rotateX(0); /* Retourne à sa position normale */
         opacity: 1; /* Rendu visible */
     }
-    .header, .sidebar, .sidebar2 {
+    .header, .sidebar{
         width: 100%;
     }
     
@@ -607,10 +610,14 @@ padding: 0;
         box-shadow: 0 0 15px hotpink;
     }
     
-    .footer-social-icons ul li a:hover {
-        color: hotpink;
-        box-shadow: 0 0 5px hotpink;
-        text-shadow: 0 0 5px hotpink;
+   
+    
+    #footer .link a {
+        font-family: var(--font-secondary);
+        font-size: 2rem;
+        color: var(--secondary-color);
+        text-decoration: none;
+        transition: color 0.3s ease;
     }
     
 }
