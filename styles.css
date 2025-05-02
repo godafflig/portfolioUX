@@ -88,7 +88,7 @@ a:hover {
 
 .sidebar {
 	width: 100%;
-	height: 75%;
+	height: 100%;
 	top: 20%;
 	right: 0;
 }
@@ -190,7 +190,9 @@ a:hover {
 	text-align: center;
 	text-decoration: none;
 }
-
+.para h2 {
+	font-size: 3rem;
+}
 
 
 /* Mobile Styles */
@@ -199,14 +201,8 @@ a:hover {
 		font-size: 1rem;
 	}
 
-	.nav {
-		flex-direction: column;
-		gap: 15px;
-	}
-
-	.nav ul {
-		flex-direction: column;
-		align-items: center;
+	.title-line {
+		margin: 0;
 	}
 
 	.nav ul li {
@@ -275,9 +271,7 @@ a:hover {
 	right: 10%;
 }
 
-.para h2 {
-	font-size: 5rem;
-}
+
 
 /* SHARED STYLES FOR SECTIONS */
 .education,
@@ -738,7 +732,7 @@ a:hover {
 	font-size: 5rem;
 	/* Taille par défaut pour les écrans larges */
 	font-weight: bold;
-	margin-top: 100px;
+	margin-top: 50px;
 }
 
 /* Animation flap */
@@ -1039,11 +1033,5 @@ a:hover {
 }
 
 @media (max-width: 768px) {
-	.para h2 {
-		font-size: 1.5rem;
-	}
 
-	.title-line {
-		margin: 0;
-	}
 }
