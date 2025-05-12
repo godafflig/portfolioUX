@@ -291,7 +291,7 @@ a:hover {
 .education,
 .experience,
 .skills-set {
-	margin: 50px auto;
+	margin: 50px ;
 	padding: 20px;
 	background-color: var(--background-light);
 	border-radius: 10px;
