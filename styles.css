@@ -7,6 +7,17 @@
 	--font-secondary: "commissioner", sans-serif;
 	--font-accent: "condiment", cursive;
 }
+.cover-tagline{
+	text-align:center ;
+	font-size: 1.5rem;
+	align-items: center;
+}
+.cover-title{
+	text-align: center;
+	font-size: 3rem;
+	align-items: center;
+}
+
 
 /* RESET */
 * {
@@ -198,11 +209,12 @@ a:hover {
 /* Mobile Styles */
 @media (max-width: 768px) {
 	.para h2 {
-		font-size: 1rem;
+		font-size: 0.75rem;
+		text-align: center;
 	}
 
 	.title-line {
-		margin: 0;
+		margin: 10px 0;
 	}
 
 	.nav ul li {
@@ -214,13 +226,13 @@ a:hover {
 	}
 
 	.title p {
-		font-size: 3rem;
+		font-size: 2rem;
 
 	}
 
 	.title-line {
-		font-size: 3rem;
-		text-align: center;
+		font-size: 2rem;
+		text-align: left;
 	}
 
 
@@ -325,6 +337,11 @@ a:hover {
 	padding: 15px;
 	display: inline-block;
 	text-align: center;
+}
+.project h2{
+	font-family: var(--font-primary);
+	font-size: 1rem;
+	color: var(--secondary-color);
 }
 
 
@@ -444,7 +461,6 @@ a:hover {
 .nav {
 	display: none;
 	/* Masqué par défaut sur mobile */
-	flex-direction: column;
 	align-items: center;
 	position: fixed;
 	top: 60px;
@@ -456,6 +472,8 @@ a:hover {
 }
 
 .nav ul {
+	display: flex;
+	flex-direction: column;
 	list-style: none;
 	padding: 0;
 	margin: 0;
@@ -507,7 +525,7 @@ a:hover {
 	flex-direction: column;
 	justify-content: space-between;
 	width: 25px;
-	height: 20px;
+	height: 19px;
 	cursor: pointer;
 }
 
@@ -613,6 +631,7 @@ a:hover {
 
 	.nav ul {
 		display: flex;
+		flex-direction: row;
 		justify-content: space-between;
 	}
 

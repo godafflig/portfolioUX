@@ -20,9 +20,9 @@
             <div></div>
             <div class="nav">
                 <ul>
-                    <li class="li2"><a href="#about">À propos</a></li>
-                    <li class="li2"><a href="#skills">Compétences</a></li>
-                    <li class="li2"><a href="#projects">Projets</a></li>
+                    <li class="li2"><a href="#about" data-scroll-to="#about">À propos</a></li>
+                    <li class="li2"><a href="#skills" data-scroll-to="#skills">Compétences</a></li>
+                    <li class="li2"><a href="#projects" data-scroll-to="#projects">Projets</a></li>
                     <a href="mailto:tombenat99@hotmail.fr" class="nav-btn">Contactez-moi</a>
                 </ul>
             </div>
@@ -78,7 +78,7 @@
         </div>
         <div class="strip6" data-scroll data-scroll-speed="9"></div>
 
-        <div class="education" data-scroll data-scroll-speed="1">
+        <div class="education" data-scroll data-scroll-speed="2">
             <h4 class="h4 imp2">YNOV - Lyon</h4>
             <h4 class="h4 imp">Bachelor informatique</h4>
             <h4 class="h4 imp2">2022 - 2024</h4>
@@ -88,14 +88,14 @@
             <h4 class="h4 imp2">2024 - 2025</h4>
             <br>
         </div>
-        <div class="experience" data-scroll data-scroll-speed="3">
+        <div class="experience" data-scroll data-scroll-speed="2">
             <h3 class="h3">Expérience</h3>
             <h4 class="h4 imp">Développeur Web</h4>
             <h4 class="h4 imp2">Stage de Développeur (6mois)</h4>
             <h4 class="h4 imp2">Freelance Développeur</h4>
             <h4 class="h4 imp2">Alternance en UX/UI (1an)</h4>
         </div>
-        <div class="skills-set" data-scroll data-scroll-speed="1">
+        <div class="skills-set" data-scroll data-scroll-speed="2">
             <h3 class="h2">Compétences</h3>
             <ul class="ul">
                 <li class="html li">HTML / CSS</li>
@@ -107,11 +107,9 @@
     </section>
 
     <section id="projects" data-scroll-section>
-        <h3 class="project-title" data-scroll-speed="1" data-scroll>Projets</h3>
-        <div class="cover" data-scroll data-scroll-speed="1">
+        <div class="cover" data-scroll data-scroll-speed="2">
             <h2 class="cover-title">Mes projets</h2>
-            <h4 class="cover-tagline">Voici quelques projets sur lesquels j'ai travaillé.</h4>
-            <h4 class="cover-tagline">Cliquez sur l'image pour voir le projet.</h4>
+            <h4 class="cover-tagline">Voici quelques projets sur lesquels j'ai travaillé. <br>Cliquez sur l'image pour voir le projet.</h4>
         </div>
         <div class="projects-container">
             <div class="project" data-scroll data-scroll-speed="2">
@@ -139,7 +137,7 @@
                 <h2>Easy Pitch</h2>
             </div>
         </div>
-        <a href="https://github.com/godafflig" class="nav-btn pos2" data-scroll data-scroll-speed="1">Plus de projets</a>
+        <a href="https://github.com/godafflig" class="nav-btn pos2" data-scroll data-scroll-speed="2">Plus de projets</a>
     </section>
 
         <div id="contact" class="contact-me">
@@ -153,12 +151,12 @@
     <section id="footer" data-scroll-section>
         
         <div class="scroll-indicator">
-            <a href="#landingPage" data-scroll data-scroll-speed="4"><i class="fa fa-arrow-up"></i></a>
+            <a href="#landingPage" data-scroll data-scroll-speed="2"><i class="fa fa-arrow-up"></i></a>
         </div>
         <div class="link" data-scroll data-scroll-speed="1">
-            <a class="footer-link" href="#about">À propos</a>
-            <a class="footer-link" href="#skills">Compétences</a>
-            <a class="footer-link" href="#projects">Projets</a>
+            <a class="footer-link" data-scroll-to="#about" >À propos</a>
+            <a class="footer-link" data-scroll-to="#skills" >Compétences</a>
+            <a class="footer-link" data-scroll-to="#projects" >Projets</a>
         </div>
         <div class="footer-social-icons" >
             <ul>
@@ -175,6 +173,23 @@
     </section>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const scroll = new LocomotiveScroll({
+                el: document.querySelector("[data-scroll-container]"),
+                smooth: true,
+                multiplier: 1
+            });
+        
+            // Gestion des liens d'ancre
+            const anchorLinks = document.querySelectorAll("[data-scroll-to]");
+            anchorLinks.forEach(link => {
+                link.addEventListener("click", function (e) {
+                    e.preventDefault(); // Empêche le comportement par défaut
+                    const target = this.getAttribute("data-scroll-to");
+                    scroll.scrollTo(target); // Utilise Locomotive Scroll pour défiler
+                });
+            });
+        });
         
         document.addEventListener("DOMContentLoaded", function () {
             const loader = document.querySelector(".loader");
