@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Festi-Event — Tom Benat</title>
+    <link rel="stylesheet" type="text/css" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300&family=Condiment&family=Lato:wght@900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body class="project-page-body">
+    <header class="project-page-header">
+        <a href="../index.html#projects" class="project-back"><i class="fa fa-arrow-left"></i> Retour aux projets</a>
+    </header>
+    <main class="project-page">
+        <div class="project-page-card">
+            <h1 class="project-page-title">Festi-Event</h1>
+
+            <!-- TODO: remplacer par le vrai logo/icône du projet -->
+            <div class="project-page-icon pro-img-placeholder">FE</div>
+
+            <section class="project-page-section">
+                <h2>Description</h2>
+                <p>
+                    Plateforme de gestion de festivals musicaux réunissant trois parcours : l'organisateur crée son
+                    festival, ses scènes et ses créneaux ; l'artiste dépose un profil avec démos et candidate ; le
+                    festivalier achète ses billets par Stripe.
+                </p>
+                <p>
+                    Hiérarchie de rôles à 4 niveaux (utilisateur / artiste / organisateur / admin), stockage S3 avec
+                    URLs présignées pour les fichiers privés, e-mails transactionnels automatiques à chaque décision
+                    sur une candidature, et une API REST authentifiée en JWT doublant l'interface web.
+                </p>
+                <p>
+                    Application mobile compagnon disponible : <a href="festi-event-mobile.html">Festi-Event Mobile</a>,
+                    le client Flutter connecté à cette même API.
+                </p>
+            </section>
+
+            <section class="project-page-section">
+                <h2>Stack technique</h2>
+                <ul class="project-page-list">
+                    <li>Symfony 8, FrankenPHP</li>
+                    <li>PostgreSQL 16, Doctrine</li>
+                    <li>Stripe (paiement)</li>
+                    <li>AWS S3 / MinIO (stockage)</li>
+                    <li>Gotenberg</li>
+                    <li>Leaflet</li>
+                    <li>Stimulus (Symfony UX), Bootstrap 5</li>
+                    <li>LexikJWT (API REST authentifiée en JWT)</li>
+                    <li>Docker</li>
+                </ul>
+            </section>
+
+            <section class="project-page-section">
+                <h2>Mon rôle</h2>
+                <p>
+                    Conception et développement de l'ensemble de l'application : architecture des trois parcours
+                    (organisateur, artiste, festivalier), logique métier isolée en services, migrations versionnées,
+                    routes et rôles documentés.
+                </p>
+                <p>
+                    Mise en place de l'infrastructure Docker : Docker Compose multi-services, Dockerfile multi-stage
+                    dev/test/prod, et un entrypoint qui provisionne tout au démarrage (base, migrations, clés JWT,
+                    assets) — un <code>docker compose up</code> et le projet tourne.
+                </p>
+            </section>
+
+            <div class="project-page-links">
+                <!-- TODO: ajouter le lien vers le site en ligne si disponible -->
+                <a class="nav-btn" href="https://gitlab.com/tbenat8/festi-event-symfony" target="_blank" rel="noopener">Voir le dépôt</a>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

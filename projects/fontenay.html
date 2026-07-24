@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fontenay Restaurants — Tom Benat</title>
+    <link rel="stylesheet" type="text/css" href="../styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300&family=Condiment&family=Lato:wght@900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body class="project-page-body">
+    <header class="project-page-header">
+        <a href="../index.html#projects" class="project-back"><i class="fa fa-arrow-left"></i> Retour aux projets</a>
+    </header>
+    <main class="project-page">
+        <div class="project-page-card">
+            <h1 class="project-page-title">Fontenay Restaurants</h1>
+
+            <!-- TODO: remplacer par le vrai logo/icône du projet -->
+            <div class="project-page-icon pro-img-placeholder">FR</div>
+
+            <section class="project-page-section">
+                <h2>Description</h2>
+                <p>
+                    Prototype de gestion de salle et de service, réalisé en réponse à un appel d'offres : réservation
+                    en ligne côté client, plan de salle en temps réel et prise de commande à table côté serveurs,
+                    écran cuisine synchronisé.
+                </p>
+                <p>
+                    Monorepo à trois briques autour d'une API centrale : API Symfony (REST, JWT), site public
+                    React/Vite, et application staff React en PWA installable sur tablette.
+                </p>
+                <p>
+                    Périmètre MVP cadré et arbitré (parcours complet livré, reste spécifié et chiffré pour une phase
+                    2), contrainte de souveraineté tenue — 100&nbsp;% briques libres, auto-hébergeable, aucune donnée
+                    chez un tiers.
+                </p>
+            </section>
+
+            <section class="project-page-section">
+                <h2>Stack technique</h2>
+                <ul class="project-page-list">
+                    <li>Symfony 7, PHP 8</li>
+                    <li>React, TypeScript, Vite</li>
+                    <li>PWA</li>
+                    <li>PostgreSQL</li>
+                    <li>Docker Compose</li>
+                    <li>GitHub Actions (CI)</li>
+                </ul>
+            </section>
+
+            <section class="project-page-section">
+                <h2>Mon rôle</h2>
+                <p>Projet réalisé en équipe.</p>
+                <p class="project-page-todo">
+                    TODO : préciser ma contribution personnelle (quelle(s) brique(s) — API, site public, appli
+                    staff — j'ai développée(s)).
+                </p>
+            </section>
+
+            <div class="project-page-links">
+                <!-- TODO: ajouter le lien vers le site en ligne si disponible -->
+                <a class="nav-btn" href="https://github.com/NaimHz/fontenay" target="_blank" rel="noopener">Voir le dépôt</a>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>
