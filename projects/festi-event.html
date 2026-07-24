@@ -24,32 +24,21 @@
             <section class="project-page-section">
                 <h2>Description</h2>
                 <p>
-                    Plateforme de gestion de festivals musicaux réunissant trois parcours : l'organisateur crée son
-                    festival, ses scènes et ses créneaux ; l'artiste dépose un profil avec démos et candidate ; le
-                    festivalier achète ses billets par Stripe.
-                </p>
-                <p>
-                    Hiérarchie de rôles à 4 niveaux (utilisateur / artiste / organisateur / admin), stockage S3 avec
-                    URLs présignées pour les fichiers privés, e-mails transactionnels automatiques à chaque décision
-                    sur une candidature, et une API REST authentifiée en JWT doublant l'interface web.
-                </p>
-                <p>
-                    Application mobile compagnon disponible : <a href="festi-event-mobile.html">Festi-Event Mobile</a>,
-                    le client Flutter connecté à cette même API.
+                    Plateforme de gestion de festivals musicaux, avec un espace web pour les organisateurs et les
+                    artistes et une application mobile pour les festivaliers (billets, QR code, suivi des
+                    candidatures).
                 </p>
             </section>
 
             <section class="project-page-section">
                 <h2>Stack technique</h2>
                 <ul class="project-page-list">
-                    <li>Symfony 8, FrankenPHP</li>
-                    <li>PostgreSQL 16, Doctrine</li>
-                    <li>Stripe (paiement)</li>
-                    <li>AWS S3 / MinIO (stockage)</li>
-                    <li>Gotenberg</li>
-                    <li>Leaflet</li>
-                    <li>Stimulus (Symfony UX), Bootstrap 5</li>
-                    <li>LexikJWT (API REST authentifiée en JWT)</li>
+                    <li>Flutter</li>
+                    <li>Build Android</li>
+                    <li>Stripe</li>
+                    <li>AWS</li>
+                    <li>Symfony</li>
+                    <li>PostgreSQL</li>
                     <li>Docker</li>
                 </ul>
             </section>
@@ -62,6 +51,12 @@
                     routes et rôles documentés.
                 </p>
                 <p>
+                    Conception et développement de l'application mobile Flutter connectée à cette même API :
+                    séparation nette models / services / screens, configuration d'environnement centralisée,
+                    pull-to-refresh, et états visuels explicites (billet valide/utilisé, candidature en
+                    attente/confirmée/refusée).
+                </p>
+                <p>
                     Mise en place de l'infrastructure Docker : Docker Compose multi-services, Dockerfile multi-stage
                     dev/test/prod, et un entrypoint qui provisionne tout au démarrage (base, migrations, clés JWT,
                     assets) — un <code>docker compose up</code> et le projet tourne.
@@ -70,7 +65,8 @@
 
             <div class="project-page-links">
                 <!-- TODO: ajouter le lien vers le site en ligne si disponible -->
-                <a class="nav-btn" href="https://gitlab.com/tbenat8/festi-event-symfony" target="_blank" rel="noopener">Voir le dépôt</a>
+                <a class="nav-btn" href="https://gitlab.com/tbenat8/festi-event-symfony" target="_blank" rel="noopener">Voir le dépôt (web)</a>
+                <a class="nav-btn" href="https://gitlab.com/tbenat8/festi-event-flutter" target="_blank" rel="noopener">Voir le dépôt (mobile)</a>
             </div>
         </div>
     </main>

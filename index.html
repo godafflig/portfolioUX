@@ -17,16 +17,15 @@
 <body >
     <div data-scroll-container>
     <section id="landingPage" data-scroll-section> 
-        <div class="header" >
-            <h3>Tom.B</h3>
-            <div></div>
+        <div class="header">
+            <a href="#landingPage" class="header-logo" data-scroll-to="#landingPage">Tom<span>.</span>B</a>
             <div class="nav">
                 <ul>
-                    <li class="li2"><a href="#about" data-scroll-to="#about">À propos</a></li>
-                    <li class="li2"><a href="#competences" data-scroll-to="#competences">Compétences</a></li>
-                    <li class="li2"><a href="#timeline" data-scroll-to="#timeline">Parcours</a></li>
-                    <li class="li2"><a href="#projects" data-scroll-to="#projects">Projets</a></li>
-                    <a href="mailto:tombenat99@hotmail.fr" class="nav-btn">Contactez-moi</a>
+                    <li><a href="#about" data-scroll-to="#about">À propos</a></li>
+                    <li><a href="#competences" data-scroll-to="#competences">Compétences</a></li>
+                    <li><a href="#timeline" data-scroll-to="#timeline">Parcours</a></li>
+                    <li><a href="#projects" data-scroll-to="#projects">Projets</a></li>
+                    <li><a href="mailto:tombenat99@hotmail.fr" class="nav-btn nav-btn--small">Contactez-moi</a></li>
                 </ul>
             </div>
         </div>
@@ -201,36 +200,50 @@
     <section id="projects" data-scroll-section>
         <div class="cover" data-scroll data-scroll-speed="2">
             <h2 class="cover-title">Mes projets</h2>
-            <h4 class="cover-tagline">Voici quelques projets sur lesquels j'ai travaillé. <br>Cliquez sur l'image pour voir le projet.</h4>
+            <h4 class="cover-tagline">Voici quelques projets sur lesquels j'ai travaillé. <br>Cliquez sur une carte pour voir le projet.</h4>
         </div>
         <div class="projects-container">
-            <div class="project" data-scroll data-scroll-speed="2">
-                <a href="projects/festi-event.html"><!-- TODO: remplacer par le vrai logo Festi-Event --><div class="pro-img pro-img-placeholder">FE</div></a>
-                <h2>Festi-Event</h2>
+            <div class="project-card" data-scroll data-scroll-speed="2">
+                <a href="projects/festi-event.html" class="project-card-link">
+                    <div class="project-card-icon"><i class="fa fa-calendar"></i></div>
+                    <h2 class="project-card-title">Festi-Event</h2>
+                    <span class="project-card-tag">Plateforme évènementielle</span>
+                </a>
             </div>
-            <div class="project" data-scroll data-scroll-speed="2">
-                <a href="projects/festi-event-mobile.html"><!-- TODO: remplacer par le vrai logo Festi-Event Mobile --><div class="pro-img pro-img-placeholder">FM</div></a>
-                <h2>Festi-Event Mobile</h2>
+            <div class="project-card" data-scroll data-scroll-speed="2">
+                <a href="projects/fontenay.html" class="project-card-link">
+                    <div class="project-card-icon"><i class="fa fa-cutlery"></i></div>
+                    <h2 class="project-card-title">Fontenay Restaurants</h2>
+                    <span class="project-card-tag">Plateforme mobile et web</span>
+                </a>
             </div>
-            <div class="project" data-scroll data-scroll-speed="2">
-                <a href="projects/fontenay.html"><!-- TODO: remplacer par le vrai logo Fontenay Restaurants --><div class="pro-img pro-img-placeholder">FR</div></a>
-                <h2>Fontenay Restaurants</h2>
+            <div class="project-card" data-scroll data-scroll-speed="2">
+                <a href="projects/freecodecamp.html" class="project-card-link">
+                    <div class="project-card-icon"><i class="fa fa-certificate"></i></div>
+                    <h2 class="project-card-title">Certification responsive web design</h2>
+                    <span class="project-card-tag">freeCodeCamp</span>
+                </a>
             </div>
-            <div class="project" data-scroll data-scroll-speed="2">
-                <a href="projects/freecodecamp.html"><img class="pro-img" src="img/freecodecamp.png"></a>
-                <h2>Certification responsive web design</h2>
+            <div class="project-card" data-scroll data-scroll-speed="2">
+                <a href="projects/festival-film-scolaire.html" class="project-card-link">
+                    <div class="project-card-icon"><i class="fa fa-film"></i></div>
+                    <h2 class="project-card-title">Festival Film Scolaire</h2>
+                    <span class="project-card-tag">Site vitrine</span>
+                </a>
             </div>
-            <div class="project" data-scroll data-scroll-speed="2">
-                <a href="projects/festival-film-scolaire.html"><img class="pro-img" src="img/festival.png"></a>
-                <h2>Festival Film Scolaire</h2>
+            <div class="project-card" data-scroll data-scroll-speed="2">
+                <a href="projects/couple-et-famille.html" class="project-card-link">
+                    <div class="project-card-icon"><i class="fa fa-heart"></i></div>
+                    <h2 class="project-card-title">Couple & Familles</h2>
+                    <span class="project-card-tag">Site vitrine</span>
+                </a>
             </div>
-            <div class="project" data-scroll data-scroll-speed="2">
-                <a href="projects/couple-et-famille.html"><img class="pro-img" src="img/logocoupleetfamille.png"></a>
-                <h2>Couple & Familles</h2>
-            </div>
-            <div class="project" data-scroll data-scroll-speed="2">
-                <a href="projects/sokoban.html"><img class="pro-img" src="img/sokoban.png"></a>
-                <h2>Sokoban</h2>
+            <div class="project-card" data-scroll data-scroll-speed="2">
+                <a href="projects/sokoban.html" class="project-card-link">
+                    <div class="project-card-icon"><i class="fa fa-gamepad"></i></div>
+                    <h2 class="project-card-title">Sokoban</h2>
+                    <span class="project-card-tag">Jeu web</span>
+                </a>
             </div>
         </div>
         <a href="https://github.com/godafflig" class="nav-btn pos2" data-scroll data-scroll-speed="2">Plus de projets</a>
@@ -245,28 +258,33 @@
         </div>
 
     <section id="footer" data-scroll-section>
-        
-        <div class="scroll-indicator">
-            <a href="#landingPage" data-scroll data-scroll-speed="2"><i class="fa fa-arrow-up"></i></a>
-        </div>
-        <div class="link" data-scroll data-scroll-speed="1">
-            <a class="footer-link" data-scroll-to="#about" >À propos</a>
-            <a class="footer-link" data-scroll-to="#competences" >Compétences</a>
-            <a class="footer-link" data-scroll-to="#timeline" >Parcours</a>
-            <a class="footer-link" data-scroll-to="#projects" >Projets</a>
-        </div>
-        <div class="footer-social-icons" >
-            <ul>
-                <li><a href="https://github.com/godafflig"><i class="fa fa-github" aria-hidden="true"></i></a></li>
-                <li><a href="https://www.linkedin.com/in/tom-benat-764a171a1/"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
-                <li><a href="https://www.instagram.com/tom_benat/"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+        <div class="footer-content" data-scroll data-scroll-speed="1">
+            <div class="footer-brand">
+                <h3>Tom.B</h3>
+                <p>Développeur Full Stack</p>
+            </div>
+
+            <nav class="footer-nav">
+                <a data-scroll-to="#about">À propos</a>
+                <a data-scroll-to="#competences">Compétences</a>
+                <a data-scroll-to="#timeline">Parcours</a>
+                <a data-scroll-to="#projects">Projets</a>
+            </nav>
+
+            <ul class="footer-social-icons">
+                <li><a href="https://github.com/godafflig" aria-label="GitHub"><i class="fa fa-github" aria-hidden="true"></i></a></li>
+                <li><a href="https://www.linkedin.com/in/tom-benat-764a171a1/" aria-label="LinkedIn"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                <li><a href="https://www.instagram.com/tom_benat/" aria-label="Instagram"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
             </ul>
-        </div>
-        <div class="sidebar2">
-            <div class="strip2"></div>
-        </div>
+
+            <a href="#landingPage" class="scroll-top-btn" data-scroll data-scroll-speed="2" aria-label="Retour en haut">
+                <i class="fa fa-arrow-up"></i>
+            </a>
         </div>
 
+        <div class="footer-bottom">
+            <p>&copy; 2026 Tom Benat</p>
+        </div>
     </section>
 
     <script src="data/skills.js"></script>
@@ -339,20 +357,6 @@
         });
         
         document.addEventListener("DOMContentLoaded", function () {
-            const loader = document.querySelector(".loader");
-            const headerSpans = document.querySelectorAll(".header h3 span");
-
-            window.addEventListener("load", function () {
-                setTimeout(() => {
-                    loader.classList.add("hidden");
-                    headerSpans.forEach((span, index) => {
-                        setTimeout(() => {
-                            span.classList.add("animate");
-                        }, index * 100);
-                    });
-                }, 3000);
-            });
-
             const scroll = new LocomotiveScroll({
                 el: document.querySelector("[data-scroll-container]"),
                 smooth: true,
@@ -389,6 +393,30 @@
                     document.body.style.overflow = "auto";
                     scroll.start();
                 }
+            });
+
+            // Effet "carte à collectionner" : tilt 3D qui suit la souris
+            document.querySelectorAll(".project-card-link").forEach(function (card) {
+                card.addEventListener("mouseenter", function () {
+                    card.style.transition = "none";
+                });
+
+                card.addEventListener("mousemove", function (e) {
+                    const rect = card.getBoundingClientRect();
+                    const percentX = (e.clientX - rect.left) / rect.width;
+                    const percentY = (e.clientY - rect.top) / rect.height;
+                    const rotateX = (0.5 - percentY) * 18;
+                    const rotateY = (percentX - 0.5) * 18;
+
+                    card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.04)`;
+                    card.style.setProperty("--mx", (percentX * 100) + "%");
+                    card.style.setProperty("--my", (percentY * 100) + "%");
+                });
+
+                card.addEventListener("mouseleave", function () {
+                    card.style.transition = "transform 0.6s ease, box-shadow 0.4s ease, border-color 0.4s ease";
+                    card.style.transform = "rotateX(0deg) rotateY(0deg) scale(1)";
+                });
             });
 
             const hamburger = document.createElement("div");

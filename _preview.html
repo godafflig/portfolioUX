@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="fr" >
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benat</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300&family=Condiment&family=Lato:wght@900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+[data-scroll] { opacity: 1 !important; transform: none !important; }
+</style></head>
+
+<body >
+    <div data-scroll-container>
+    <section id="landingPage" data-scroll-section> 
+        <div class="header">
+            <a href="#landingPage" class="header-logo" data-scroll-to="#landingPage">Tom<span>.</span>B</a>
+            <div class="nav">
+                <ul>
+                    <li><a href="#about" data-scroll-to="#about">À propos</a></li>
+                    <li><a href="#competences" data-scroll-to="#competences">Compétences</a></li>
+                    <li><a href="#timeline" data-scroll-to="#timeline">Parcours</a></li>
+                    <li><a href="#projects" data-scroll-to="#projects">Projets</a></li>
+                    <li><a href="mailto:tombenat99@hotmail.fr" class="nav-btn nav-btn--small">Contactez-moi</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="sidebar">
+            <div class="title">
+                <p class="title-line" data-scroll data-scroll-speed="3">Bienvenue à vous</p>
+            </div>
+            
+            <div class="strip" data-scroll data-scroll-speed="8"></div>
+
+            <div class="strip5" data-scroll data-scroll-speed="3"></div>
+        </div>
+        <div class="para">
+            <h2>Mon nom est Tom Benat, je suis Développeur Full Stack.</h2>
+        </div>
+        <div class="strip5" data-scroll data-scroll-speed="3"></div>
+
+    </section>
+
+    <section id="about" data-scroll-section>
+        <div class="topbar" data-scroll>
+            <h3>À propos</h3>
+        </div>
+        <div class="box" data-scroll data-scroll-speed="1">
+            <h4>Je m'appelle Tom Benat, développeur Full Stack passionné par la création d'applications modernes,
+                performantes et centrées sur l'utilisateur.</h4>
+            <h4>Issu d'une reconversion professionnelle, j'ai découvert dans le développement un domaine où logique,
+                créativité et résolution de problèmes se rejoignent. Au fil de mes expériences, j'ai développé des
+                compétences aussi bien en développement qu'en UX/UI Design, convaincu qu'une bonne application ne se
+                limite pas à son fonctionnement : elle doit aussi être intuitive, fluide et agréable à utiliser.</h4>
+            <h4>J'aime concevoir des interfaces qui répondent à de vrais besoins, développer des fonctionnalités
+                robustes et transformer des idées en produits concrets. Aujourd'hui, je continue d'évoluer dans le
+                développement Full Stack tout en cultivant mon intérêt pour l'expérience utilisateur afin de créer des
+                solutions aussi efficaces que plaisantes à utiliser.</h4>
+            <a href="#" class="nav-btn pos" id="open-popup">Résumé</a>
+            <div id="popup" class="popup">
+                <div class="popup-content">
+                    <span class="close-btn">&times;</span>
+                    <img src="img/tomcv.png" alt="Résumé de Tom Benat" class="popup-image">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" data-scroll-section>
+        <div class="strip3">
+            <img class="photo" src="img/TomBenat.jpg">
+            
+            <div class="bio">
+                <h4 class="h2" data-scroll data-scroll-speed="1">Benat Tom</h4>
+                <h4 class="h2" data-scroll data-scroll-speed="1">Lyon</h4>
+                <h4 class="h4" data-scroll data-scroll-speed="1">26 ans</h4>
+                <h4 class="h4" data-scroll data-scroll-speed="1">Développeur Full Stack</h4>
+            </div>
+        </div>
+        <div class="strip6" data-scroll data-scroll-speed="9"></div>
+
+        <div class="education" data-scroll data-scroll-speed="2">
+            <h4 class="h4 imp2">YNOV - Lyon</h4>
+            <h4 class="h4 imp">Bachelor informatique</h4>
+            <h4 class="h4 imp2">2022 - 2024</h4>
+            <br>
+            <h4 class="h4 imp2">YNOV - Lyon</h4>
+            <h4 class="h4 imp">Bachelor UX</h4>
+            <h4 class="h4 imp2">2024 - 2025</h4>
+            <br>
+            <h4 class="h4 imp2">MyDigitalSchool - Lyon</h4>
+            <h4 class="h4 imp">Master Informatique</h4>
+            <h4 class="h4 imp2">2025 - 2027</h4>
+            <br>
+        </div>
+    </section>
+
+    <section id="competences" data-scroll-section>
+        <div class="competences-header" data-scroll>
+            <h2 class="competences-title">Compétences</h2>
+        </div>
+        <div class="competences-wrapper" id="competences-list" data-scroll data-scroll-speed="1">
+            <!-- Contenu généré dynamiquement depuis data/skills.js -->
+        </div>
+    </section>
+
+    <section id="timeline" data-scroll-section>
+        <div class="timeline-header" data-scroll>
+            <h3 class="timeline-title">Parcours</h3>
+            <p class="timeline-subtitle">Expérience professionnelle</p>
+        </div>
+
+        <div class="timeline-wrapper">
+            <div class="timeline-track">
+                <div class="timeline-progress"></div>
+            </div>
+
+            <div class="timeline-item tl-right">
+                <div class="timeline-meta">Stage · 6 mois</div>
+                <div class="timeline-dot"></div>
+                <div class="timeline-card">
+                    <span class="timeline-tag">Agence 36</span>
+                    <h4 class="timeline-company">Développeur Java / Android</h4>
+                    <ul class="timeline-list">
+                        <li>Application mobile pour étudiants en Java &amp; Android Studio</li>
+                        <li>Conception, développement et implémentation des fonctionnalités</li>
+                        <li>Participation à la conception de l'architecture technique</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-item tl-left">
+                <div class="timeline-meta">Freelance · 2022</div>
+                <div class="timeline-dot"></div>
+                <div class="timeline-card">
+                    <span class="timeline-tag">Freelance</span>
+                    <h4 class="timeline-company">Site vitrine · Couple &amp; Familles</h4>
+                    <ul class="timeline-list">
+                        <li>Création d'un site vitrine pour un cabinet de thérapie familiale</li>
+                        <li>Développement front-end &amp; back-end</li>
+                        <li>Intégration responsive &amp; optimisation des performances</li>
+                        <li>Accompagnement jusqu'à la mise en ligne</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-item tl-right">
+                <div class="timeline-meta">Freelance · 2023</div>
+                <div class="timeline-dot"></div>
+                <div class="timeline-card">
+                    <span class="timeline-tag">Freelance</span>
+                    <h4 class="timeline-company">Site vitrine · Festival Film Scolaire</h4>
+                    <ul class="timeline-list">
+                        <li>Création du site vitrine du festival</li>
+                        <li>Développement front-end &amp; back-end</li>
+                        <li>Intégration responsive &amp; optimisation des performances</li>
+                        <li>Accompagnement jusqu'à la mise en ligne</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-item tl-left">
+                <div class="timeline-meta">Alternance · 2024</div>
+                <div class="timeline-dot"></div>
+                <div class="timeline-card">
+                    <span class="timeline-tag">Hyggle</span>
+                    <h4 class="timeline-company">UX/UI Designer &amp; Développeur Front-End</h4>
+                    <ul class="timeline-list">
+                        <li>Conception de Design Systems</li>
+                        <li>Maquettes, prototypes &amp; développement d'interfaces</li>
+                        <li>Tableaux de bord de data visualisation</li>
+                        <li>Librairies JavaScript de charting (graphiques interactifs)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-item tl-right">
+                <div class="timeline-meta">Alternance · 2026 → Actuel</div>
+                <div class="timeline-dot timeline-dot--current"></div>
+                <div class="timeline-card timeline-card--current">
+                    <span class="timeline-tag timeline-tag--current">Aqualter</span>
+                    <h4 class="timeline-company">Développeur Full Stack .NET / C#</h4>
+                    <p class="timeline-desc">Solution de gestion technique et administrative dédiée aux services de l'eau.</p>
+                    <ul class="timeline-list">
+                        <li>Développement Full Stack .NET &amp; C#</li>
+                        <li>Conception de nouvelles fonctionnalités</li>
+                        <li>Maintenance et évolution de l'application</li>
+                        <li>Développement d'interfaces métier</li>
+                        <li>Optimisation de l'expérience utilisateur</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" data-scroll-section>
+        <div class="cover" data-scroll data-scroll-speed="2">
+            <h2 class="cover-title">Mes projets</h2>
+            <h4 class="cover-tagline">Voici quelques projets sur lesquels j'ai travaillé. <br>Cliquez sur une carte pour voir le projet.</h4>
+        </div>
+        <div class="projects-container">
+            <div class="project-card" data-scroll data-scroll-speed="2">
+                <a href="projects/festi-event.html" class="project-card-link">
+                    <div class="project-card-icon"><i class="fa fa-calendar"></i></div>
+                    <h2 class="project-card-title">Festi-Event</h2>
+                    <span class="project-card-tag">Plateforme évènementielle</span>
+                </a>
+            </div>
+            <div class="project-card" data-scroll data-scroll-speed="2">
+                <a href="projects/fontenay.html" class="project-card-link">
+                    <div class="project-card-icon"><i class="fa fa-cutlery"></i></div>
+                    <h2 class="project-card-title">Fontenay Restaurants</h2>
+                    <span class="project-card-tag">Plateforme mobile et web</span>
+                </a>
+            </div>
+            <div class="project-card" data-scroll data-scroll-speed="2">
+                <a href="projects/freecodecamp.html" class="project-card-link">
+                    <div class="project-card-icon"><i class="fa fa-certificate"></i></div>
+                    <h2 class="project-card-title">Certification responsive web design</h2>
+                    <span class="project-card-tag">freeCodeCamp</span>
+                </a>
+            </div>
+            <div class="project-card" data-scroll data-scroll-speed="2">
+                <a href="projects/festival-film-scolaire.html" class="project-card-link">
+                    <div class="project-card-icon"><i class="fa fa-film"></i></div>
+                    <h2 class="project-card-title">Festival Film Scolaire</h2>
+                    <span class="project-card-tag">Site vitrine</span>
+                </a>
+            </div>
+            <div class="project-card" data-scroll data-scroll-speed="2">
+                <a href="projects/couple-et-famille.html" class="project-card-link">
+                    <div class="project-card-icon"><i class="fa fa-heart"></i></div>
+                    <h2 class="project-card-title">Couple & Familles</h2>
+                    <span class="project-card-tag">Site vitrine</span>
+                </a>
+            </div>
+            <div class="project-card" data-scroll data-scroll-speed="2">
+                <a href="projects/sokoban.html" class="project-card-link">
+                    <div class="project-card-icon"><i class="fa fa-gamepad"></i></div>
+                    <h2 class="project-card-title">Sokoban</h2>
+                    <span class="project-card-tag">Jeu web</span>
+                </a>
+            </div>
+        </div>
+        <a href="https://github.com/godafflig" class="nav-btn pos2" data-scroll data-scroll-speed="2">Plus de projets</a>
+    </section>
+
+        <div id="contact" class="contact-me">
+            <h3 class="contact-title">Contactez-moi</h3>
+            <h2 class="contact-tagline">Si vous aimez mon travail ou si vous avez besoin d'aide.</h2>
+            <h4 class="p2">Si vous avez une idée de projet et que vous avez besoin d'aide ou simplement dire "Hey",
+                contactez-moi.</h4>
+            <a class="nav-btn" href="mailto:tombenat99@hotmail.fr">ENVOYER VOTRE MESSAGE</a>
+        </div>
+
+    <section id="footer" data-scroll-section>
+        <div class="footer-content" data-scroll data-scroll-speed="1">
+            <div class="footer-brand">
+                <h3>Tom.B</h3>
+                <p>Développeur Full Stack</p>
+            </div>
+
+            <nav class="footer-nav">
+                <a data-scroll-to="#about">À propos</a>
+                <a data-scroll-to="#competences">Compétences</a>
+                <a data-scroll-to="#timeline">Parcours</a>
+                <a data-scroll-to="#projects">Projets</a>
+            </nav>
+
+            <ul class="footer-social-icons">
+                <li><a href="https://github.com/godafflig" aria-label="GitHub"><i class="fa fa-github" aria-hidden="true"></i></a></li>
+                <li><a href="https://www.linkedin.com/in/tom-benat-764a171a1/" aria-label="LinkedIn"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                <li><a href="https://www.instagram.com/tom_benat/" aria-label="Instagram"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
+            </ul>
+
+            <a href="#landingPage" class="scroll-top-btn" data-scroll data-scroll-speed="2" aria-label="Retour en haut">
+                <i class="fa fa-arrow-up"></i>
+            </a>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 Tom Benat</p>
+        </div>
+    </section>
+
+    <script src="data/skills.js"></script>
+    <script>
+        function renderSkills() {
+            const container = document.getElementById("competences-list");
+            if (!container || typeof skillsData === "undefined") return;
+
+            skillsData.forEach(function (categoryData, index) {
+                const panelId = "skills-panel-" + index;
+
+                const category = document.createElement("div");
+                category.className = "skills-category";
+
+                const title = document.createElement("h3");
+                title.className = "skills-category-title";
+
+                const toggle = document.createElement("button");
+                toggle.type = "button";
+                toggle.className = "skills-category-toggle";
+                toggle.setAttribute("aria-expanded", "false");
+                toggle.setAttribute("aria-controls", panelId);
+                toggle.textContent = categoryData.category;
+                title.appendChild(toggle);
+                category.appendChild(title);
+
+                const list = document.createElement("ul");
+                list.className = "skills-chip-list";
+                list.id = panelId;
+                list.hidden = true;
+
+                categoryData.skills.forEach(function (skill) {
+                    const item = document.createElement("li");
+                    item.className = "skills-chip";
+                    item.textContent = skill;
+                    list.appendChild(item);
+                });
+
+                toggle.addEventListener("click", function () {
+                    const expanded = toggle.getAttribute("aria-expanded") === "true";
+                    toggle.setAttribute("aria-expanded", String(!expanded));
+                    list.hidden = expanded;
+                    category.classList.toggle("skills-category--open", !expanded);
+                    if (window.__locoScroll) window.__locoScroll.update();
+                });
+
+                category.appendChild(list);
+                container.appendChild(category);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            renderSkills();
+
+            const scroll = new LocomotiveScroll({
+                el: document.querySelector("[data-scroll-container]"),
+                smooth: true,
+                multiplier: 1
+            });
+        
+            // Gestion des liens d'ancre
+            const anchorLinks = document.querySelectorAll("[data-scroll-to]");
+            anchorLinks.forEach(link => {
+                link.addEventListener("click", function (e) {
+                    e.preventDefault(); // Empêche le comportement par défaut
+                    const target = this.getAttribute("data-scroll-to");
+                    scroll.scrollTo(target); // Utilise Locomotive Scroll pour défiler
+                });
+            });
+        });
+        
+        document.addEventListener("DOMContentLoaded", function () {
+            const scroll = new LocomotiveScroll({
+                el: document.querySelector("[data-scroll-container]"),
+                smooth: true,
+                multiplier: 1
+            });
+            window.__locoScroll = scroll;
+
+            scroll.scrollTo(0, {
+                duration: 0,
+                disableLerp: true
+            });
+
+            const popup = document.getElementById("popup");
+            const openPopup = document.getElementById("open-popup");
+            const closePopup = document.querySelector(".close-btn");
+
+            openPopup.addEventListener("click", function (e) {
+                e.preventDefault();
+                popup.style.display = "flex";
+                document.body.style.overflow = "hidden";
+                scroll.stop();
+            });
+
+            closePopup.addEventListener("click", function () {
+                popup.style.display = "none";
+                document.body.style.overflow = "auto";
+                scroll.start();
+            });
+
+            popup.addEventListener("click", function (e) {
+                const popupContent = document.querySelector(".popup-content");
+                if (!popupContent.contains(e.target)) {
+                    popup.style.display = "none";
+                    document.body.style.overflow = "auto";
+                    scroll.start();
+                }
+            });
+
+            // Effet "carte à collectionner" : tilt 3D qui suit la souris
+            document.querySelectorAll(".project-card-link").forEach(function (card) {
+                card.addEventListener("mouseenter", function () {
+                    card.style.transition = "none";
+                });
+
+                card.addEventListener("mousemove", function (e) {
+                    const rect = card.getBoundingClientRect();
+                    const percentX = (e.clientX - rect.left) / rect.width;
+                    const percentY = (e.clientY - rect.top) / rect.height;
+                    const rotateX = (0.5 - percentY) * 18;
+                    const rotateY = (percentX - 0.5) * 18;
+
+                    card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.04)`;
+                    card.style.setProperty("--mx", (percentX * 100) + "%");
+                    card.style.setProperty("--my", (percentY * 100) + "%");
+                });
+
+                card.addEventListener("mouseleave", function () {
+                    card.style.transition = "transform 0.6s ease, box-shadow 0.4s ease, border-color 0.4s ease";
+                    card.style.transform = "rotateX(0deg) rotateY(0deg) scale(1)";
+                });
+            });
+
+            const hamburger = document.createElement("div");
+            hamburger.classList.add("hamburger");
+            hamburger.innerHTML = `
+                <span></span>
+                <span></span>
+                <span></span>
+            `;
+            document.querySelector(".header").appendChild(hamburger);
+
+            const nav = document.querySelector(".nav");
+
+            hamburger.addEventListener("click", function () {
+                hamburger.classList.toggle("active");
+                nav.classList.toggle("active");
+            });
+
+            window.addEventListener("resize", function () {
+                if (window.innerWidth > 768) {
+                    hamburger.classList.remove("active");
+                    nav.classList.remove("active");
+                }
+            });
+
+            if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+                gsap.registerPlugin(ScrollTrigger);
+
+                let scrollY = 0;
+
+                ScrollTrigger.scrollerProxy("[data-scroll-container]", {
+                    scrollTop(value) {
+                        return arguments.length
+                            ? scroll.scrollTo(value, { duration: 0, disableLerp: true })
+                            : scrollY;
+                    },
+                    getBoundingClientRect() {
+                        return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
+                    }
+                });
+
+                scroll.on("scroll", function (args) {
+                    scrollY = args.scroll.y;
+                    ScrollTrigger.update();
+                });
+
+                ScrollTrigger.addEventListener("refresh", function () {
+                    scroll.update();
+                });
+
+                gsap.set(".tl-right .timeline-card", { autoAlpha: 0, x: 60 });
+                gsap.set(".tl-left .timeline-card", { autoAlpha: 0, x: -60 });
+                gsap.set(".timeline-dot", { autoAlpha: 0, scale: 0 });
+                gsap.set(".timeline-meta", { autoAlpha: 0 });
+
+                gsap.to(".timeline-progress", {
+                    height: "100%",
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: ".timeline-wrapper",
+                        scroller: "[data-scroll-container]",
+                        start: "top center",
+                        end: "bottom center",
+                        scrub: 1.5
+                    }
+                });
+
+                document.querySelectorAll(".timeline-item").forEach(function (item) {
+                    var dot = item.querySelector(".timeline-dot");
+                    var card = item.querySelector(".timeline-card");
+                    var meta = item.querySelector(".timeline-meta");
+
+                    gsap.to(dot, {
+                        autoAlpha: 1,
+                        scale: 1,
+                        duration: 0.5,
+                        ease: "back.out(2.5)",
+                        scrollTrigger: {
+                            trigger: item,
+                            scroller: "[data-scroll-container]",
+                            start: "top 78%",
+                            toggleActions: "play none none reverse"
+                        }
+                    });
+
+                    gsap.to(card, {
+                        autoAlpha: 1,
+                        x: 0,
+                        duration: 0.9,
+                        delay: 0.12,
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: item,
+                            scroller: "[data-scroll-container]",
+                            start: "top 78%",
+                            toggleActions: "play none none reverse"
+                        }
+                    });
+
+                    if (meta) {
+                        gsap.to(meta, {
+                            autoAlpha: 1,
+                            duration: 0.7,
+                            delay: 0.08,
+                            scrollTrigger: {
+                                trigger: item,
+                                scroller: "[data-scroll-container]",
+                                start: "top 78%",
+                                toggleActions: "play none none reverse"
+                            }
+                        });
+                    }
+                });
+
+                ScrollTrigger.refresh();
+            }
+        });
+    </script>
+</body>
+
+</html>
