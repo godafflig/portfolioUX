@@ -199,7 +199,7 @@
 
     <section id="projects" data-scroll-section>
         <div class="cover" data-scroll data-scroll-speed="2">
-            <h2 class="cover-title">Mes projets</h2>
+            <h2 class="cover-title">Mes projets personnelle</h2>
             <h4 class="cover-tagline">Voici quelques projets sur lesquels j'ai travaillé. <br>Cliquez sur une carte pour voir le projet.</h4>
         </div>
         <div class="projects-container">
@@ -243,6 +243,13 @@
                     <div class="project-card-icon"><i class="fa fa-gamepad"></i></div>
                     <h2 class="project-card-title">Sokoban</h2>
                     <span class="project-card-tag">Jeu web</span>
+                </a>
+            </div>
+            <div class="project-card" data-scroll data-scroll-speed="2">
+                <a href="erosion.html" class="project-card-link">
+                    <div class="project-card-icon"><i class="fa fa-hourglass-half"></i></div>
+                    <h2 class="project-card-title">Érosion</h2>
+                    <span class="project-card-tag">Étude visuelle interactive</span>
                 </a>
             </div>
         </div>
@@ -339,24 +346,9 @@
         document.addEventListener("DOMContentLoaded", function () {
             renderSkills();
 
-            const scroll = new LocomotiveScroll({
-                el: document.querySelector("[data-scroll-container]"),
-                smooth: true,
-                multiplier: 1
-            });
-        
-            // Gestion des liens d'ancre
-            const anchorLinks = document.querySelectorAll("[data-scroll-to]");
-            anchorLinks.forEach(link => {
-                link.addEventListener("click", function (e) {
-                    e.preventDefault(); // Empêche le comportement par défaut
-                    const target = this.getAttribute("data-scroll-to");
-                    scroll.scrollTo(target); // Utilise Locomotive Scroll pour défiler
-                });
-            });
-        });
-        
-        document.addEventListener("DOMContentLoaded", function () {
+            // Une seule instance de Locomotive Scroll : deux instances sur le même
+            // conteneur se disputaient le contrôle du scroll et bloquaient la page
+            // une fois le popup CV ouvert (impossible à refermer).
             const scroll = new LocomotiveScroll({
                 el: document.querySelector("[data-scroll-container]"),
                 smooth: true,
@@ -367,6 +359,16 @@
             scroll.scrollTo(0, {
                 duration: 0,
                 disableLerp: true
+            });
+
+            // Gestion des liens d'ancre
+            const anchorLinks = document.querySelectorAll("[data-scroll-to]");
+            anchorLinks.forEach(link => {
+                link.addEventListener("click", function (e) {
+                    e.preventDefault(); // Empêche le comportement par défaut
+                    const target = this.getAttribute("data-scroll-to");
+                    scroll.scrollTo(target); // Utilise Locomotive Scroll pour défiler
+                });
             });
 
             const popup = document.getElementById("popup");
