@@ -638,7 +638,211 @@ a {
   display: none; /* décors de la frise : inutiles dans la liste */
 }
 
-/* --- 8 bis. Sections provisoires (à construire aux prochaines étapes) ----- */
+/* --- 8 bis. Projets ------------------------------------------------------- */
+/* La section elle-même est presque vide : les cartes sont dessinées dans le
+   canvas 3D, et leurs titres dans une couche à part (ci-dessous). */
+.projets {
+  position: relative;
+  height: 100vh; /* un écran : c'est elle qui est épinglée */
+}
+
+.projets .section-label {
+  position: absolute;
+  top: 96px;
+  left: 0;
+}
+
+.projets__hint {
+  position: absolute;
+  left: var(--gutter);
+  bottom: 28px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+}
+
+/* La couche des titres : par-dessus le canvas, sur tout l'écran.
+   pointer-events: none la rend « traversable » ; seuls les boutons réagissent. */
+.corridor-labels {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  overflow: hidden; /* un titre qui sort de l'écran ne crée pas de barre de défilement */
+  pointer-events: none;
+}
+
+/* Un titre : placé en haut à gauche, puis déplacé par le JavaScript (transform) */
+.corridor-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+  pointer-events: auto; /* le bouton, lui, reçoit bien les clics */
+  transform-origin: top left; /* il rétrécit vers son coin, collé à la carte */
+  visibility: hidden; /* affiché par le JavaScript quand sa carte est visible */
+  will-change: transform, opacity;
+}
+
+.corridor-label__meta {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+}
+
+.corridor-label__title {
+  display: block;
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  transition: color 0.25s;
+}
+
+/* Au survol (de la carte ou du titre), le titre passe en orange */
+.corridor-label.is-hover .corridor-label__title {
+  color: var(--orange);
+}
+
+/* -- La page détaillée d'un projet : un panneau blanc plein écran -- */
+.detail {
+  position: fixed;
+  inset: 0;
+  z-index: 50; /* au-dessus de tout, en-tête compris */
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* texte | visuel */
+  gap: 48px;
+  align-items: center;
+  padding: 96px var(--gutter) 48px;
+  overflow-y: auto; /* défile si le contenu dépasse */
+  background: var(--white);
+}
+
+/* L'attribut hidden doit gagner sur display: grid */
+.detail[hidden] {
+  display: none;
+}
+
+.detail__back {
+  position: absolute;
+  top: 20px;
+  left: var(--gutter);
+  padding: 8px 0;
+  border: 0;
+  background: none;
+  color: var(--blue);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.detail__number,
+.detail__status {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+}
+
+.detail__title {
+  margin: 12px 0 16px;
+  font-size: clamp(2.75rem, 8vw, 8rem);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+}
+
+.detail__summary {
+  max-width: 44ch;
+  margin-top: 24px;
+  font-size: clamp(1.0625rem, 1.4vw, 1.375rem);
+}
+
+.detail__stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 28px;
+}
+
+.detail__stack li {
+  padding: 6px 12px;
+  border: 1px solid var(--ink);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.detail__visual {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 10;
+  background: #f1f1f1 radial-gradient(circle, rgba(15, 30, 175, 0.4) 1px, transparent 1.5px) 0 0 / 28px 28px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+}
+
+.detail__visual img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detail__visual span {
+  padding: 4px 8px;
+  border: 1px dashed var(--ink-soft);
+  background: var(--white);
+}
+
+/* -- Variante sans couloir (mouvement réduit) : une liste de boutons -- */
+.projets--static {
+  height: auto;
+  padding: 18vh var(--gutter);
+}
+
+.projets--static .section-label {
+  position: static;
+  padding: 0;
+}
+
+.projets__list {
+  max-width: 40rem;
+}
+
+.projets__row {
+  display: block;
+  width: 100%;
+  padding: 16px 0;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.projets__row strong {
+  display: block;
+  font-size: 1.25rem;
+}
+
+.projets__row small {
+  color: var(--ink-soft);
+  font-size: 0.9375rem;
+}
+
+/* --- 8 ter. Section provisoire (contact, à construire à l'étape 5) -------- */
 .stub {
   position: relative;
   z-index: 3; /* le texte passe devant le canvas : toujours lisible */
@@ -777,6 +981,16 @@ a {
 
   .parcours__content {
     max-width: calc(100vw - 2 * var(--gutter)); /* toute la largeur disponible */
+  }
+
+  .detail {
+    grid-template-columns: 1fr; /* texte puis visuel, l'un sous l'autre */
+    align-items: start;
+    gap: 32px;
+  }
+
+  .corridor-label__title {
+    font-size: 1.5rem;
   }
 
   .nav {

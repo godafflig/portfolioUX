@@ -130,6 +130,10 @@
   "projets": {
     "number": "03",
     "title": "Projets",
+    "hint": "Survoler · cliquer pour ouvrir",
+    "hintTouch": "Toucher une carte pour l'ouvrir",
+    "back": "Retour aux projets",
+    "placeholder": "Visuel à venir",
     "items": [
       {
         "slug": "aldret",

@@ -8,15 +8,16 @@
 //   Intro     → la galaxie : du code épars, des caractères et des grains
 //   À propos  → la galaxie se rassemble en lignes décomposées
 //   Parcours  → les lignes décomposées se tendent en lignes droites
-//   Projets   → les lignes droites s'assemblent : la forme finale
+//   Projets   → au bout du couloir, les lignes droites s'assemblent : la forme finale
 //   Contact   → le code vient couvrir les faces : le produit
 // ============================================================================
 
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { isMobile } from '../core/env.js'
 
-// `parcours` est ce que renvoie initParcours : il donne l'avancement de la frise
-export function initObjectTimeline(stage, signature, header, parcours) {
+// `parcours` et `projets` sont ce que renvoient initParcours et initProjets :
+// ils donnent l'avancement de la frise et celui du couloir
+export function initObjectTimeline(stage, signature, header, parcours, projets) {
   const { state } = signature
 
   // Crée un capteur sans animation : on lira simplement sa propriété .progress
@@ -25,7 +26,7 @@ export function initObjectTimeline(stage, signature, header, parcours) {
   // « top bottom » se lit : « quand le HAUT de la section atteint le BAS de l'écran »
   const gather = sensor('#about', 'top bottom', 'top 20%') // galaxie → lignes décomposées
   const afterAbout = sensor('#parcours', 'top bottom', 'top 30%') // l'objet change de place après « À propos »
-  const assemble = sensor('#projets', 'top 60%', 'bottom bottom') // lignes droites → forme finale
+  const corridor = sensor('#projets', 'top bottom', 'top top') // l'objet va se placer au bout du couloir
   const product = sensor('#contact', 'top 85%', 'bottom bottom') // forme finale → produit couvert de code
   // Un capteur sur toute la page, pour faire tourner l'objet avec le scroll
   const page = ScrollTrigger.create({ start: 0, end: 'max' })
@@ -39,30 +40,37 @@ export function initObjectTimeline(stage, signature, header, parcours) {
   // onFrameEarly : ce calcul passe AVANT la mise à jour de l'objet 3D,
   // qui se sert de ces valeurs dans la même image
   stage.onFrameEarly(() => {
-    // Les quatre curseurs de la construction suivent chacun leur capteur
+    // -- Les quatre curseurs de la construction --
     state.gather = gather.progress
     // Lignes décomposées → lignes droites : au rythme de la frise du parcours.
     // (÷ 0.85 : la transformation est terminée un peu avant la dernière étape)
     state.align = Math.min(1, parcours.progress() / 0.85)
-    state.assemble = assemble.progress
+    // Lignes droites → forme finale : au rythme du couloir des projets
+    state.assemble = Math.min(1, projets.progress() / 0.85)
     state.code = product.progress
 
-    // « away » : l'objet est-il écarté du centre ? Oui dès « À propos », plus au contact.
+    // -- La place et la taille de l'objet --
+    // « away » : l'objet est-il écarté de sa pose centrée ? Oui dès « À propos », plus au contact.
     // (1 - product.progress) vaut 1 avant le contact et tombe à 0 : il ramène l'objet au centre.
     const away = gather.progress * (1 - product.progress)
+    // Dans le couloir, l'objet est au centre, au fond : petit au départ,
+    // il grandit à mesure qu'on avance vers lui (de 40 % à 75 % de sa taille)
+    const corridorScale = lerp(0.4, 0.75, projets.progress())
 
     if (isMobile) {
       // Sur mobile, pas la place de le décaler : il reste centré derrière le texte,
-      // un peu plus petit et plus pâle pour ne pas gêner la lecture
+      // un peu plus petit et plus pâle pour ne pas gêner la lecture…
       state.x = 0
-      state.scale = 1 - 0.15 * away
-      canvas.style.opacity = 1 - 0.6 * away
+      state.scale = lerp(1, lerp(0.85, corridorScale, corridor.progress), away)
+      // …sauf dans le couloir, où le canvas doit rester net pour montrer les cartes
+      canvas.style.opacity = 1 - 0.6 * away * (1 - corridor.progress)
     } else {
-      // Sur ordinateur, deux poses successives :
+      // Sur ordinateur, trois poses successives :
       //   « À propos » : à 10 % à droite du centre, à cheval sur le bord de la photo, taille 70 %
-      //   ensuite      : à 24 % à droite du centre, taille 80 %
-      const x = lerp(0.1, 0.24, afterAbout.progress)
-      const scale = lerp(0.7, 0.8, afterAbout.progress)
+      //   « Parcours » : à 24 % à droite du centre, taille 80 %
+      //   « Projets »  : au centre, au bout du couloir
+      const x = lerp(lerp(0.1, 0.24, afterAbout.progress), 0, corridor.progress)
+      const scale = lerp(lerp(0.7, 0.8, afterAbout.progress), corridorScale, corridor.progress)
       // « away » fait le lien avec la pose centrée (intro et contact)
       state.x = x * away
       state.scale = lerp(1, scale, away)

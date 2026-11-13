@@ -40,7 +40,8 @@ Le site est alors visible sur http://localhost:5173.
 | `src/sections/about.js` | Section 2 : titre géant, texte ligne par ligne, photo en parallaxe |
 | `src/sections/objectTimeline.js` | Quel état de l'objet à quel endroit de la page |
 | `src/sections/parcours.js` | Section 3 : frise horizontale épinglée, ligne bleue, années géantes |
-| `src/sections/stubs.js` | Sections 4 et 5 en version provisoire |
+| `src/sections/projets.js` | Section 4 : couloir 3D des cartes, survol, clic, page détaillée |
+| `src/sections/stubs.js` | Section 5 en version provisoire |
 | `public/images/` | Les images (photo, visuels des projets) |
 | `src/styles/main.css` | Styles et variables de couleur |
 
@@ -49,7 +50,7 @@ Le site est alors visible sur http://localhost:5173.
 - [x] Étape 1 — Intro + objet signature (galaxie, lignes, forme, produit ; souris, mobile, mouvement réduit)
 - [x] Étape 2 — À propos (texte ligne par ligne, parallaxe photo)
 - [x] Étape 3 — Parcours (défilement horizontal épinglé, ligne bleue, années géantes)
-- [ ] Étape 4 — Projets (couloir 3D, brume, survol, entrée dans l'image)
+- [x] Étape 4 — Projets (couloir 3D, brume, survol, entrée dans l'image)
 - [ ] Étape 5 — Contact (version finale)
 
 ## À compléter dans `content.json`
@@ -58,7 +59,9 @@ Le site est alors visible sur http://localhost:5173.
 - `about.photo.src` : déposer la photo dans `public/images/` (format portrait 4:5 conseillé),
   puis écrire son chemin, par exemple `"/images/portrait.jpg"`. Tant que le champ est vide,
   un fond pointillé « Photo à venir » la remplace.
-- `projets.items[].image` : les visuels des projets (même principe)
+- `projets.items[].image` : les visuels des projets (même principe, format 16:10 conseillé).
+  Tant que le champ est vide, la carte affiche le numéro du projet sur un fond pointillé.
+- `projets.items[].summary` et `stack` : le texte et les technologies de la page détaillée
 - `parcours.steps[0]` et `[1]` : l'année du déclic et du stage Agence 36 (`year`).
   Tant qu'elle est vide, le mot du champ `mark` (« Déclic », « Stage ») s'affiche en géant à sa place.
 - `about.lead`, `about.paragraphs`, `about.profile` : textes de présentation (brouillons à réécrire)

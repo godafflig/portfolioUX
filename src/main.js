@@ -21,7 +21,8 @@ import { initHeader } from './sections/header.js' // en-tête
 import { initIntro } from './sections/intro.js' // section 1
 import { initAbout } from './sections/about.js' // section 2
 import { initParcours } from './sections/parcours.js' // section 3
-import { initStubs } from './sections/stubs.js' // sections 4 et 5 (provisoires)
+import { initProjets } from './sections/projets.js' // section 4
+import { initStubs } from './sections/stubs.js' // section 5 (provisoire)
 import { ScrollTrigger } from 'gsap/ScrollTrigger' // pour recalculer les positions de scroll
 import { initObjectTimeline } from './sections/objectTimeline.js' // scénario de l'objet
 
@@ -51,7 +52,9 @@ const signature = createSignature(stage)
 if (import.meta.env.DEV) window.signature = signature
 
 // 5. Le lien entre le scroll et l'objet
-initObjectTimeline(stage, signature, header, parcours)
+//    (le couloir des projets a besoin de la scène 3D : il est créé ici, après elle)
+const projets = initProjets(content, stage, lenis)
+initObjectTimeline(stage, signature, header, parcours, projets)
 
 // 6. Premier calcul de taille : tout est prêt, on peut dessiner
 stage.start()
