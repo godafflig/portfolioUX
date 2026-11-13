@@ -219,9 +219,14 @@
         "title": "Fontenay Restaurants",
         "status": "",
         "summary": "Plateforme mobile et web.",
-        "stack": [],
+        "stack": [
+          "Symfony",
+          "PostgreSQL",
+          "React",
+          "PWA"
+        ],
         "image": "/images/projets/fontenay-restaurants.png",
-        "tint": false
+        "url": "https://staff.tombenat.fr/"
       },
       {
         "slug": "erosion",
