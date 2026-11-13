@@ -15,7 +15,8 @@
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { isMobile } from '../core/env.js'
 
-export function initObjectTimeline(stage, signature, header) {
+// `parcours` est ce que renvoie initParcours : il donne l'avancement de la frise
+export function initObjectTimeline(stage, signature, header, parcours) {
   const { state } = signature
 
   // Crée un capteur sans animation : on lira simplement sa propriété .progress
@@ -24,7 +25,6 @@ export function initObjectTimeline(stage, signature, header) {
   // « top bottom » se lit : « quand le HAUT de la section atteint le BAS de l'écran »
   const gather = sensor('#about', 'top bottom', 'top 20%') // galaxie → lignes décomposées
   const afterAbout = sensor('#parcours', 'top bottom', 'top 30%') // l'objet change de place après « À propos »
-  const align = sensor('#parcours', 'top 70%', 'bottom 70%') // lignes décomposées → lignes droites
   const assemble = sensor('#projets', 'top 60%', 'bottom bottom') // lignes droites → forme finale
   const product = sensor('#contact', 'top 85%', 'bottom bottom') // forme finale → produit couvert de code
   // Un capteur sur toute la page, pour faire tourner l'objet avec le scroll
@@ -41,7 +41,9 @@ export function initObjectTimeline(stage, signature, header) {
   stage.onFrameEarly(() => {
     // Les quatre curseurs de la construction suivent chacun leur capteur
     state.gather = gather.progress
-    state.align = align.progress
+    // Lignes décomposées → lignes droites : au rythme de la frise du parcours.
+    // (÷ 0.85 : la transformation est terminée un peu avant la dernière étape)
+    state.align = Math.min(1, parcours.progress() / 0.85)
     state.assemble = assemble.progress
     state.code = product.progress
 

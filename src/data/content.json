@@ -54,10 +54,16 @@
   "parcours": {
     "number": "02",
     "title": "Parcours",
+    "types": {
+      "declic": "Point de départ",
+      "pro": "Expérience",
+      "formation": "Formation"
+    },
     "steps": [
       {
         "type": "declic",
         "year": null,
+        "mark": "Déclic",
         "title": "Le déclic",
         "subtitle": "Ma reconversion professionnelle",
         "period": ""
@@ -65,6 +71,7 @@
       {
         "type": "pro",
         "year": null,
+        "mark": "Stage",
         "title": "Agence 36",
         "subtitle": "Stage développeur Java / Android",
         "period": "6 mois"

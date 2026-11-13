@@ -445,7 +445,200 @@ a {
   color: var(--ink-soft);
 }
 
-/* --- 8. Sections provisoires (à construire aux prochaines étapes) --------- */
+/* --- 8. Parcours ---------------------------------------------------------- */
+/* La section fait exactement un écran de haut : c'est elle qui est « épinglée »
+   pendant que la piste glisse. Sans z-index, elle passe SOUS le canvas :
+   l'objet 3D se dessine par-dessus les années géantes. */
+.parcours {
+  position: relative;
+  height: 100vh;
+  overflow: hidden; /* cache la partie de la piste qui dépasse de l'écran */
+}
+
+.parcours .section-label {
+  position: absolute; /* fixe dans la section : ne glisse pas avec la piste */
+  top: 96px;
+  left: 0;
+  z-index: 2;
+}
+
+/* La piste : aussi large que tous les panneaux mis bout à bout */
+.parcours__track {
+  position: relative;
+  width: max-content; /* largeur = celle de son contenu */
+  height: 100%;
+  will-change: transform; /* elle va glisser */
+}
+
+.parcours__list {
+  display: flex; /* les panneaux côte à côte */
+  height: 100%;
+}
+
+/* Un panneau = un écran */
+.parcours__panel {
+  position: relative; /* repère pour l'année, la pastille et le contenu */
+  flex: 0 0 100vw; /* largeur fixe : toute la largeur de l'écran */
+  height: 100%;
+}
+
+/* La ligne bleue : toute la longueur de la piste, étirée depuis la gauche.
+   scaleX(0) = invisible ; le JavaScript augmente cette valeur avec le scroll. */
+.parcours__line {
+  position: absolute;
+  top: 36vh;
+  left: var(--gutter);
+  right: var(--gutter);
+  z-index: 1; /* au-dessus des années */
+  height: 2px;
+  background: var(--blue);
+  transform: scaleX(0);
+  transform-origin: left; /* le côté gauche ne bouge pas */
+}
+
+/* La pastille de chaque étape, centrée sur la ligne */
+.parcours__node {
+  position: absolute;
+  top: calc(36vh - 7px); /* 7 px = la moitié de sa hauteur, moins l'épaisseur de la ligne */
+  left: var(--gutter);
+  z-index: 2;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--blue);
+  border-radius: 50%;
+  background: var(--white); /* éteinte : un anneau vide */
+  transform: scale(0.6);
+  transition: transform 0.5s, background-color 0.5s, border-color 0.5s;
+}
+
+/* Allumée : elle grossit et se remplit de la couleur de son type */
+.parcours__panel.is-active .parcours__node {
+  transform: scale(1);
+  border-color: var(--ink);
+  background: var(--ink); /* le déclic : noir */
+}
+
+.parcours__panel--pro.is-active .parcours__node {
+  border-color: var(--orange);
+  background: var(--orange); /* expérience pro : orange */
+}
+
+.parcours__panel--formation.is-active .parcours__node {
+  border-color: var(--blue);
+  background: var(--blue); /* formation : bleu */
+}
+
+/* Le contenu, suspendu sous la ligne */
+.parcours__content {
+  position: absolute;
+  top: calc(36vh + 44px);
+  left: var(--gutter);
+  z-index: 2;
+  max-width: min(46vw, 42rem); /* à gauche : l'objet 3D occupe la droite */
+  opacity: 0.2; /* estompé tant que l'étape n'est pas atteinte */
+  transform: translateY(16px);
+  transition: opacity 0.6s, transform 0.6s;
+}
+
+.parcours__panel.is-active .parcours__content {
+  opacity: 1;
+  transform: none;
+}
+
+.parcours__type {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.parcours__title {
+  margin: 0 0 12px;
+  font-size: clamp(2.5rem, 6.5vw, 6.5rem);
+  font-weight: 800;
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+.parcours__subtitle {
+  font-size: clamp(1.0625rem, 1.5vw, 1.5rem);
+}
+
+.parcours__period {
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  color: var(--ink-soft);
+}
+
+/* L'année géante, en arrière-plan : gris très pâle pour ne pas gêner la lecture */
+.parcours__year {
+  position: absolute;
+  left: 4vw;
+  bottom: 1vh;
+  font-size: clamp(7rem, 28vw, 34rem);
+  font-weight: 800;
+  line-height: 0.8;
+  letter-spacing: -0.05em;
+  color: #efefef;
+  text-transform: uppercase;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.parcours__counter {
+  position: absolute;
+  right: var(--gutter);
+  bottom: 28px;
+  z-index: 2;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+/* -- Variante sans défilement horizontal (mouvement réduit) -- */
+/* Les étapes sont empilées, comme une liste classique */
+.parcours--static {
+  height: auto;
+  overflow: visible;
+  padding: 18vh 0;
+}
+
+.parcours--static .section-label {
+  position: static;
+}
+
+.parcours--static .parcours__track {
+  width: auto;
+}
+
+.parcours--static .parcours__list {
+  flex-direction: column; /* les uns sous les autres */
+}
+
+.parcours--static .parcours__panel {
+  flex: none;
+  height: auto;
+  padding: 28px var(--gutter);
+}
+
+.parcours--static .parcours__content {
+  position: static;
+  max-width: 42rem;
+}
+
+.parcours--static .parcours__line,
+.parcours--static .parcours__node,
+.parcours--static .parcours__year,
+.parcours--static .parcours__counter {
+  display: none; /* décors de la frise : inutiles dans la liste */
+}
+
+/* --- 8 bis. Sections provisoires (à construire aux prochaines étapes) ----- */
 .stub {
   position: relative;
   z-index: 3; /* le texte passe devant le canvas : toujours lisible */
@@ -580,6 +773,10 @@ a {
   .about__photo {
     grid-column: 3 / -1; /* la photo passe dessous, décalée à droite */
     margin-top: 72px;
+  }
+
+  .parcours__content {
+    max-width: calc(100vw - 2 * var(--gutter)); /* toute la largeur disponible */
   }
 
   .nav {

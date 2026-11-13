@@ -1,5 +1,5 @@
 // ============================================================================
-// SECTIONS PROVISOIRES — Parcours, Projets, Contact
+// SECTIONS PROVISOIRES — Projets, Contact
 //
 // Ces sections affichent déjà le contenu du fichier JSON, sous une forme
 // volontairement simple. Elles donnent à la page sa longueur réelle, ce qui
@@ -32,18 +32,6 @@ function buildItem(badgeClass, title, subtitle) {
 }
 
 export function initStubs(content) {
-  // --- Parcours ------------------------------------------------------------
-  const parcours = buildShell('parcours', content.parcours, 'Version provisoire · étape 3')
-  const steps = el('ol', 'stub__list')
-  content.parcours.steps.forEach((step) => {
-    // Classe de la pastille selon le type : orange (pro), bleu (formation), noir (déclic)
-    const badge = step.type === 'pro' ? 'badge--pro' : step.type === 'formation' ? 'badge--formation' : ''
-    // filter(Boolean) retire les morceaux vides avant de les relier par un point médian
-    const subtitle = [step.subtitle, step.period].filter(Boolean).join(' · ')
-    steps.append(buildItem(badge, step.title, subtitle))
-  })
-  parcours.append(steps)
-
   // --- Projets -------------------------------------------------------------
   const projets = buildShell('projets', content.projets, 'Version provisoire · étape 4')
   const items = el('ol', 'stub__list')

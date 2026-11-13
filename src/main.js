@@ -20,7 +20,8 @@ import { createSignature } from './three/signature.js' // l'icosaèdre de partic
 import { initHeader } from './sections/header.js' // en-tête
 import { initIntro } from './sections/intro.js' // section 1
 import { initAbout } from './sections/about.js' // section 2
-import { initStubs } from './sections/stubs.js' // sections 3 à 5 (provisoires)
+import { initParcours } from './sections/parcours.js' // section 3
+import { initStubs } from './sections/stubs.js' // sections 4 et 5 (provisoires)
 import { ScrollTrigger } from 'gsap/ScrollTrigger' // pour recalculer les positions de scroll
 import { initObjectTimeline } from './sections/objectTimeline.js' // scénario de l'objet
 
@@ -39,6 +40,7 @@ if (import.meta.env.DEV) window.lenis = lenis
 const header = initHeader(content)
 initIntro(content)
 initAbout(content)
+const parcours = initParcours(content)
 initStubs(content)
 
 // 4. La scène 3D et l'objet signature
@@ -49,7 +51,7 @@ const signature = createSignature(stage)
 if (import.meta.env.DEV) window.signature = signature
 
 // 5. Le lien entre le scroll et l'objet
-initObjectTimeline(stage, signature, header)
+initObjectTimeline(stage, signature, header, parcours)
 
 // 6. Premier calcul de taille : tout est prêt, on peut dessiner
 stage.start()
