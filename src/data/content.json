@@ -5,19 +5,50 @@
     "description": "Portfolio de Tom Benat, développeur Full Stack (.NET/C#, JavaScript, React Native) et UX/UI Designer à Lyon."
   },
   "nav": [
-    { "label": "À propos", "href": "#about" },
-    { "label": "Parcours", "href": "#parcours" },
-    { "label": "Projets", "href": "#projets" },
-    { "label": "Contact", "href": "#contact" }
+    {
+      "label": "À propos",
+      "href": "#about"
+    },
+    {
+      "label": "Parcours",
+      "href": "#parcours"
+    },
+    {
+      "label": "Projets",
+      "href": "#projets"
+    },
+    {
+      "label": "Contact",
+      "href": "#contact"
+    }
   ],
   "hud": [
-    { "index": "01", "label": "Érosion", "detail": "le code épars" },
-    { "index": "02", "label": "Esquisse", "detail": "les lignes décomposées" },
-    { "index": "03", "label": "Construction", "detail": "les lignes droites" },
-    { "index": "04", "label": "Produit", "detail": "la forme finale" }
+    {
+      "index": "01",
+      "label": "Érosion",
+      "detail": "le code épars"
+    },
+    {
+      "index": "02",
+      "label": "Esquisse",
+      "detail": "les lignes décomposées"
+    },
+    {
+      "index": "03",
+      "label": "Construction",
+      "detail": "les lignes droites"
+    },
+    {
+      "index": "04",
+      "label": "Produit",
+      "detail": "la forme finale"
+    }
   ],
   "intro": {
-    "nameLines": ["Tom", "Benat"],
+    "nameLines": [
+      "Tom",
+      "Benat"
+    ],
     "role": "Développeur Full Stack & UX/UI Designer",
     "location": "Lyon",
     "tagline": "Je transforme une idée en produit : je la dessine, je la code, je la fais vivre.",
@@ -26,7 +57,10 @@
   "about": {
     "number": "01",
     "title": "À propos",
-    "headline": ["Développeur", "& Designer"],
+    "headline": [
+      "Développeur",
+      "& Designer"
+    ],
     "lead": "Je ne suis pas arrivé au code par la voie classique.",
     "paragraphs": [
       "Après une reconversion professionnelle, j'ai appris à développer, puis à concevoir les interfaces que je développe.",
@@ -140,15 +174,24 @@
         "title": "Aldret",
         "status": "En cours",
         "summary": "Plateforme C2C de seconde main pour les sports de montagne. Une IA génère la description d'un article à partir d'une photo.",
-        "stack": ["React Native (Android)", "API C#", "PostgreSQL", "IA"],
-        "image": ""
+        "stack": [
+          "React Native (Android)",
+          "API C#",
+          "PostgreSQL",
+          "IA"
+        ],
+        "image": "/images/projets/aldret.png",
+        "video": "/videos/aldret.mp4",
+        "url": "https://aldret.vercel.app/"
       },
       {
         "slug": "alarme-connectee",
         "title": "Alarme connectée",
         "status": "",
         "summary": "Application mobile qui pilote une alarme (unité centrale + détecteurs de mouvement), avec authentification biométrique.",
-        "stack": ["React Native (iOS / Android)"],
+        "stack": [
+          "React Native (iOS / Android)"
+        ],
         "image": ""
       },
       {
@@ -173,7 +216,8 @@
         "status": "Freelance",
         "summary": "Site vitrine pour un client réel.",
         "stack": [],
-        "image": ""
+        "image": "/images/projets/festival-film-scolaire.png",
+        "url": "https://www.generation7art.com/"
       },
       {
         "slug": "couple-et-familles",
@@ -181,7 +225,8 @@
         "status": "Freelance",
         "summary": "Site vitrine pour un cabinet de thérapie.",
         "stack": [],
-        "image": ""
+        "image": "/images/projets/couple-et-familles.png",
+        "url": "https://couples-et-familles69.com/"
       },
       {
         "slug": "erosion",
@@ -191,19 +236,35 @@
         "stack": [],
         "image": ""
       }
-    ]
+    ],
+    "visit": "Voir le site"
   },
   "contact": {
     "number": "04",
     "title": "Contact",
-    "headline": ["Une idée ?", "Parlons-en"],
+    "headline": [
+      "Une idée ?",
+      "Parlons-en"
+    ],
     "invitation": "Un produit à dessiner, à construire ou à faire grandir : écrivez-moi.",
     "backToTop": "Retour en haut ↑",
-    "cta": { "label": "Me contacter", "href": "mailto:tombenat99@hotmail.fr" },
+    "cta": {
+      "label": "Me contacter",
+      "href": "mailto:tombenat99@hotmail.fr"
+    },
     "links": [
-      { "label": "GitHub", "href": "https://github.com/godafflig" },
-      { "label": "GitLab", "href": "https://gitlab.com/tbenat8" },
-      { "label": "LinkedIn", "href": "https://www.linkedin.com/in/tom-benat-764a171a1/" }
+      {
+        "label": "GitHub",
+        "href": "https://github.com/godafflig"
+      },
+      {
+        "label": "GitLab",
+        "href": "https://gitlab.com/tbenat8"
+      },
+      {
+        "label": "LinkedIn",
+        "href": "https://www.linkedin.com/in/tom-benat-764a171a1/"
+      }
     ]
   }
 }

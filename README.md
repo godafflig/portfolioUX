@@ -58,8 +58,13 @@ Le site est alors visible sur http://localhost:5173.
 - `about.photo.src` : déposer la photo dans `public/images/` (format portrait 4:5 conseillé),
   puis écrire son chemin, par exemple `"/images/portrait.jpg"`. Tant que le champ est vide,
   un fond pointillé « Photo à venir » la remplace.
-- `projets.items[].image` : les visuels des projets (même principe, format 16:10 conseillé).
+- `projets.items[].image` : les visuels des projets (dans `public/images/projets/`, format 16:10 conseillé).
   Tant que le champ est vide, la carte affiche le numéro du projet sur un fond pointillé.
+  Manquent encore : Alarme connectée, Fontenay Restaurants, Festi-Event, Érosion.
+  Dans le couloir, chaque image est affichée en deux tons bleu / blanc ; ses vraies couleurs
+  reviennent au survol et à l'ouverture. Aucune retouche à faire à la main.
+- `projets.items[].video` et `url` (facultatifs) : une vidéo de présentation et le lien du site en ligne,
+  affichés dans la page détaillée
 - `projets.items[].summary` et `stack` : le texte et les technologies de la page détaillée
 - `parcours.steps[0]` et `[1]` : l'année du déclic et du stage Agence 36 (`year`).
   Tant qu'elle est vide, le mot du champ `mark` (« Déclic », « Stage ») s'affiche en géant à sa place.

@@ -40,6 +40,44 @@ const smooth = (a, b, x) => {
 const pad = (n) => String(n).padStart(2, '0')
 
 // ----------------------------------------------------------------------------
+// Le « traitement DA » des images
+// ----------------------------------------------------------------------------
+// Les captures de projets ont chacune leurs couleurs, qui jureraient avec la
+// direction artistique. Ce petit shader les affiche donc en deux tons
+// (du bleu pour les zones sombres au blanc pour les zones claires), et ne
+// révèle les vraies couleurs qu'au survol ou à l'ouverture de la carte.
+const cardVertexShader = /* glsl */ `
+  varying vec2 vUv; // position dans l'image (0 → 1 dans chaque sens), transmise au fragment shader
+  void main() {
+    vUv = uv;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`
+
+const cardFragmentShader = /* glsl */ `
+  uniform sampler2D map;    // l'image de la carte
+  uniform float uOpacity;   // opacité (la brume)
+  uniform float uDuotone;   // 1 = appliquer le traitement deux tons, 0 = laisser l'image telle quelle
+  uniform float uReveal;    // 0 → 1 : part des vraies couleurs (survol, ouverture)
+  uniform vec3 uBlue;       // le bleu de la direction artistique
+  varying vec2 vUv;
+
+  void main() {
+    vec3 real = texture2D(map, vUv).rgb; // la vraie couleur du pixel
+    // Sa luminosité : un seul nombre, 0 = noir, 1 = blanc
+    // (les trois coefficients reflètent la sensibilité de l'œil au rouge, au vert et au bleu)
+    float light = pow(dot(real, vec3(0.2126, 0.7152, 0.0722)), 0.45);
+    // Deux tons : bleu pour le sombre, blanc pour le clair
+    vec3 duotone = mix(uBlue, vec3(1.0), smoothstep(0.05, 0.9, light));
+    // On glisse du deux-tons vers les vraies couleurs selon uReveal
+    vec3 color = mix(real, mix(duotone, real, uReveal), uDuotone);
+    gl_FragColor = vec4(color, uOpacity);
+    // Conversion finale des couleurs pour l'écran (fournie par Three.js)
+    #include <colorspace_fragment>
+  }
+`
+
+// ----------------------------------------------------------------------------
 // L'image d'une carte
 // ----------------------------------------------------------------------------
 // Si le projet a une image dans le JSON, on la charge. Sinon on dessine une
@@ -106,8 +144,12 @@ function buildDetail(data) {
   const stack = el('ul', 'detail__stack')
   const visual = el('div', 'detail__visual')
 
+  const site = el('a', 'detail__site', `${data.visit} ↗`)
+  site.target = '_blank' // s'ouvre dans un nouvel onglet
+  site.rel = 'noopener' // par sécurité, la page ouverte n'a aucun accès à la nôtre
+
   const inner = el('div', 'detail__inner')
-  inner.append(number, title, status, summary, stack)
+  inner.append(number, title, status, summary, stack, site)
   detail.append(back, inner, visual)
   document.body.append(detail)
 
@@ -119,8 +161,21 @@ function buildDetail(data) {
     status.hidden = !item.status // pas de statut : on masque la ligne
     summary.textContent = item.summary
     stack.replaceChildren(...item.stack.map((tech) => el('li', '', tech)))
+    // Le lien vers le site en ligne, s'il y en a un
+    site.hidden = !item.url
+    if (item.url) site.href = item.url
+
     visual.replaceChildren() // on vide l'ancien visuel
-    if (item.image) {
+    if (item.video) {
+      // Une vidéo de présentation : lecteur avec ses commandes, jamais lancé tout seul
+      const video = el('video')
+      video.src = item.video
+      video.controls = true
+      video.playsInline = true // sur téléphone, reste dans la page au lieu de passer en plein écran
+      video.preload = 'metadata' // ne télécharge que le strict nécessaire avant la lecture
+      if (item.image) video.poster = item.image // image affichée avant la lecture
+      visual.append(video)
+    } else if (item.image) {
       const img = el('img')
       img.src = item.image
       img.alt = '' // décoratif : le titre décrit déjà le projet
@@ -130,7 +185,10 @@ function buildDetail(data) {
     }
   }
 
-  return { root: detail, back, fill }
+  // Met la vidéo en pause (appelé à la fermeture du panneau)
+  const stop = () => visual.querySelector('video')?.pause()
+
+  return { root: detail, back, fill, stop }
 }
 
 export function initProjets(content, stage, lenis) {
@@ -180,6 +238,7 @@ export function initProjets(content, stage, lenis) {
     const closeStatic = () => {
       if (opened < 0) return
       opened = -1
+      detail.stop()
       detail.root.hidden = true
       document.documentElement.style.overflow = ''
       lastFocus?.focus()
@@ -210,11 +269,19 @@ export function initProjets(content, stage, lenis) {
   const geometry = new THREE.PlaneGeometry(CARD_W, CARD_H)
 
   const cards = items.map((item, i) => {
-    // MeshBasicMaterial : affiche l'image telle quelle, sans calcul de lumière
-    const material = new THREE.MeshBasicMaterial({
-      map: buildCardTexture(item, i, data.placeholder),
+    // Le matériau : notre shader « deux tons » et les valeurs qu'on lui envoie
+    const uniforms = {
+      map: { value: buildCardTexture(item, i, data.placeholder) },
+      uOpacity: { value: 0 },
+      uDuotone: { value: item.image ? 1 : 0 }, // l'image d'attente est déjà dans la palette
+      uReveal: { value: 0 },
+      uBlue: { value: new THREE.Color(0x0f1eaf) },
+    }
+    const material = new THREE.ShaderMaterial({
+      vertexShader: cardVertexShader,
+      fragmentShader: cardFragmentShader,
+      uniforms,
       transparent: true, // nécessaire pour faire varier l'opacité (la brume)
-      opacity: 0,
     })
     const mesh = new THREE.Mesh(geometry, material)
     mesh.userData.index = i // on note son numéro pour le retrouver au survol
@@ -229,8 +296,9 @@ export function initProjets(content, stage, lenis) {
 
     const card = {
       mesh,
-      material,
+      uniforms,
       button,
+      opacity: 0, // opacité actuelle de la carte (la brume)
       side: i % 2 === 0 ? -1 : 1, // -1 = à gauche, +1 = à droite, en alternance
       hover: 0, // 0 → 1 : la carte est-elle survolée ? (valeur lissée)
       open: 0, // 0 → 1 : la carte est-elle en train de remplir l'écran ?
@@ -334,7 +402,7 @@ export function initProjets(content, stage, lenis) {
   function pick(ndc) {
     raycaster.setFromCamera(ndc, stage.camera)
     // On ne teste que les cartes assez visibles pour être cliquées
-    const targets = cards.filter((c) => c.mesh.visible && c.material.opacity > 0.3).map((c) => c.mesh)
+    const targets = cards.filter((c) => c.mesh.visible && c.opacity > 0.3).map((c) => c.mesh)
     const hit = raycaster.intersectObjects(targets)[0] // la plus proche de nous
     return hit ? hit.object.userData.index : -1
   }
@@ -378,6 +446,7 @@ export function initProjets(content, stage, lenis) {
   function close() {
     if (opened < 0 || detail.root.hidden) return
     const card = cards[opened]
+    detail.stop() // on coupe la vidéo si elle tournait
     // La page s'efface…
     gsap.to(detail.root, {
       opacity: 0,
@@ -453,8 +522,11 @@ export function initProjets(content, stage, lenis) {
       const fog = smooth(FOG_FAR, FOG_NEAR, distance) // loin = transparent
       const tooClose = smooth(fadeNear, fadeFar, distance) // elle s'efface aussi en nous frôlant
       const opacity = Math.max(o, presence * fog * tooClose)
-      card.material.opacity = opacity
+      card.opacity = opacity
+      card.uniforms.uOpacity.value = opacity
       card.mesh.visible = opacity > 0.01
+      // Les vraies couleurs reviennent au survol, et pendant que la carte s'ouvre
+      card.uniforms.uReveal.value = Math.max(card.hover, o)
       // Une carte ouverte passe devant tout le reste
       card.mesh.renderOrder = o > 0 ? 10 : 0
 
