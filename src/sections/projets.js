@@ -278,12 +278,40 @@ export function initProjets(content, stage, lenis) {
   let sideOffset = 1.4 // écart des cartes par rapport au centre du couloir
   let fillScale = 1 // agrandissement nécessaire pour remplir l'écran
 
+  let narrow = false // écran étroit (téléphone tenu à la verticale) ?
+  let fadeNear = 1.6 // distance à laquelle une carte qui nous frôle a fini de s'effacer…
+  let fadeFar = 3.0 // …et distance à laquelle elle commence
+  let endDistance = 5.5 // distance de la dernière carte à la fin du couloir
+
   stage.onResize((view) => {
-    // view.width : largeur visible au centre de la scène (7.3 sur un écran large)
-    cardScale = Math.min(1, Math.max(0.45, view.width / 7.3))
-    sideOffset = Math.min(1.4, view.width * 0.2 + 0.25)
-    // Taille de la zone visible à OPEN_DISTANCE de la caméra (même calcul que dans stage.js)
     const fov = THREE.MathUtils.degToRad(stage.camera.fov)
+    // view.width : largeur visible au centre de la scène (7.3 sur un écran large, 1.9 sur un téléphone)
+    narrow = view.width < 4
+
+    if (narrow) {
+      // Écran étroit : le couloir se resserre. Les cartes occupent 62 % de la largeur
+      // et s'écartent à peine du centre, pour rester entières à l'écran.
+      cardScale = (view.width * 0.62) / CARD_W
+      sideOffset = view.width * 0.16
+      // À quelle distance le bord de la carte touche-t-il le bord de l'écran ?
+      // (demi-largeur visible à une distance d = d × tan(angle / 2) × proportions)
+      const edge = sideOffset + (CARD_W * cardScale) / 2
+      const edgeDistance = edge / (Math.tan(fov / 2) * stage.camera.aspect)
+      // La carte s'efface juste avant d'être coupée par le bord
+      fadeFar = edgeDistance * 0.92
+      fadeNear = edgeDistance * 0.62
+      // Et la dernière s'arrête là où elle tient encore en entier
+      endDistance = edgeDistance * 1.08
+    } else {
+      // Écran large : les cartes sont à leur taille normale, bien écartées
+      cardScale = Math.min(1, Math.max(0.45, view.width / 7.3))
+      sideOffset = Math.min(1.4, view.width * 0.2 + 0.25)
+      fadeNear = 1.6
+      fadeFar = 3.0
+      endDistance = 5.5
+    }
+
+    // Taille de la zone visible à OPEN_DISTANCE de la caméra (même calcul que dans stage.js)
     const visibleH = 2 * Math.tan(fov / 2) * OPEN_DISTANCE
     const visibleW = visibleH * stage.camera.aspect
     // La carte doit couvrir l'écran dans les deux sens : on prend le plus grand des deux rapports
@@ -388,9 +416,9 @@ export function initProjets(content, stage, lenis) {
 
     const camZ = stage.camera.position.z
     // Le couloir avance vers nous. Au départ, la première carte est à 7 unités ;
-    // à l'arrivée, la dernière est à 5.5 unités : bien visible, à côté de l'objet assemblé.
+    // à l'arrivée, la dernière s'arrête à « endDistance » : bien visible, près de l'objet assemblé.
     const lastZ = (items.length - 1) * SPACING
-    group.position.z = lerp(camZ - 7, camZ - 5.5 + lastZ, progress)
+    group.position.z = lerp(camZ - Math.max(7, endDistance), camZ - endDistance + lastZ, progress)
 
     // Quelle carte est sous la souris ?
     hovered = pointerActive && isActive() ? pick(pointer) : -1
@@ -423,7 +451,7 @@ export function initProjets(content, stage, lenis) {
       // -- La brume : l'opacité dépend de la distance à la caméra --
       const distance = camZ - (group.position.z + card.mesh.position.z)
       const fog = smooth(FOG_FAR, FOG_NEAR, distance) // loin = transparent
-      const tooClose = smooth(1.6, 3.0, distance) // elle s'efface aussi en nous frôlant
+      const tooClose = smooth(fadeNear, fadeFar, distance) // elle s'efface aussi en nous frôlant
       const opacity = Math.max(o, presence * fog * tooClose)
       card.material.opacity = opacity
       card.mesh.visible = opacity > 0.01
@@ -441,10 +469,16 @@ export function initProjets(content, stage, lenis) {
       card.mesh.updateWorldMatrix(true, false) // (on s'assure que sa position est à jour)
       // …converti en position dans la scène, puis « projeté » sur l'écran (-1 → +1)
       card.mesh.localToWorld(corner).project(stage.camera)
-      const x = (corner.x * 0.5 + 0.5) * window.innerWidth
+      let x = (corner.x * 0.5 + 0.5) * window.innerWidth
       const y = (-corner.y * 0.5 + 0.5) * window.innerHeight
       // Plus la carte est loin, plus le titre est petit
       const scale = Math.min(1.25, Math.max(0.45, 5 / distance))
+      // Sur écran étroit, on retient le titre dans l'écran : s'il dépasse à droite,
+      // on le décale vers la gauche (en gardant 12 px de marge de chaque côté)
+      if (narrow) {
+        const width = card.button.offsetWidth * scale // largeur réelle du titre affiché
+        x = Math.max(12, Math.min(x, window.innerWidth - width - 12))
+      }
       card.button.style.visibility = 'visible'
       card.button.style.opacity = labelOpacity
       card.button.style.transform = `translate(${x}px, ${y + 10}px) scale(${scale})`
