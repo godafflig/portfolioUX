@@ -3,13 +3,13 @@
 //
 // On pose des « capteurs » (ScrollTrigger) sur les sections. Chacun fournit
 // un avancement entre 0 et 1 : 0 quand on entre dans sa zone, 1 quand on en sort.
-// À chaque image, on combine ces avancements pour régler l'icosaèdre.
+// À chaque image, on recopie ces avancements dans l'état de l'objet.
 //
-//   Intro     → wireframe bleu
-//   À propos  → l'objet rétrécit et se pose entre le texte et la photo
-//   Parcours  → le wireframe se couvre de code
-//   Projets   → l'objet se désagrège en sable
-//   Contact   → les grains se rassemblent et reforment l'objet
+//   Intro     → la galaxie : du code épars, des caractères et des grains
+//   À propos  → la galaxie se rassemble en lignes décomposées
+//   Parcours  → les lignes décomposées se tendent en lignes droites
+//   Projets   → les lignes droites s'assemblent : la forme finale
+//   Contact   → le code vient couvrir les faces : le produit
 // ============================================================================
 
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -22,11 +22,11 @@ export function initObjectTimeline(stage, signature, header) {
   const sensor = (trigger, start, end) => ScrollTrigger.create({ trigger, start, end })
 
   // « top bottom » se lit : « quand le HAUT de la section atteint le BAS de l'écran »
-  const about = sensor('#about', 'top bottom', 'top 20%') // l'objet quitte le centre
-  const afterAbout = sensor('#parcours', 'top bottom', 'top 30%') // il change de place après « À propos »
-  const code = sensor('#parcours', 'top 70%', 'bottom 70%') // wireframe → code
-  const erode = sensor('#projets', 'top 60%', 'bottom bottom') // code → sable
-  const reform = sensor('#contact', 'top 85%', 'bottom bottom') // sable → objet
+  const gather = sensor('#about', 'top bottom', 'top 20%') // galaxie → lignes décomposées
+  const afterAbout = sensor('#parcours', 'top bottom', 'top 30%') // l'objet change de place après « À propos »
+  const align = sensor('#parcours', 'top 70%', 'bottom 70%') // lignes décomposées → lignes droites
+  const assemble = sensor('#projets', 'top 60%', 'bottom bottom') // lignes droites → forme finale
+  const product = sensor('#contact', 'top 85%', 'bottom bottom') // forme finale → produit couvert de code
   // Un capteur sur toute la page, pour faire tourner l'objet avec le scroll
   const page = ScrollTrigger.create({ start: 0, end: 'max' })
 
@@ -36,16 +36,18 @@ export function initObjectTimeline(stage, signature, header) {
   // du chemin entre a et b. lerp(10, 20, 0.5) = 15.
   const lerp = (a, b, t) => a + (b - a) * t
 
-  stage.onFrame(() => {
-    // Wireframe → code : directement l'avancement dans le parcours
-    state.code = code.progress
-
-    // Sable : monte pendant les projets, redescend pendant le contact.
-    // (1 - reform.progress) vaut 1 avant le contact et tombe à 0 : il « annule » le sable.
-    state.sand = erode.progress * (1 - reform.progress)
+  // onFrameEarly : ce calcul passe AVANT la mise à jour de l'objet 3D,
+  // qui se sert de ces valeurs dans la même image
+  stage.onFrameEarly(() => {
+    // Les quatre curseurs de la construction suivent chacun leur capteur
+    state.gather = gather.progress
+    state.align = align.progress
+    state.assemble = assemble.progress
+    state.code = product.progress
 
     // « away » : l'objet est-il écarté du centre ? Oui dès « À propos », plus au contact.
-    const away = about.progress * (1 - reform.progress)
+    // (1 - product.progress) vaut 1 avant le contact et tombe à 0 : il ramène l'objet au centre.
+    const away = gather.progress * (1 - product.progress)
 
     if (isMobile) {
       // Sur mobile, pas la place de le décaler : il reste centré derrière le texte,
@@ -67,10 +69,10 @@ export function initObjectTimeline(stage, signature, header) {
     // Un tour et demi sur toute la longueur de la page (2π radians = un tour)
     state.spin = page.progress * Math.PI * 3
 
-    // L'étiquette d'état dans l'en-tête
-    if (reform.progress > 0.6) header.setState(3) // 04 — Produit
-    else if (state.sand > 0.4) header.setState(2) // 03 — Érosion
-    else if (state.code > 0.5) header.setState(1) // 02 — Code
-    else header.setState(0) // 01 — Maquette
+    // L'étiquette d'état dans l'en-tête : on affiche la dernière étape entamée pour de bon
+    if (state.assemble > 0.6) header.setState(3) // 04 — Produit
+    else if (state.align > 0.5) header.setState(2) // 03 — Construction
+    else if (state.gather > 0.5) header.setState(1) // 02 — Esquisse
+    else header.setState(0) // 01 — Érosion
   })
 }

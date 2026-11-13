@@ -44,6 +44,9 @@ initStubs(content)
 // 4. La scène 3D et l'objet signature
 const stage = createStage(document.getElementById('stage'))
 const signature = createSignature(stage)
+// En développement seulement : l'objet est accessible depuis la console pour faire des essais,
+// ex. signature.uniforms.uGlyphShare.value = 1 (que des caractères dans la galaxie)
+if (import.meta.env.DEV) window.signature = signature
 
 // 5. Le lien entre le scroll et l'objet
 initObjectTimeline(stage, signature, header)

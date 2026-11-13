@@ -11,10 +11,10 @@
     { "label": "Contact", "href": "#contact" }
   ],
   "hud": [
-    { "index": "01", "label": "Maquette", "detail": "l'idée" },
-    { "index": "02", "label": "Code", "detail": "la construction" },
-    { "index": "03", "label": "Érosion", "detail": "le sable" },
-    { "index": "04", "label": "Produit", "detail": "tout se rassemble" }
+    { "index": "01", "label": "Érosion", "detail": "le code épars" },
+    { "index": "02", "label": "Esquisse", "detail": "les lignes décomposées" },
+    { "index": "03", "label": "Construction", "detail": "les lignes droites" },
+    { "index": "04", "label": "Produit", "detail": "la forme finale" }
   ],
   "intro": {
     "nameLines": ["Tom", "Benat"],

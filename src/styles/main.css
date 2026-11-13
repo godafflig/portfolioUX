@@ -137,12 +137,12 @@ a {
   transition: background-color 0.4s; /* changement de couleur en douceur */
 }
 
-.hud[data-state='1'] .hud__dot {
-  background: var(--orange); /* état « code » */
+.hud[data-state='0'] .hud__dot {
+  background: var(--ink); /* état « érosion » : la matière brute */
 }
 
-.hud[data-state='2'] .hud__dot {
-  background: var(--ink); /* état « sable » */
+.hud[data-state='3'] .hud__dot {
+  background: var(--orange); /* état « produit » : le code est en place */
 }
 
 .hud__label {
@@ -169,9 +169,10 @@ a {
 }
 
 /* --- 6. Intro ------------------------------------------------------------- */
+/* Comme pour « À propos », la section n'a pas de z-index : ses enfants se placent
+   eux-mêmes par rapport au canvas (z-index 2). Le nom passe dessous, l'accroche dessus. */
 .intro {
   position: relative; /* repère pour les éléments en position absolue */
-  z-index: 1; /* sous le canvas : l'icosaèdre passe devant le nom */
   min-height: 100vh; /* au moins un écran de haut */
   min-height: 100svh; /* idem, en tenant compte des barres du navigateur mobile */
   display: flex;
@@ -181,6 +182,8 @@ a {
 }
 
 .intro__name {
+  position: relative;
+  z-index: 1; /* sous le canvas : la galaxie passe devant le nom */
   font-weight: 800; /* très gras */
   font-size: clamp(4.5rem, 24vw, 30rem); /* typographie géante, proportionnelle à l'écran */
   line-height: 0.84; /* lignes très serrées */
@@ -211,6 +214,7 @@ a {
 .intro__foot {
   position: absolute;
   inset: auto var(--gutter) 28px var(--gutter); /* collé en bas */
+  z-index: 3; /* au-dessus du canvas : l'accroche reste lisible */
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
@@ -218,8 +222,21 @@ a {
 }
 
 .intro__role {
+  position: relative; /* repère pour le halo ci-dessous */
   max-width: 34ch; /* environ 34 caractères par ligne */
   font-size: 1rem;
+}
+
+/* Un halo blanc et flou derrière l'accroche et l'invitation à défiler :
+   il écarte visuellement les grains de la galaxie pour que le texte reste lisible */
+.intro__role::before,
+.intro__scroll::before {
+  content: '';
+  position: absolute;
+  inset: -6px -18px -12px; /* déborde un peu autour du texte (moins en haut, pour ne pas mordre sur le nom) */
+  z-index: -1; /* derrière le texte, mais toujours devant le canvas */
+  background: var(--white);
+  filter: blur(8px); /* bords fondus plutôt qu'un rectangle net */
 }
 
 .intro__role strong {
@@ -232,6 +249,7 @@ a {
 }
 
 .intro__scroll {
+  position: relative; /* repère pour le halo */
   display: flex;
   align-items: center;
   gap: 10px;

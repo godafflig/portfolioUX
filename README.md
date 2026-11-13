@@ -1,8 +1,13 @@
 # Portfolio 2027 — Tom Benat
 
-Portfolio interactif en 3D : un icosaèdre de particules se construit (wireframe bleu),
-se code (caractères orange) puis s'érode en sable au fil du défilement, avant de se
-reformer dans la section contact.
+Portfolio interactif en 3D : un objet fait de particules se construit au fil du défilement.
+
+1. **Érosion** — une galaxie de caractères de code et de grains (intro)
+2. **Esquisse** — la galaxie se rassemble en lignes décomposées, des bouts de fil qui ondulent (à propos)
+3. **Construction** — les fils se tendent en lignes droites, encore détachées (parcours)
+4. **Produit** — les lignes s'assemblent en icosaèdre (projets), puis le code couvre ses faces (contact)
+
+La souris ouvre un trou dans la galaxie et repousse les lignes.
 
 Technologies : [Three.js](https://threejs.org) · [GSAP ScrollTrigger](https://gsap.com) ·
 [Lenis](https://lenis.darkroom.engineering) · [Vite](https://vite.dev)
@@ -29,7 +34,7 @@ Le site est alors visible sur http://localhost:5173.
 | `src/core/env.js` | Détection mobile / mouvement réduit, couleurs |
 | `src/core/scroll.js` | Défilement fluide (Lenis) relié à ScrollTrigger |
 | `src/three/stage.js` | Scène, caméra, renderer, boucle d'animation |
-| `src/three/signature.js` | L'icosaèdre : calcul des 3 positions de chaque particule, souris |
+| `src/three/signature.js` | L'objet : calcul des 5 positions de chaque particule, souris |
 | `src/three/signature.shaders.js` | Les shaders : mouvement, couleur et forme des particules |
 | `src/sections/intro.js` | Section 1 : nom géant découpé sur deux lignes |
 | `src/sections/about.js` | Section 2 : titre géant, texte ligne par ligne, photo en parallaxe |
@@ -40,7 +45,7 @@ Le site est alors visible sur http://localhost:5173.
 
 ## Avancement
 
-- [x] Étape 1 — Intro + objet signature (3 états, souris, mobile, mouvement réduit)
+- [x] Étape 1 — Intro + objet signature (galaxie, lignes, forme, produit ; souris, mobile, mouvement réduit)
 - [x] Étape 2 — À propos (texte ligne par ligne, parallaxe photo)
 - [ ] Étape 3 — Parcours (défilement horizontal épinglé, ligne bleue, années géantes)
 - [ ] Étape 4 — Projets (couloir 3D, brume, survol, entrée dans l'image)
@@ -56,7 +61,18 @@ Le site est alors visible sur http://localhost:5173.
 - `parcours.steps[0]` et `[1]` : l'année du déclic et du stage Agence 36 (`year`)
 - `about.lead`, `about.paragraphs`, `about.profile` : textes de présentation (brouillons à réécrire)
 
-## Tester le défilement depuis la console
+## Régler l'objet
 
-En développement, Lenis est accessible dans la console du navigateur :
-`lenis.scrollTo(1200)` défile jusqu'à 1200 px, `lenis.stop()` / `lenis.start()` le fige ou le relance.
+Dans `src/three/signature.js` :
+
+- `GLYPH_SHARE` : part des grains de la galaxie affichés comme caractères de code
+  (0 = que du sable, 1 = que des caractères ; 0.45 par défaut)
+- `FRAGMENTS_PER_EDGE` : en combien de bouts chaque arête est découpée
+- `PARTICLE_COUNT` : nombre de particules (ordinateur / mobile)
+
+## Tester depuis la console
+
+En développement, deux objets sont accessibles dans la console du navigateur :
+
+- `lenis.scrollTo(1200)` défile jusqu'à 1200 px, `lenis.stop()` / `lenis.start()` fige ou relance le défilement
+- `signature.uniforms.uGlyphShare.value = 1` change la part de caractères dans la galaxie, en direct

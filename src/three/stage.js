@@ -37,7 +37,8 @@ export function createStage(canvas) {
   // --- Les abonnés ---------------------------------------------------------
   // Les autres fichiers s'inscrivent ici pour être appelés
   // à chaque image (frame) ou à chaque redimensionnement (resize).
-  const frameCallbacks = new Set()
+  const earlyCallbacks = new Set() // appelés en premier : ceux qui LISENT le scroll
+  const frameCallbacks = new Set() // appelés ensuite : ceux qui mettent à jour les objets 3D
   const resizeCallbacks = new Set()
 
   // Calcule la taille de la zone visible au niveau de l'objet (à z = 0),
@@ -76,7 +77,9 @@ export function createStage(canvas) {
     // On convertit le delta en secondes, et on le borne : après un changement
     // d'onglet il peut être énorme et ferait « sauter » les animations.
     const dt = Math.min(deltaTime / 1000, 0.05)
-    // Chaque abonné met à jour ses objets…
+    // D'abord on lit où en est le scroll…
+    earlyCallbacks.forEach((fn) => fn(time, dt))
+    // …ensuite chaque abonné met à jour ses objets avec ces valeurs toutes fraîches…
     frameCallbacks.forEach((fn) => fn(time, dt))
     // …puis on dessine l'image
     renderer.render(scene, camera)
@@ -90,6 +93,9 @@ export function createStage(canvas) {
     getView,
     // s'abonner à chaque image
     onFrame: (fn) => frameCallbacks.add(fn),
+    // s'abonner à chaque image, en passant avant tous les autres abonnés
+    // (sans cela, l'objet serait dessiné avec les valeurs de scroll de l'image précédente)
+    onFrameEarly: (fn) => earlyCallbacks.add(fn),
     // s'abonner au redimensionnement (appelé une première fois tout de suite)
     onResize: (fn) => {
       resizeCallbacks.add(fn)

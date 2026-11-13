@@ -2,13 +2,16 @@
 // L'OBJET SIGNATURE : un icosaèdre fait de particules
 //
 // Un icosaèdre est un solide à 20 faces triangulaires, 30 arêtes, 12 sommets.
-// Chaque particule connaît TROIS positions, calculées une seule fois ici :
-//   1. sur une arête          → état « wireframe » (la maquette)
-//   2. sur une face, en grille → état « code » (la construction)
-//   3. dispersée dans l'espace → état « sable » (l'érosion)
+// L'objet raconte une construction, en cinq temps. Chaque particule connaît
+// donc CINQ positions, calculées une seule fois ici :
+//   1. dans la galaxie          → le code épars, des caractères et des grains
+//   2. sur un bout de ligne     → les lignes décomposées, posées de travers
+//   3. sur une ligne droite     → les arêtes entières, encore détachées
+//   4. sur une arête de la forme → l'icosaèdre assemblé
+//   5. sur une face, en grille  → le produit final, couvert de code
 // Ensuite, la carte graphique glisse d'une position à l'autre (voir
-// signature.shaders.js) selon deux curseurs pilotés par le scroll :
-// `state.code` et `state.sand`.
+// signature.shaders.js) selon quatre curseurs pilotés par le scroll :
+// `state.gather`, `state.align`, `state.assemble` et `state.code`.
 // ============================================================================
 
 import * as THREE from 'three'
@@ -19,7 +22,12 @@ import { vertexShader, fragmentShader } from './signature.shaders.js'
 const RADIUS = 1
 // Nombre de particules : version allégée sur mobile
 const PARTICLE_COUNT = isMobile ? 6000 : 14000
-// Les 64 caractères qui composent le « code » affiché sur les faces
+// En combien de bouts chaque arête est découpée pour l'étape « lignes décomposées »
+const FRAGMENTS_PER_EDGE = 5
+// Part des grains de la galaxie affichés comme caractères de code (le reste : des points).
+// 0 = que du sable, 1 = que des caractères.
+const GLYPH_SHARE = 0.45
+// Les 64 caractères qui composent le « code »
 const GLYPHS = '{}[]()<>=;:+-*/#&|!?$_.%^~@01234567abcdefghijklmnopqrstuvwxyzACS'
 
 // Convertit une couleur 0xRRVVBB en trois nombres entre 0 et 1 (format des shaders)
@@ -29,6 +37,11 @@ function hexToVec3(hex) {
     ((hex >> 8) & 255) / 255, // vert : les 8 bits du milieu
     (hex & 255) / 255, // bleu : les 8 bits de droite
   )
+}
+
+// Renvoie une direction tirée au hasard (un vecteur de longueur 1)
+function randomDirection() {
+  return new THREE.Vector3().randomDirection()
 }
 
 // ----------------------------------------------------------------------------
@@ -79,7 +92,54 @@ function buildIcosahedron() {
 }
 
 // ----------------------------------------------------------------------------
-// 2. La grille de code : des cases alignées en lignes sur chaque face
+// 2. Les poses de chaque arête avant l'assemblage
+// ----------------------------------------------------------------------------
+// Pour chaque arête, on invente deux « poses » antérieures à la forme finale :
+//   - la ligne droite   : l'arête entière, écartée du centre et un peu tournée
+//   - les bouts de ligne : la même arête coupée en morceaux, chacun jeté de travers
+function buildPoses(edges) {
+  return edges.map(([a, b]) => {
+    const length = a.distanceTo(b) // longueur de l'arête
+    const middle = a.clone().add(b).multiplyScalar(0.5) // son milieu
+    const direction = b.clone().sub(a).normalize() // sa direction (vecteur de longueur 1)
+
+    // -- Pose « ligne droite » --
+    // Le milieu est poussé vers l'extérieur (× 1.2 à 1.55) puis décalé d'un petit hasard :
+    // les arêtes ne se touchent plus, comme les pièces d'une notice de montage
+    const lineCenter = middle
+      .clone()
+      .multiplyScalar(1.2 + Math.random() * 0.35)
+      .add(randomDirection().multiplyScalar(0.18))
+    // Et la ligne est tournée de quelques degrés (jusqu'à ±0.5 radian, soit ±28°)
+    // autour d'un axe au hasard : elle n'est pas encore dans le bon sens
+    const lineDirection = direction
+      .clone()
+      .applyAxisAngle(randomDirection(), (Math.random() - 0.5) * 1.0)
+
+    // -- Pose « bouts de ligne » --
+    const fragments = []
+    for (let k = 0; k < FRAGMENTS_PER_EDGE; k++) {
+      // Où se trouve ce bout sur la ligne droite, mesuré depuis son milieu
+      const offset = ((k + 0.5) / FRAGMENTS_PER_EDGE - 0.5) * length
+      // On part de là, puis on l'écarte au hasard (de 0.15 à 0.55 unité)
+      const center = lineCenter
+        .clone()
+        .addScaledVector(lineDirection, offset)
+        .add(randomDirection().multiplyScalar(0.15 + Math.random() * 0.4))
+      fragments.push({
+        center, // le milieu du bout de ligne
+        direction: randomDirection(), // son orientation, complètement au hasard
+        seed: Math.random(), // un nombre au hasard, partagé par toutes ses particules
+      })
+    }
+
+    // seed : un nombre au hasard partagé par toutes les particules de l'arête
+    return { a, b, length, lineCenter, lineDirection, fragments, seed: Math.random() }
+  })
+}
+
+// ----------------------------------------------------------------------------
+// 3. La grille de code : des cases alignées en lignes sur chaque face
 // ----------------------------------------------------------------------------
 function buildCells(faces) {
   const COL = 0.05 // largeur d'une case (espace entre deux caractères)
@@ -131,7 +191,7 @@ function buildCells(faces) {
 }
 
 // ----------------------------------------------------------------------------
-// 3. La planche de caractères : une image contenant les 64 glyphes
+// 4. La planche de caractères : une image contenant les 64 glyphes
 // ----------------------------------------------------------------------------
 function buildAtlas() {
   const SIZE = 512 // taille de l'image en pixels
@@ -161,8 +221,11 @@ function buildAtlas() {
 
   // On transforme le canvas en « texture » : une image utilisable par la carte graphique
   const texture = new THREE.CanvasTexture(canvas)
-  texture.generateMipmaps = false // pas de versions réduites : évite les bavures entre cases
-  texture.minFilter = THREE.LinearFilter // lissage simple quand le caractère est petit
+  // « Mipmaps » : des copies de plus en plus petites de l'image, préparées à l'avance.
+  // Dans la galaxie, beaucoup de caractères sont minuscules : la carte graphique pioche
+  // alors dans la copie de la bonne taille, et ils restent nets au lieu de scintiller.
+  texture.generateMipmaps = true
+  texture.minFilter = THREE.LinearMipmapLinearFilter
 
   // La police JetBrains Mono peut arriver après : on redessine quand elle est chargée
   document.fonts.load('700 44px "JetBrains Mono Variable"').then(() => {
@@ -174,35 +237,63 @@ function buildAtlas() {
 }
 
 // ----------------------------------------------------------------------------
-// 4. L'objet complet
+// 5. L'objet complet
 // ----------------------------------------------------------------------------
 export function createSignature(stage) {
   const { faces, edges } = buildIcosahedron()
+  const poses = buildPoses(edges)
   const cells = buildCells(faces)
 
   // --- Les tableaux de données, un par « attribut » de particule -----------
   // Float32Array = tableau de nombres compact, le format attendu par la carte graphique
   const N = PARTICLE_COUNT
-  const aEdge = new Float32Array(N * 3) // position sur une arête (x, y, z)
-  const aCell = new Float32Array(N * 3) // position dans la grille de code
+  const aScatter = new Float32Array(N * 3) // 1. position dans la galaxie (x, y, z)
+  const aFrag = new Float32Array(N * 3) // 2. position sur un bout de ligne
+  const aLine = new Float32Array(N * 3) // 3. position sur une ligne droite
+  const aEdge = new Float32Array(N * 3) // 4. position sur une arête de la forme
+  const aCell = new Float32Array(N * 3) // 5. position dans la grille de code
   const aNormal = new Float32Array(N * 3) // direction « vers l'extérieur »
-  const aScatter = new Float32Array(N * 3) // position une fois en sable
-  const aGrid = new Float32Array(N * 3) // colonne, ligne, est-un-caractère
+  const aGroup = new Float32Array(N * 3) // place sur le bout de ligne + hasards partagés
+  const aGrid = new Float32Array(N * 3) // colonne, ligne, est-un-caractère-de-face
   const aRand = new Float32Array(N * 4) // 4 nombres aléatoires
 
-  const p = new THREE.Vector3() // vecteur de travail, réutilisé pour ne pas en créer 14 000
+  const p = new THREE.Vector3() // vecteurs de travail, réutilisés pour ne pas en créer 14 000
+  const q = new THREE.Vector3()
 
   for (let i = 0; i < N; i++) {
-    // -- Position 1 : un point au hasard sur une arête --
-    // i % edges.length répartit les particules équitablement entre les 30 arêtes
-    const [a, b] = edges[i % edges.length]
-    // lerpVectors(a, b, t) : le point situé à t (entre 0 et 1) du chemin de a vers b
-    p.lerpVectors(a, b, Math.random())
+    // i % poses.length répartit les particules équitablement entre les 30 arêtes
+    const pose = poses[i % poses.length]
+    // t : où se trouve la particule le long de l'arête (0 = un bout, 1 = l'autre)
+    const t = Math.random()
+
+    // -- Position 4 : sur l'arête de la forme finale --
+    // lerpVectors(a, b, t) : le point situé à t du chemin de a vers b
+    p.lerpVectors(pose.a, pose.b, t)
     aEdge.set([p.x, p.y, p.z], i * 3)
 
-    // -- Position 2 : une case de la grille de code --
-    // Les premières particules deviennent des caractères (une par case) ;
-    // les autres restent sur leur arête et continuent de dessiner le wireframe.
+    // -- Position 3 : au même endroit de la ligne droite, encore détachée --
+    // On part du milieu de la ligne et on avance de (t - 0.5) × longueur dans sa direction
+    q.copy(pose.lineCenter).addScaledVector(pose.lineDirection, (t - 0.5) * pose.length)
+    aLine.set([q.x, q.y, q.z], i * 3)
+
+    // -- Position 2 : sur un bout de ligne --
+    // k : dans quel bout tombe la particule (0 à 4)
+    const k = Math.min(FRAGMENTS_PER_EDGE - 1, Math.floor(t * FRAGMENTS_PER_EDGE))
+    // along : sa place à l'intérieur de ce bout (0 = début, 1 = fin)
+    const along = t * FRAGMENTS_PER_EDGE - k
+    const fragment = pose.fragments[k]
+    q.copy(fragment.center).addScaledVector(
+      fragment.direction,
+      (along - 0.5) * (pose.length / FRAGMENTS_PER_EDGE),
+    )
+    aFrag.set([q.x, q.y, q.z], i * 3)
+    // Les hasards partagés : toutes les particules d'un même bout (ou d'une même arête)
+    // reçoivent le même nombre, ce qui leur permet de bouger ensemble
+    aGroup.set([along, fragment.seed, pose.seed], i * 3)
+
+    // -- Position 5 : une case de la grille de code --
+    // Les premières particules deviendront des caractères (une par case) ;
+    // les autres restent sur leur arête et continuent de dessiner la forme.
     const cell = cells[i]
     if (cell) {
       aCell.set([cell.point.x, cell.point.y, cell.point.z], i * 3)
@@ -216,7 +307,7 @@ export function createSignature(stage) {
       aGrid.set([0, 0, 0], i * 3)
     }
 
-    // -- Position 3 : un grain de sable dans un large nuage --
+    // -- Position 1 : un grain dans la galaxie, un large nuage --
     aScatter.set(
       [
         (Math.random() - 0.5) * 10, // largeur : de -5 à +5
@@ -235,17 +326,23 @@ export function createSignature(stage) {
   // « position » est le nom imposé par Three.js : on y met la position sur l'arête.
   // Le second nombre indique combien de valeurs par particule (3 = x, y, z).
   geometry.setAttribute('position', new THREE.BufferAttribute(aEdge, 3))
+  geometry.setAttribute('aScatter', new THREE.BufferAttribute(aScatter, 3))
+  geometry.setAttribute('aFrag', new THREE.BufferAttribute(aFrag, 3))
+  geometry.setAttribute('aLine', new THREE.BufferAttribute(aLine, 3))
   geometry.setAttribute('aCell', new THREE.BufferAttribute(aCell, 3))
   geometry.setAttribute('aNormal', new THREE.BufferAttribute(aNormal, 3))
-  geometry.setAttribute('aScatter', new THREE.BufferAttribute(aScatter, 3))
+  geometry.setAttribute('aGroup', new THREE.BufferAttribute(aGroup, 3))
   geometry.setAttribute('aGrid', new THREE.BufferAttribute(aGrid, 3))
   geometry.setAttribute('aRand', new THREE.BufferAttribute(aRand, 4))
 
   // --- Le matériau : nos deux shaders + les valeurs qu'on leur envoie ------
   const uniforms = {
     uTime: { value: 0 },
+    uGather: { value: 0 },
+    uAlign: { value: 0 },
+    uAssemble: { value: 0 },
     uCode: { value: 0 },
-    uSand: { value: 0 },
+    uGlyphShare: { value: GLYPH_SHARE },
     uScale: { value: 1 },
     uObjScale: { value: 1 },
     uHover: { value: 0 },
@@ -269,7 +366,7 @@ export function createSignature(stage) {
 
   // Points = un objet Three.js qui dessine un carré par sommet de la géométrie
   const points = new THREE.Points(geometry, material)
-  // Les particules sortent largement de la forme de départ : on interdit à
+  // Les particules sortent largement de la forme finale : on interdit à
   // Three.js de masquer l'objet quand il le croit hors champ
   points.frustumCulled = false
 
@@ -286,8 +383,10 @@ export function createSignature(stage) {
 
   // --- L'état piloté par le scroll (modifié par src/sections/objectTimeline.js)
   const state = {
-    code: 0, // 0 = wireframe, 1 = code
-    sand: 0, // 0 = objet entier, 1 = sable
+    gather: 0, // 0 = galaxie, 1 = lignes décomposées
+    align: 0, // 0 = lignes décomposées, 1 = lignes droites
+    assemble: 0, // 0 = lignes droites détachées, 1 = icosaèdre assemblé
+    code: 0, // 0 = forme nue, 1 = faces couvertes de code
     x: 0, // décalage horizontal, en proportion de la largeur visible
     scale: 1, // échelle supplémentaire
     spin: 0, // rotation ajoutée par le scroll, en radians
@@ -337,8 +436,10 @@ export function createSignature(stage) {
   stage.onFrame((time, dt) => {
     // On transmet le temps et l'état du scroll aux shaders
     uniforms.uTime.value = time
+    uniforms.uGather.value = state.gather
+    uniforms.uAlign.value = state.align
+    uniforms.uAssemble.value = state.assemble
     uniforms.uCode.value = state.code
-    uniforms.uSand.value = state.sand
 
     // Position et échelle du groupe
     const scale = fit * state.scale
@@ -366,8 +467,8 @@ export function createSignature(stage) {
 
     // On lance le rayon depuis la caméra à travers la souris
     raycaster.setFromCamera(smooth, stage.camera)
-    // Touche-t-il la coque ? (seulement tant que l'objet est entier)
-    hovered = pointerActive && state.sand < 0.5 && raycaster.intersectObject(hull).length > 0
+    // Touche-t-il la coque ? (seulement une fois la forme assemblée)
+    hovered = pointerActive && state.assemble > 0.5 && raycaster.intersectObject(hull).length > 0
 
     // Les particules sont calculées dans le repère de l'objet (qui tourne) :
     // on y transporte le rayon grâce à la matrice inverse
@@ -382,5 +483,6 @@ export function createSignature(stage) {
   })
 
   // On expose l'état pour que le scroll puisse le piloter
-  return { state, group }
+  // (et les uniforms, pour pouvoir régler l'objet depuis la console en développement)
+  return { state, group, uniforms }
 }
