@@ -201,6 +201,7 @@
     "backToTop": "Retour en haut ↑",
     "cta": { "label": "Me contacter", "href": "mailto:tombenat99@hotmail.fr" },
     "links": [
+      { "label": "GitHub", "href": "https://github.com/godafflig" },
       { "label": "GitLab", "href": "https://gitlab.com/tbenat8" },
       { "label": "LinkedIn", "href": "https://www.linkedin.com/in/tom-benat-764a171a1/" }
     ]
