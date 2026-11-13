@@ -422,6 +422,32 @@ a {
   will-change: transform;
 }
 
+/* Les deux exemplaires de la photo, exactement superposés */
+.about__photo-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* remplit le cadre sans déformer */
+  object-position: bottom; /* le portrait détouré est calé en bas du cadre */
+}
+
+/* Dessous : la version deux tons (filtre SVG créé dans about.js) */
+.about__photo-img--duotone {
+  filter: url(#duotone);
+}
+
+/* Dessus : les vraies couleurs, invisibles au repos… */
+.about__photo-img--color {
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+/* …qui apparaissent quand la souris passe sur la photo */
+.about__photo:hover .about__photo-img--color {
+  opacity: 1;
+}
+
 /* En attendant la vraie photo : un fond pointillé bleu et une mention */
 .about__photo-placeholder {
   display: grid;

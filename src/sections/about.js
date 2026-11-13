@@ -102,12 +102,39 @@ export function initAbout(content) {
   const frame = el('div', 'about__photo-frame')
   let inner
   if (data.photo.src) {
-    // Une photo est renseignée dans le JSON : on l'affiche
-    inner = el('img', 'about__photo-inner')
-    inner.src = data.photo.src
-    inner.alt = data.photo.alt // texte de remplacement pour les lecteurs d'écran
-    inner.loading = 'lazy' // chargée seulement quand on s'en approche
-    inner.decoding = 'async' // décodée sans bloquer l'affichage de la page
+    // Une photo est renseignée dans le JSON : on l'affiche deux fois, l'une sur l'autre.
+    //   dessous : la photo en deux tons (bleu et blanc), raccord avec la direction artistique
+    //   dessus  : la photo en vraies couleurs, invisible, qui apparaît au survol (voir le CSS)
+    inner = el('div', 'about__photo-inner')
+    const makeImage = (className) => {
+      const img = el('img', className)
+      img.src = data.photo.src
+      img.loading = 'lazy' // chargée seulement quand on s'en approche
+      return img
+    }
+    const duotone = makeImage('about__photo-img about__photo-img--duotone')
+    duotone.alt = data.photo.alt // texte de remplacement pour les lecteurs d'écran
+    const color = makeImage('about__photo-img about__photo-img--color')
+    color.alt = '' // doublon décoratif : ignoré par les lecteurs d'écran
+    inner.append(duotone, color)
+
+    // Le filtre « deux tons », décrit en SVG et appliqué par le CSS (filter: url(#duotone)).
+    //   1. feColorMatrix : remplace chaque couleur par sa luminosité (un gris)
+    //   2. feComponentTransfer : étire ce gris entre le bleu de la DA (pour le noir) et le blanc
+    //      (0.059, 0.118, 0.686 = les parts de rouge, vert, bleu de #0F1EAF)
+    document.body.insertAdjacentHTML(
+      'beforeend',
+      `<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <filter id="duotone" color-interpolation-filters="sRGB">
+          <feColorMatrix type="matrix" values=".2126 .7152 .0722 0 0  .2126 .7152 .0722 0 0  .2126 .7152 .0722 0 0  0 0 0 1 0"/>
+          <feComponentTransfer>
+            <feFuncR type="table" tableValues="0.059 1"/>
+            <feFuncG type="table" tableValues="0.118 1"/>
+            <feFuncB type="table" tableValues="0.686 1"/>
+          </feComponentTransfer>
+        </filter>
+      </svg>`,
+    )
   } else {
     // Pas encore de photo : un fond pointillé avec une mention
     inner = el('div', 'about__photo-inner about__photo-placeholder')

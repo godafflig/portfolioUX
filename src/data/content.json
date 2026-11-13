@@ -79,7 +79,7 @@
       }
     ],
     "photo": {
-      "src": "",
+      "src": "/images/portrait-detoure.webp",
       "alt": "Portrait de Tom Benat",
       "caption": "Tom Benat — Lyon",
       "placeholder": "Photo à venir"
@@ -185,14 +185,34 @@
         "url": "https://aldret.vercel.app/"
       },
       {
+        "slug": "perfpro",
+        "title": "PerfPro",
+        "status": "",
+        "summary": "Application de suivi de performances pour un joueur de foot amateur : saisie des séances et des matchs, équilibre de charge d'entraînement, calendrier et statistiques.",
+        "stack": [
+          "React",
+          "TypeScript",
+          "Vite",
+          "Tailwind CSS",
+          "TanStack Query",
+          "Recharts"
+        ],
+        "image": "/images/projets/perfpro.png",
+        "tint": false
+      },
+      {
         "slug": "alarme-connectee",
         "title": "Alarme connectée",
         "status": "",
-        "summary": "Application mobile qui pilote une alarme (unité centrale + détecteurs de mouvement), avec authentification biométrique.",
+        "summary": "Système d'alarme complet : des détecteurs de mouvement, une centrale qui décide et déclenche même sans internet, et une application mobile pour armer, désarmer et suivre l'état en direct. Alerte sur le téléphone en moins de 5 secondes, authentification biométrique.",
         "stack": [
-          "React Native (iOS / Android)"
+          "React Native (iOS / Android)",
+          "FastAPI",
+          "MQTT",
+          "ESP-NOW",
+          "GitLab CI"
         ],
-        "image": ""
+        "image": "/images/projets/alarme-connectee.png"
       },
       {
         "slug": "fontenay-restaurants",
@@ -200,15 +220,20 @@
         "status": "",
         "summary": "Plateforme mobile et web.",
         "stack": [],
-        "image": ""
+        "image": "/images/projets/fontenay-restaurants.png",
+        "tint": false
       },
       {
-        "slug": "festi-event",
-        "title": "Festi-Event",
+        "slug": "erosion",
+        "title": "Érosion",
         "status": "",
-        "summary": "Plateforme événementielle.",
-        "stack": [],
-        "image": ""
+        "summary": "Étude visuelle interactive : un mot se dissout en grains, qui migrent vers le mot suivant et fuient le curseur.",
+        "stack": [
+          "JavaScript",
+          "Canvas 2D"
+        ],
+        "image": "/images/projets/erosion.png",
+        "url": "/erosion.html"
       },
       {
         "slug": "festival-film-scolaire",
@@ -227,14 +252,6 @@
         "stack": [],
         "image": "/images/projets/couple-et-familles.png",
         "url": "https://couples-et-familles69.com/"
-      },
-      {
-        "slug": "erosion",
-        "title": "Érosion",
-        "status": "",
-        "summary": "Étude visuelle interactive.",
-        "stack": [],
-        "image": ""
       }
     ],
     "visit": "Voir le site"

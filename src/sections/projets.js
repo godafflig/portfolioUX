@@ -273,7 +273,10 @@ export function initProjets(content, stage, lenis) {
     const uniforms = {
       map: { value: buildCardTexture(item, i, data.placeholder) },
       uOpacity: { value: 0 },
-      uDuotone: { value: item.image ? 1 : 0 }, // l'image d'attente est déjà dans la palette
+      // Deux cas où l'on n'applique pas le traitement deux tons : l'image d'attente, et les
+      // visuels composés (téléphones sur fond pointillé), marqués "tint": false dans le JSON.
+      // Ils sont déjà dans la palette, et le traitement les rendrait presque blancs.
+      uDuotone: { value: item.image && item.tint !== false ? 1 : 0 },
       uReveal: { value: 0 },
       uBlue: { value: new THREE.Color(0x0f1eaf) },
     }

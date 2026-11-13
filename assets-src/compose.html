@@ -1,0 +1,81 @@
+<!doctype html>
+<!--
+  OUTIL DE FABRICATION DES VISUELS (ne fait pas partie du site)
+  Cette page aligne des captures de téléphone dans des cadres, sur un fond
+  aux couleurs de la direction artistique. On la photographie ensuite avec
+  Chrome pour obtenir l'image d'une carte de projet (1600 × 1000 px).
+
+  Utilisation : compose.html?img=a.png,b.png&crop=5
+    img  : les captures à afficher, séparées par des virgules
+    crop : pourcentage de la hauteur à rogner en haut (barre d'état, barre du navigateur)
+-->
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      html,
+      body {
+        margin: 0;
+        width: 1600px;
+        height: 1000px;
+        overflow: hidden;
+      }
+      body {
+        display: flex; /* les téléphones côte à côte */
+        align-items: center;
+        justify-content: center;
+        gap: 64px;
+        /* fond gris très clair, pointillés bleus : le même que les cartes d'attente */
+        background: #f1f1f1 radial-gradient(circle, rgba(15, 30, 175, 0.4) 1.5px, transparent 2px) 0 0 / 40px 40px;
+      }
+      .phone {
+        width: 350px;
+        border: 10px solid #111;
+        border-radius: 44px;
+        overflow: hidden; /* coupe la capture aux coins arrondis */
+        background: #111;
+        box-shadow: 0 30px 60px rgba(17, 17, 17, 0.18);
+      }
+      /* Le téléphone du milieu est un peu plus grand et plus haut : donne du rythme */
+      .phone:nth-child(2):not(:last-child) {
+        width: 390px;
+        transform: translateY(-20px);
+      }
+      .screen {
+        overflow: hidden; /* cache la partie rognée de la capture */
+      }
+      .screen img {
+        display: block;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      // On lit les paramètres de l'adresse (?img=…&crop=…)
+      const params = new URLSearchParams(location.search)
+      const crop = Number(params.get('crop') || 0) / 100 // part à rogner en haut
+      const shown = 0.84 // part de la hauteur de la capture que l'on montre
+      params
+        .get('img')
+        .split(',')
+        .forEach((src) => {
+          const phone = document.createElement('div')
+          phone.className = 'phone'
+          const screen = document.createElement('div')
+          screen.className = 'screen'
+          const img = new Image()
+          img.src = src
+          img.onload = () => {
+            // Largeur affichée de l'image = celle de l'écran ; on en déduit sa hauteur
+            const height = (screen.clientWidth * img.naturalHeight) / img.naturalWidth
+            img.style.marginTop = `-${height * crop}px` // on remonte l'image : le haut disparaît
+            screen.style.height = `${height * shown}px` // et on limite la hauteur visible
+          }
+          screen.append(img)
+          phone.append(screen)
+          document.body.append(phone)
+        })
+    </script>
+  </body>
+</html>

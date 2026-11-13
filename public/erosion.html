@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Érosion — grains de sel, morphing et répulsion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ground:#E9E3D6;
+    --ink:#16130F;
+    --line:rgba(22,19,15,.28);
+    --soft:rgba(22,19,15,.55);
+  }
+  html[data-mode="nuit"]{
+    --ground:#0C1013;
+    --ink:#F4EFE4;
+    --line:rgba(244,239,228,.3);
+    --soft:rgba(244,239,228,.6);
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--ground);
+    color:var(--ink);
+    font-family:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+    -webkit-font-smoothing:antialiased;
+    cursor:crosshair;
+    transition:background .6s ease, color .6s ease;
+  }
+
+  #scene{position:fixed;inset:0;z-index:0;pointer-events:none}
+  #grains{position:absolute;inset:0;width:100%;height:100%}
+  #paper{
+    position:absolute;inset:0;
+    opacity:.5;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+  }
+  html[data-mode="nuit"] #paper{mix-blend-mode:screen;opacity:.22}
+
+  .hud{position:fixed;z-index:3;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+  .tl{top:22px;left:24px}
+  .hud a{color:inherit;text-decoration:none;border-bottom:1px solid var(--line);padding-bottom:1px;margin-right:14px;transition:border-color .25s}
+  .hud a:hover{border-color:var(--ink)}
+  .hud a:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+  .tr{top:18px;right:24px;display:flex;gap:8px}
+  .bl{bottom:26px;left:24px;max-width:min(46ch,60vw)}
+  .hud .dim{color:var(--soft)}
+
+  .btn{
+    font:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    background:none;border:1px solid var(--line);color:var(--ink);
+    padding:7px 12px;cursor:pointer;transition:background .25s,color .25s;
+  }
+  .btn:hover{background:var(--ink);color:var(--ground)}
+  .btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+  .btn[aria-pressed="true"]{background:var(--ink);color:var(--ground)}
+
+  #legend{line-height:1.6;text-transform:none;letter-spacing:.02em;font-size:12px;
+          color:var(--soft);transition:opacity .45s ease}
+
+  #ruler{position:fixed;z-index:3;right:24px;top:50%;transform:translateY(-50%);
+         display:flex;flex-direction:column;gap:10px;align-items:flex-end}
+  #ruler .tick{width:14px;height:1px;background:var(--line);transition:width .35s ease,background .35s ease}
+  #ruler .tick.on{width:34px;background:var(--ink)}
+
+  #hint{position:fixed;z-index:3;bottom:26px;left:50%;transform:translateX(-50%);
+        font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--soft);
+        transition:opacity .5s ease;text-align:center}
+  #hint.gone{opacity:0}
+
+  main{position:relative;z-index:1}
+  section{height:100vh}
+
+  @media (max-width:640px){
+    .bl{max-width:78vw}
+    #ruler{display:none}
+    .hud{font-size:10px}
+  }
+</style>
+</head>
+<body>
+
+<div id="scene" aria-hidden="true">
+  <canvas id="grains"></canvas>
+  <div id="paper"></div>
+</div>
+
+<div class="hud tl"><a href="/#projets">&larr; Portfolio</a><span>Érosion</span> <span class="dim">/ étude de dissolution</span></div>
+<div class="hud tr">
+  <button id="repel" class="btn" type="button" aria-pressed="true">Curseur</button>
+  <button id="swap" class="btn" type="button">Inverser</button>
+</div>
+<div class="hud bl"><p id="legend"></p></div>
+<div id="ruler" aria-hidden="true"></div>
+<div id="hint">Défiler &nbsp;·&nbsp; passer la souris sur le texte</div>
+
+<main id="track"></main>
+
+<script>
+/* ==================================================================
+   CONFIG
+================================================================== */
+const PHRASES = [
+  { lines:["ÉROSION"],           note:"Passe la souris sur le texte : les grains fuient le curseur puis retombent en place." },
+  { lines:["TOUT","S'EFFRITE"],  note:"Le mot ne disparaît pas : ses grains migrent vers les lettres du mot suivant." },
+  { lines:["GRAIN","PAR GRAIN"], note:"Chaque grain garde son rang horizontal d'un mot à l'autre — la vague part de la gauche." },
+  { lines:["RIEN","NE TIENT"],   note:"Dernière étape : plus de destination, le vent emporte tout. Remonte pour reformer." }
+];
+
+const HOLD    = 0.42;   // part du segment où le mot reste stable
+const SPREAD  = 0.50;   // décalage entre grains pendant la transition
+const PUFF    = 0.16;   // bombement en vol (fraction de la largeur)
+const REACH   = 0.45;   // distance d'envol final
+const MRADIUS = 300;    // rayon de répulsion, en px CSS
+const MFORCE  = 125;    // poussée max, en px CSS
+const MFALL   = 1.6;    // courbe du bord : 1 = linéaire, 3 = trou très net
+
+/* ================================================================== */
+const cv = document.getElementById('grains');
+const ctx = cv.getContext('2d', { alpha:true });
+const legend  = document.getElementById('legend');
+const ruler   = document.getElementById('ruler');
+const hint    = document.getElementById('hint');
+const btnSwap = document.getElementById('swap');
+const btnRep  = document.getElementById('repel');
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+let W=0, H=0, S=1, img=null, buf=null;
+let N=0, clouds=[], sx,sy, dm,di, sd,pf,tone,siz;
+let inkRGB=[20,20,20];
+let smooth=0, active=-1, born=0, scrolled=false;
+let mx=-9999, my=-9999, tmx=-9999, tmy=-9999, mAmt=0, mWant=0, repelOn=true;
+
+document.getElementById('track').innerHTML =
+  PHRASES.map(()=>'<section></section>').join('') + '<section></section>';
+ruler.innerHTML = PHRASES.map(()=>'<div class="tick"></div>').join('');
+const ticks = [...ruler.children];
+
+const clamp = (v,a,b)=> v<a?a : v>b?b : v;
+const easeOut = t => 1-Math.pow(1-t,3);
+const easeIn  = t => t*t*t;
+const smoothstep = t => t*t*(3-2*t);
+const stagger = (t,d)=> clamp((t - d*SPREAD)/(1-SPREAD), 0, 1);
+
+/* ==================================================================
+   Échantillonnage : un mot -> un nuage de points, trié par x
+================================================================== */
+function samplePhrase(lines){
+  const off = document.createElement('canvas');
+  off.width = W; off.height = H;
+  const o = off.getContext('2d', { willReadFrequently:true });
+
+  const face = px => px + 'px Anton, "Haettenschweiler", "Arial Narrow", Impact, sans-serif';
+  let size = Math.min(H*0.30, W*0.26);
+  const longest = lines.reduce((a,b)=> a.length>b.length ? a : b);
+  o.font = face(size);
+  if('letterSpacing' in o) o.letterSpacing = '-0.01em';
+  size *= Math.min(1, (W*0.84)/(o.measureText(longest).width || 1));
+  o.font = face(size);
+
+  const lh = size*0.88, top = H/2 - (lines.length-1)*lh/2;
+  o.textAlign='center'; o.textBaseline='middle'; o.fillStyle='#fff';
+  lines.forEach((t,i)=> o.fillText(t, W/2, top + i*lh));
+
+  const data = o.getImageData(0,0,W,H).data;
+  let step = Math.max(1, Math.round(S)), pts;
+  for(;;){
+    pts = [];
+    for(let y=0;y<H;y+=step){
+      const row = y*W;
+      for(let x=0;x<W;x+=step){
+        if(data[(row+x)*4+3] > 130) pts.push([x,y]);
+      }
+    }
+    if(pts.length <= 40000 || step > 8) break;
+    step++;
+  }
+  // tri horizontal : garantit la correspondance d'un mot à l'autre
+  pts.sort((a,b)=> (a[0]+Math.random()*3) - (b[0]+Math.random()*3));
+  return pts;
+}
+
+function build(){
+  const raw = PHRASES.map(p => samplePhrase(p.lines));
+  N = Math.max(...raw.map(p=>p.length));
+
+  clouds = raw.map(pts=>{
+    const tx = new Float32Array(N), ty = new Float32Array(N);
+    const c = pts.length;
+    const jit = (N/c > 1.05) ? 0.9*S : 0;      // évite les grains superposés
+    for(let i=0;i<N;i++){
+      const p = pts[ Math.min(c-1, (i*c/N)|0) ];
+      tx[i] = p[0] + (jit ? (Math.random()-0.5)*jit*2 : 0);
+      ty[i] = p[1] + (jit ? (Math.random()-0.5)*jit*2 : 0);
+    }
+    return {tx,ty};
+  });
+
+  sx = new Float32Array(N); sy = new Float32Array(N);
+  dm = new Float32Array(N); di = new Float32Array(N);
+  sd = new Float32Array(N); pf = new Float32Array(N);
+  tone = new Float32Array(N); siz = new Uint8Array(N);
+
+  const reach = W*REACH*(reduced?0.2:1);
+  for(let i=0;i<N;i++){
+    const a = Math.random()*Math.PI*2, r = Math.pow(Math.random(),0.65);
+    sx[i] = (Math.cos(a)*r*0.8 + 1.05) * reach * (0.35+Math.random());
+    sy[i] = (Math.sin(a)*r*0.7 - 0.30) * reach * (0.35+Math.random());
+    dm[i] = 0.60*(i/N) + 0.40*Math.random();   // vague de gauche à droite
+    di[i] = Math.random();
+    sd[i] = Math.random()*Math.PI*2;
+    pf[i] = W*PUFF*(0.15+Math.pow(Math.random(),2))*(reduced?0.25:1);
+    tone[i] = 0.78 + Math.random()*0.34;
+    siz[i] = Math.random()<0.16 ? 2 : 1;
+  }
+}
+
+function readInk(){
+  const c = getComputedStyle(document.body).color.match(/\d+/g);
+  if(c) inkRGB = [+c[0], +c[1], +c[2]];
+}
+
+function layout(){
+  S = Math.min(window.devicePixelRatio || 1, 2);
+  W = Math.round(innerWidth*S); H = Math.round(innerHeight*S);
+  cv.width = W; cv.height = H;
+  cv.style.width = innerWidth+'px'; cv.style.height = innerHeight+'px';
+  img = ctx.createImageData(W,H);
+  buf = new Uint32Array(img.data.buffer);
+  readInk();
+  build();
+}
+
+/* ==================================================================
+   Rendu
+================================================================== */
+function draw(now){
+  requestAnimationFrame(draw);
+  if(!buf) return;
+
+  const max = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+  const targetP = clamp(scrollY/max, 0, 1);
+  smooth += (targetP - smooth) * (reduced ? 1 : 0.11);
+
+  // curseur lissé
+  mAmt += (mWant - mAmt) * 0.12;
+  if(tmx > -9000){
+    if(mx < -9000){ mx = tmx; my = tmy; }
+    mx += (tmx-mx)*0.28; my += (tmy-my)*0.28;
+  }
+  const R = MRADIUS*S, R2 = R*R, F = MFORCE*S*mAmt;
+
+  const n = PHRASES.length;
+  const u = clamp(smooth*n, 0, n);
+  const idx = Math.min(u|0, n-1);
+  let t = clamp(u - idx, 0, 1);
+
+  if(idx !== active){
+    active = idx;
+    legend.style.opacity = 0;
+    setTimeout(()=>{ legend.textContent = PHRASES[active].note; legend.style.opacity = 1; }, 180);
+    ticks.forEach((el,i)=> el.classList.toggle('on', i===active));
+  }
+
+  const A = clouds[idx];
+  const last = idx === n-1;
+  const B = last ? null : clouds[idx+1];
+  const m = t < HOLD ? 0 : (t-HOLD)/(1-HOLD);
+
+  // apparition au chargement (première phrase uniquement)
+  const life = clamp((now-born-250)/1900, 0, 1);
+  const intro = (idx===0 && m===0 && life<1);
+
+  buf.fill(0);
+  const [Rc,Gc,Bc] = inkRGB;
+
+  for(let i=0;i<N;i++){
+    let x, y, a;
+
+    if(intro){
+      const k = 1 - easeOut(stagger(life, di[i]));
+      x = A.tx[i] + sx[i]*k; y = A.ty[i] + sy[i]*k;
+      a = 1-k;
+    } else if(m === 0){
+      x = A.tx[i]; y = A.ty[i]; a = 1;
+    } else {
+      const k = stagger(m, dm[i]);
+      if(last){
+        if(k >= 1) continue;
+        const e = easeIn(k);
+        x = A.tx[i] + sx[i]*e + Math.sin(sd[i] + k*5.2)*26*S*k;
+        y = A.ty[i] + sy[i]*e - k*k*30*S;
+        a = 1-k;
+      } else {
+        const e = smoothstep(k), puff = Math.sin(Math.PI*k);
+        x = A.tx[i] + (B.tx[i]-A.tx[i])*e + Math.cos(sd[i])*puff*pf[i];
+        y = A.ty[i] + (B.ty[i]-A.ty[i])*e + Math.sin(sd[i])*puff*pf[i];
+        a = 1 - 0.34*puff;
+      }
+    }
+
+    // répulsion : le grain fuit le curseur
+    if(F > 0.5){
+      const ddx = x-mx, ddy = y-my, d2 = ddx*ddx + ddy*ddy;
+      if(d2 < R2){
+        const d = Math.sqrt(d2) + 0.001;
+        const f = Math.pow(1 - d/R, MFALL);
+        const push = f * F * (0.55 + tone[i]*0.6);
+        x += ddx/d * push;
+        y += ddy/d * push;
+        a *= 1 - 0.38*f;
+      }
+    }
+
+    a = a*a*(3-2*a) * tone[i];
+    if(a <= 0.02) continue;
+    const X = x|0, Y = y|0;
+    if(X < 0 || Y < 0 || X >= W || Y >= H) continue;
+    const A8 = (a > 1 ? 255 : (a*255)|0);
+    if(A8 < 6) continue;
+
+    const px = (A8<<24) | (Bc<<16) | (Gc<<8) | Rc;
+    const base = Y*W + X;
+    buf[base] = px;
+    if(siz[i] === 2 && X+1 < W && Y+1 < H){
+      buf[base+1] = px; buf[base+W] = px; buf[base+W+1] = px;
+    }
+  }
+  ctx.putImageData(img,0,0);
+}
+
+/* ==================================================================
+   Événements
+================================================================== */
+addEventListener('pointermove', e=>{
+  tmx = e.clientX*S; tmy = e.clientY*S;
+  if(repelOn) mWant = 1;
+}, {passive:true});
+addEventListener('pointerdown', e=>{
+  tmx = e.clientX*S; tmy = e.clientY*S;
+  if(repelOn) mWant = 1;
+}, {passive:true});
+addEventListener('pointerleave', ()=> mWant = 0);
+addEventListener('blur', ()=> mWant = 0);
+
+addEventListener('scroll', ()=>{
+  if(!scrolled && scrollY > 40){ scrolled = true; hint.classList.add('gone'); }
+}, {passive:true});
+
+let rz; addEventListener('resize', ()=>{ clearTimeout(rz); rz = setTimeout(layout, 220); });
+
+btnSwap.addEventListener('click', ()=>{
+  const el = document.documentElement;
+  el.dataset.mode = el.dataset.mode === 'nuit' ? 'jour' : 'nuit';
+  setTimeout(readInk, 620);
+});
+btnRep.addEventListener('click', ()=>{
+  repelOn = !repelOn;
+  btnRep.setAttribute('aria-pressed', String(repelOn));
+  if(!repelOn) mWant = 0;
+});
+
+function start(){
+  layout();
+  legend.textContent = PHRASES[0].note;
+  ticks[0].classList.add('on');
+  born = performance.now();
+  requestAnimationFrame(draw);
+}
+
+if(document.fonts && document.fonts.load){
+  document.fonts.load('400 120px Anton').catch(()=>{}).then(()=>document.fonts.ready).then(start).catch(start);
+}else{
+  addEventListener('load', start);
+}
+</script>
+</body>
+</html>
