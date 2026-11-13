@@ -1,0 +1,44 @@
+<!doctype html>
+<!-- lang="fr" : indique aux navigateurs et lecteurs d'écran que la page est en français -->
+<html lang="fr">
+  <head>
+    <!-- Encodage des caractères (accents, symboles) -->
+    <meta charset="UTF-8" />
+    <!-- Adapte la largeur de la page à l'écran du téléphone -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Titre de l'onglet (remplacé au démarrage par celui du fichier JSON) -->
+    <title>Tom Benat — Portfolio</title>
+    <!-- Description lue par les moteurs de recherche (remplacée par celle du JSON) -->
+    <meta name="description" content="Portfolio de Tom Benat" />
+    <!-- Couleur de la barre du navigateur sur mobile : blanc, comme le fond -->
+    <meta name="theme-color" content="#ffffff" />
+  </head>
+  <body>
+    <!-- Lien d'évitement : permet au clavier de sauter directement au contenu -->
+    <a class="skip-link" href="#main">Aller au contenu</a>
+
+    <!-- Le canvas WebGL : la « toile » fixe où Three.js dessine l'icosaèdre.
+         aria-hidden : purement décoratif, ignoré par les lecteurs d'écran. -->
+    <canvas id="stage" aria-hidden="true"></canvas>
+
+    <!-- En-tête fixe : nom, état de l'objet 3D, navigation. Rempli par src/sections/header.js -->
+    <header class="header" id="header"></header>
+
+    <!-- Contenu principal : chaque section est générée à partir de src/data/content.json -->
+    <main id="main">
+      <!-- 1. Intro : nom géant + icosaèdre wireframe -->
+      <section class="intro" id="intro" aria-label="Introduction"></section>
+      <!-- 2. À propos (version provisoire, à construire) -->
+      <section class="stub" id="about"></section>
+      <!-- 3. Parcours (version provisoire, à construire) -->
+      <section class="stub stub--tall" id="parcours"></section>
+      <!-- 4. Projets (version provisoire, à construire) -->
+      <section class="stub stub--tall" id="projets"></section>
+      <!-- 5. Contact (version provisoire, à construire) -->
+      <section class="stub stub--contact" id="contact"></section>
+    </main>
+
+    <!-- Point d'entrée JavaScript. type="module" : autorise les import/export -->
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

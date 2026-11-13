@@ -1,0 +1,418 @@
+/* ==========================================================================
+   STYLES DU PORTFOLIO
+   Direction artistique : fond blanc, beaucoup de vide, texte noir.
+   Bleu = structure. Orange = énergie, en touches (jamais en texte courant).
+   ========================================================================== */
+
+/* --- 1. Variables (les « réglages » réutilisés partout) ------------------- */
+:root {
+  --white: #ffffff; /* fond de page */
+  --ink: #111111; /* texte noir */
+  --ink-soft: #5b5b5b; /* texte secondaire (gris lisible sur blanc) */
+  --line: #e4e4e4; /* filets très discrets */
+  --blue: #0f1eaf; /* structure : wireframe, liens, formation */
+  --orange: #fd641f; /* énergie : code, survols, CTA, expériences pro */
+
+  /* Police d'affichage et de texte */
+  --font-sans: 'Inter Tight Variable', 'Helvetica Neue', Arial, sans-serif;
+  /* Police « code » pour les petites étiquettes */
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, Consolas, monospace;
+
+  /* Marge latérale : s'adapte à la largeur de l'écran (min 16px, max 48px) */
+  --gutter: clamp(16px, 4vw, 48px);
+}
+
+/* --- 2. Remise à zéro minimale ------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box; /* la largeur inclut padding et bordure */
+}
+
+html {
+  -webkit-text-size-adjust: 100%; /* empêche iOS de grossir le texte tout seul */
+}
+
+body {
+  margin: 0; /* supprime la marge par défaut du navigateur */
+  background: var(--white); /* fond blanc */
+  color: var(--ink); /* texte noir */
+  font-family: var(--font-sans); /* police principale */
+  font-size: 1rem; /* 16px par défaut */
+  line-height: 1.5; /* interligne confortable */
+  overflow-x: clip; /* la typo géante dépasse : on coupe sans créer de barre de défilement */
+  -webkit-font-smoothing: antialiased; /* lissage des lettres sur macOS */
+}
+
+h1,
+h2,
+p,
+ol,
+ul {
+  margin: 0; /* on gère nous-mêmes tous les espacements */
+}
+
+ol,
+ul {
+  padding: 0; /* pas de retrait de liste */
+  list-style: none; /* pas de puces */
+}
+
+a {
+  color: var(--blue); /* les liens sont bleus (structure) */
+  text-underline-offset: 0.2em; /* soulignement légèrement décollé */
+}
+
+/* Contour bien visible quand on navigue au clavier */
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+}
+
+/* --- 3. Lien d'évitement (visible seulement au clavier) ------------------- */
+.skip-link {
+  position: absolute; /* sorti du flux */
+  left: var(--gutter);
+  top: -100px; /* caché au-dessus de l'écran */
+  z-index: 100; /* au-dessus de tout */
+  padding: 8px 12px;
+  background: var(--ink);
+  color: var(--white);
+}
+
+.skip-link:focus {
+  top: 12px; /* redescend quand il reçoit le focus */
+}
+
+/* --- 4. Le canvas 3D ------------------------------------------------------ */
+#stage {
+  position: fixed; /* reste en place pendant que la page défile */
+  inset: 0; /* occupe tout l'écran */
+  width: 100%;
+  height: 100%;
+  z-index: 2; /* au-dessus du nom géant (1), sous le texte des sections (3) */
+  pointer-events: none; /* laisse passer les clics vers la page en dessous */
+}
+
+/* --- 5. En-tête ----------------------------------------------------------- */
+.header {
+  position: fixed; /* toujours visible en haut */
+  inset: 0 0 auto 0; /* collé en haut, pleine largeur */
+  z-index: 10; /* au-dessus du canvas et des sections */
+  display: flex; /* éléments sur une ligne */
+  align-items: center; /* centrés verticalement */
+  justify-content: space-between; /* répartis : gauche / centre / droite */
+  gap: 16px;
+  padding: 18px var(--gutter);
+  font-size: 0.875rem;
+}
+
+.header__brand {
+  color: var(--ink); /* le nom reste noir */
+  font-weight: 700;
+  text-decoration: none;
+  letter-spacing: -0.01em;
+}
+
+/* Étiquette qui annonce l'état courant de l'objet 3D */
+.hud {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+  white-space: nowrap; /* jamais sur deux lignes */
+}
+
+/* Pastille colorée : bleue par défaut, change selon l'état (voir data-state) */
+.hud__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%; /* cercle */
+  background: var(--blue);
+  transition: background-color 0.4s; /* changement de couleur en douceur */
+}
+
+.hud[data-state='1'] .hud__dot {
+  background: var(--orange); /* état « code » */
+}
+
+.hud[data-state='2'] .hud__dot {
+  background: var(--ink); /* état « sable » */
+}
+
+.hud__label {
+  color: var(--ink); /* le nom de l'état en noir */
+}
+
+.nav {
+  display: flex;
+  gap: clamp(12px, 2vw, 28px);
+}
+
+.nav a {
+  color: var(--ink); /* liens de navigation noirs… */
+  text-decoration: none;
+  /* Soulignement « dessiné » avec un fond, pour pouvoir l'animer */
+  background: linear-gradient(var(--orange), var(--orange)) left bottom / 0% 2px no-repeat;
+  padding-bottom: 3px;
+  transition: background-size 0.35s;
+}
+
+.nav a:hover,
+.nav a:focus-visible {
+  background-size: 100% 2px; /* …soulignés d'un trait orange au survol */
+}
+
+/* --- 6. Intro ------------------------------------------------------------- */
+.intro {
+  position: relative; /* repère pour les éléments en position absolue */
+  z-index: 1; /* sous le canvas : l'icosaèdre passe devant le nom */
+  min-height: 100vh; /* au moins un écran de haut */
+  min-height: 100svh; /* idem, en tenant compte des barres du navigateur mobile */
+  display: flex;
+  flex-direction: column; /* empilement vertical */
+  justify-content: center; /* le nom est centré verticalement */
+  padding: 96px 0 120px; /* place pour l'en-tête et le pied d'intro */
+}
+
+.intro__name {
+  font-weight: 800; /* très gras */
+  font-size: clamp(4.5rem, 24vw, 30rem); /* typographie géante, proportionnelle à l'écran */
+  line-height: 0.84; /* lignes très serrées */
+  letter-spacing: -0.045em; /* lettres resserrées */
+  text-transform: uppercase; /* tout en capitales */
+}
+
+/* Chaque ligne du nom est un « masque » : ce qui en sort est coupé.
+   C'est ce qui permet aux lettres de monter depuis l'invisible. */
+.intro__line {
+  display: block;
+  overflow: hidden;
+  padding: 0.03em var(--gutter) 0; /* petit espace pour ne pas rogner le haut des lettres */
+  white-space: nowrap; /* une ligne ne se casse jamais */
+  will-change: transform; /* prévient le navigateur que la ligne va bouger */
+}
+
+.intro__line:nth-child(2) {
+  text-align: right; /* deuxième ligne calée à droite : le nom est « découpé » */
+}
+
+.intro__char {
+  display: inline-block; /* nécessaire pour pouvoir déplacer une lettre */
+  will-change: transform;
+}
+
+/* Pied de l'intro : phrase d'accroche à gauche, invitation à défiler à droite */
+.intro__foot {
+  position: absolute;
+  inset: auto var(--gutter) 28px var(--gutter); /* collé en bas */
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+}
+
+.intro__role {
+  max-width: 34ch; /* environ 34 caractères par ligne */
+  font-size: 1rem;
+}
+
+.intro__role strong {
+  display: block; /* le métier sur sa propre ligne */
+  font-weight: 700;
+}
+
+.intro__role span {
+  color: var(--ink-soft);
+}
+
+.intro__scroll {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+/* Petit trait vertical animé qui invite à défiler */
+.intro__scroll::after {
+  content: '';
+  width: 1px;
+  height: 40px;
+  background: var(--ink);
+  transform-origin: top; /* le trait « pousse » depuis le haut */
+  animation: scroll-hint 1.8s ease-in-out infinite;
+}
+
+@keyframes scroll-hint {
+  0% {
+    transform: scaleY(0); /* invisible */
+  }
+  50% {
+    transform: scaleY(1); /* entièrement tracé */
+  }
+  100% {
+    transform: scaleY(1);
+    opacity: 0; /* puis s'efface */
+  }
+}
+
+/* --- 7. Sections provisoires (à construire aux prochaines étapes) --------- */
+.stub {
+  position: relative;
+  z-index: 3; /* le texte passe devant le canvas : toujours lisible */
+  min-height: 110vh;
+  padding: 18vh var(--gutter);
+  border-top: 1px solid var(--line); /* filet discret entre les sections */
+}
+
+.stub--tall {
+  min-height: 170vh; /* sections longues : laisse le temps à l'objet de se transformer */
+}
+
+.stub--contact {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* contenu en bas : l'icosaèdre se reforme au-dessus */
+}
+
+.stub__inner {
+  max-width: 34rem; /* colonne de texte étroite, à gauche : l'objet vit à droite */
+}
+
+.stub__number {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+}
+
+.stub__title {
+  margin: 8px 0 28px;
+  font-size: clamp(2.5rem, 7vw, 6rem);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+.stub__todo {
+  display: inline-block;
+  margin-bottom: 28px;
+  padding: 4px 8px;
+  border: 1px dashed var(--ink-soft); /* pointillés : « en chantier » */
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--ink-soft);
+}
+
+.stub__text p + p {
+  margin-top: 0.35em;
+}
+
+.stub__list li {
+  display: grid;
+  grid-template-columns: 14px 1fr; /* pastille | texte */
+  gap: 4px 12px;
+  align-items: baseline;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+/* Pastille : couleur selon le type d'étape */
+.badge {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--ink); /* par défaut (le déclic, les projets) */
+}
+
+.badge--pro {
+  background: var(--orange); /* expériences pro */
+}
+
+.badge--formation {
+  background: var(--blue); /* formation */
+}
+
+.stub__list strong {
+  font-weight: 700;
+}
+
+.stub__list small {
+  display: block;
+  color: var(--ink-soft);
+  font-size: 0.875rem;
+}
+
+.stub__invite {
+  max-width: 16ch;
+  margin-bottom: 32px;
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.stub__actions {
+  display: flex;
+  flex-wrap: wrap; /* passe à la ligne sur petit écran */
+  align-items: center;
+  gap: 24px;
+}
+
+/* Bouton d'appel à l'action : fond orange, texte NOIR (le blanc sur orange
+   n'est pas assez contrasté) */
+.cta {
+  display: inline-block;
+  padding: 16px 28px;
+  border-radius: 999px; /* forme de pilule */
+  background: var(--orange);
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 0.25s, background-color 0.25s, color 0.25s;
+}
+
+.cta:hover,
+.cta:focus-visible {
+  background: var(--ink); /* s'inverse au survol */
+  color: var(--white);
+  transform: translateY(-2px); /* se soulève légèrement */
+}
+
+/* --- 8. Petits écrans ------------------------------------------------------ */
+@media (max-width: 768px) {
+  .nav {
+    display: none; /* pas la place : la navigation complète viendra plus tard */
+  }
+
+  .intro__foot {
+    flex-direction: column; /* accroche et « défiler » l'un sous l'autre */
+    align-items: flex-start;
+  }
+
+  .intro__scroll::after {
+    height: 24px;
+  }
+}
+
+/* --- 9. Accessibilité : mouvement réduit ---------------------------------- */
+/* Si la personne a demandé moins d'animations dans son système,
+   on coupe les animations CSS (le JavaScript fait la même chose de son côté). */
+@media (prefers-reduced-motion: reduce) {
+  .intro__scroll::after {
+    animation: none;
+  }
+
+  .nav a,
+  .cta,
+  .hud__dot {
+    transition: none;
+  }
+}

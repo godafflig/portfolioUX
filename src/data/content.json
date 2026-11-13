@@ -1,0 +1,179 @@
+{
+  "meta": {
+    "name": "Tom Benat",
+    "title": "Tom Benat — Développeur Full Stack & UX/UI Designer",
+    "description": "Portfolio de Tom Benat, développeur Full Stack (.NET/C#, JavaScript, React Native) et UX/UI Designer à Lyon."
+  },
+  "nav": [
+    { "label": "À propos", "href": "#about" },
+    { "label": "Parcours", "href": "#parcours" },
+    { "label": "Projets", "href": "#projets" },
+    { "label": "Contact", "href": "#contact" }
+  ],
+  "hud": [
+    { "index": "01", "label": "Maquette", "detail": "l'idée" },
+    { "index": "02", "label": "Code", "detail": "la construction" },
+    { "index": "03", "label": "Érosion", "detail": "le sable" },
+    { "index": "04", "label": "Produit", "detail": "tout se rassemble" }
+  ],
+  "intro": {
+    "nameLines": ["Tom", "Benat"],
+    "role": "Développeur Full Stack & UX/UI Designer",
+    "location": "Lyon",
+    "tagline": "Je transforme une idée en produit : je la dessine, je la code, je la fais vivre.",
+    "scrollHint": "Défiler"
+  },
+  "about": {
+    "number": "01",
+    "title": "À propos",
+    "lines": [
+      "Je ne suis pas arrivé au code par la voie classique.",
+      "Après une reconversion professionnelle, j'ai appris à développer,",
+      "puis à concevoir les interfaces que je développe.",
+      "Aujourd'hui je tiens les deux bouts : .NET/C#, JavaScript et React Native",
+      "d'un côté, UX/UI Design de l'autre."
+    ],
+    "photo": { "src": "", "alt": "Portrait de Tom Benat" }
+  },
+  "parcours": {
+    "number": "02",
+    "title": "Parcours",
+    "steps": [
+      {
+        "type": "declic",
+        "year": null,
+        "title": "Le déclic",
+        "subtitle": "Ma reconversion professionnelle",
+        "period": ""
+      },
+      {
+        "type": "pro",
+        "year": null,
+        "title": "Agence 36",
+        "subtitle": "Stage développeur Java / Android",
+        "period": "6 mois"
+      },
+      {
+        "type": "pro",
+        "year": 2022,
+        "title": "Freelance",
+        "subtitle": "Site vitrine Couple & Familles",
+        "period": "2022"
+      },
+      {
+        "type": "formation",
+        "year": 2022,
+        "title": "YNOV Lyon",
+        "subtitle": "Bachelor Informatique",
+        "period": "2022 — 2024"
+      },
+      {
+        "type": "pro",
+        "year": 2023,
+        "title": "Freelance",
+        "subtitle": "Site vitrine Festival Film Scolaire",
+        "period": "2023"
+      },
+      {
+        "type": "formation",
+        "year": 2024,
+        "title": "YNOV Lyon",
+        "subtitle": "Bachelor UX",
+        "period": "2024 — 2025"
+      },
+      {
+        "type": "pro",
+        "year": 2024,
+        "title": "Hyggle",
+        "subtitle": "Alternance UX/UI & front",
+        "period": "2024"
+      },
+      {
+        "type": "formation",
+        "year": 2025,
+        "title": "MyDigitalSchool Lyon",
+        "subtitle": "Master Expert en étude et développement du SI",
+        "period": "2025 — 2027"
+      },
+      {
+        "type": "pro",
+        "year": 2026,
+        "title": "Aqualter",
+        "subtitle": "Alternance Full Stack .NET / C#",
+        "period": "2026 → aujourd'hui"
+      }
+    ]
+  },
+  "projets": {
+    "number": "03",
+    "title": "Projets",
+    "items": [
+      {
+        "slug": "aldret",
+        "title": "Aldret",
+        "status": "En cours",
+        "summary": "Plateforme C2C de seconde main pour les sports de montagne. Une IA génère la description d'un article à partir d'une photo.",
+        "stack": ["React Native (Android)", "API C#", "PostgreSQL", "IA"],
+        "image": ""
+      },
+      {
+        "slug": "alarme-connectee",
+        "title": "Alarme connectée",
+        "status": "",
+        "summary": "Application mobile qui pilote une alarme (unité centrale + détecteurs de mouvement), avec authentification biométrique.",
+        "stack": ["React Native (iOS / Android)"],
+        "image": ""
+      },
+      {
+        "slug": "fontenay-restaurants",
+        "title": "Fontenay Restaurants",
+        "status": "",
+        "summary": "Plateforme mobile et web.",
+        "stack": [],
+        "image": ""
+      },
+      {
+        "slug": "festi-event",
+        "title": "Festi-Event",
+        "status": "",
+        "summary": "Plateforme événementielle.",
+        "stack": [],
+        "image": ""
+      },
+      {
+        "slug": "festival-film-scolaire",
+        "title": "Festival Film Scolaire",
+        "status": "Freelance",
+        "summary": "Site vitrine pour un client réel.",
+        "stack": [],
+        "image": ""
+      },
+      {
+        "slug": "couple-et-familles",
+        "title": "Couple & Familles",
+        "status": "Freelance",
+        "summary": "Site vitrine pour un cabinet de thérapie.",
+        "stack": [],
+        "image": ""
+      },
+      {
+        "slug": "erosion",
+        "title": "Érosion",
+        "status": "",
+        "summary": "Étude visuelle interactive.",
+        "stack": [],
+        "image": ""
+      }
+    ]
+  },
+  "contact": {
+    "number": "04",
+    "title": "Contact",
+    "invitation": "Une idée à transformer en produit ? Parlons-en.",
+    "cta": { "label": "Me contacter", "href": "" },
+    "links": [
+      { "label": "GitHub", "href": "" },
+      { "label": "LinkedIn", "href": "" }
+    ]
+  }
+}

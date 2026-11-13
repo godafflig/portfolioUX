@@ -1,0 +1,11 @@
+# Dépendances installées par npm (on les réinstalle avec `npm install`)
+node_modules/
+# Version compilée du site (générée par `npm run build`)
+dist/
+# Fichiers de journal et fichiers système
+*.log
+.DS_Store
+Thumbs.db
+# Variables d'environnement locales (jamais dans Git)
+.env
+.env.*
