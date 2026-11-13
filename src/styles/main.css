@@ -842,74 +842,98 @@ a {
   font-size: 0.9375rem;
 }
 
-/* --- 8 ter. Section provisoire (contact, à construire à l'étape 5) -------- */
-.stub {
+/* --- 8 ter. Contact ------------------------------------------------------- */
+/* Même empilement que l'intro : le titre géant passe SOUS le canvas (l'objet
+   terminé se pose devant), le message et les liens passent DESSUS. */
+.contact {
   position: relative;
-  z-index: 3; /* le texte passe devant le canvas : toujours lisible */
-  min-height: 110vh;
-  padding: 18vh var(--gutter);
-  border-top: 1px solid var(--line); /* filet discret entre les sections */
-}
-
-.stub--tall {
-  min-height: 170vh; /* sections longues : laisse le temps à l'objet de se transformer */
-}
-
-.stub--contact {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; /* contenu en bas : l'icosaèdre se reforme au-dessus */
+  justify-content: center; /* le titre géant est centré verticalement */
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: 120px 0 200px; /* place pour l'en-tête en haut et le message en bas */
+  border-top: 1px solid var(--line);
 }
 
-.stub__inner {
-  max-width: 34rem; /* colonne de texte étroite, à gauche : l'objet vit à droite */
+.contact .section-label {
+  position: absolute;
+  top: 96px;
+  left: 0;
 }
 
-.stub__number {
+.contact__headline {
+  position: relative;
+  z-index: 1; /* sous le canvas */
+  font-weight: 800;
+  font-size: clamp(3rem, 15vw, 19rem);
+  line-height: 0.88;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+}
+
+.contact__headline-line {
+  display: block;
+  padding: 0 var(--gutter);
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.contact__headline-line:nth-child(2) {
+  text-align: right; /* deuxième ligne calée à droite */
+}
+
+/* Le bas de la section : message + bouton à gauche, liens à droite */
+.contact__foot {
+  position: absolute;
+  inset: auto var(--gutter) 64px var(--gutter);
+  z-index: 3; /* au-dessus du canvas */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+}
+
+.contact__invite {
+  max-width: 30ch;
+  margin-bottom: 20px;
+  font-size: clamp(1.125rem, 1.6vw, 1.5rem);
+  font-weight: 500;
+}
+
+.contact__links {
+  display: flex;
+  gap: 24px;
+}
+
+/* Lien pas encore renseigné dans le JSON : affiché en gris, non cliquable */
+.is-missing {
+  color: var(--ink-soft);
+  text-decoration: none;
+  cursor: default;
+}
+
+/* La toute dernière ligne de la page */
+.contact__end {
+  position: absolute;
+  inset: auto var(--gutter) 20px var(--gutter);
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
   font-family: var(--font-mono);
   font-size: 0.75rem;
   color: var(--ink-soft);
 }
 
-.stub__title {
-  margin: 8px 0 28px;
-  font-size: clamp(2.5rem, 7vw, 6rem);
-  font-weight: 800;
-  line-height: 0.9;
-  letter-spacing: -0.04em;
-  text-transform: uppercase;
-}
-
-.stub__todo {
-  display: inline-block;
-  margin-bottom: 28px;
-  padding: 4px 8px;
-  border: 1px dashed var(--ink-soft); /* pointillés : « en chantier » */
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  color: var(--ink-soft);
-}
-
-.stub__text p + p {
-  margin-top: 0.35em;
-}
-
-.stub__list li {
-  display: grid;
-  grid-template-columns: 14px 1fr; /* pastille | texte */
-  gap: 4px 12px;
-  align-items: baseline;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--line);
-}
-
+/* --- 8 quater. Éléments partagés ------------------------------------------ */
 /* Pastille : couleur selon le type d'étape */
 .badge {
+  flex: none; /* garde sa taille, même dans une ligne serrée */
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: var(--ink); /* par défaut (le déclic, les projets) */
+  background: var(--ink); /* par défaut (le déclic) */
 }
 
 .badge--pro,
@@ -920,32 +944,6 @@ a {
 .badge--formation,
 .badge--ux {
   background: var(--blue); /* formation, UX/UI */
-}
-
-.stub__list strong {
-  font-weight: 700;
-}
-
-.stub__list small {
-  display: block;
-  color: var(--ink-soft);
-  font-size: 0.875rem;
-}
-
-.stub__invite {
-  max-width: 16ch;
-  margin-bottom: 32px;
-  font-size: clamp(2rem, 5vw, 4rem);
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.03em;
-}
-
-.stub__actions {
-  display: flex;
-  flex-wrap: wrap; /* passe à la ligne sur petit écran */
-  align-items: center;
-  gap: 24px;
 }
 
 /* Bouton d'appel à l'action : fond orange, texte NOIR (le blanc sur orange
@@ -966,6 +964,12 @@ a {
   background: var(--ink); /* s'inverse au survol */
   color: var(--white);
   transform: translateY(-2px); /* se soulève légèrement */
+}
+
+.cta.is-missing {
+  background: var(--line); /* grisé tant que l'adresse manque */
+  color: var(--ink-soft);
+  transform: none;
 }
 
 /* --- 9. Petits écrans ------------------------------------------------------ */

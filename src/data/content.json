@@ -196,7 +196,9 @@
   "contact": {
     "number": "04",
     "title": "Contact",
-    "invitation": "Une idée à transformer en produit ? Parlons-en.",
+    "headline": ["Une idée ?", "Parlons-en"],
+    "invitation": "Un produit à dessiner, à construire ou à faire grandir : écrivez-moi.",
+    "backToTop": "Retour en haut ↑",
     "cta": { "label": "Me contacter", "href": "" },
     "links": [
       { "label": "GitHub", "href": "" },

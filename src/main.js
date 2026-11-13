@@ -22,7 +22,7 @@ import { initIntro } from './sections/intro.js' // section 1
 import { initAbout } from './sections/about.js' // section 2
 import { initParcours } from './sections/parcours.js' // section 3
 import { initProjets } from './sections/projets.js' // section 4
-import { initStubs } from './sections/stubs.js' // section 5 (provisoire)
+import { initContact } from './sections/contact.js' // section 5
 import { ScrollTrigger } from 'gsap/ScrollTrigger' // pour recalculer les positions de scroll
 import { initObjectTimeline } from './sections/objectTimeline.js' // scénario de l'objet
 
@@ -42,7 +42,7 @@ const header = initHeader(content)
 initIntro(content)
 initAbout(content)
 const parcours = initParcours(content)
-initStubs(content)
+initContact(content)
 
 // 4. La scène 3D et l'objet signature
 const stage = createStage(document.getElementById('stage'))

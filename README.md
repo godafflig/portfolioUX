@@ -41,7 +41,7 @@ Le site est alors visible sur http://localhost:5173.
 | `src/sections/objectTimeline.js` | Quel état de l'objet à quel endroit de la page |
 | `src/sections/parcours.js` | Section 3 : frise horizontale épinglée, ligne bleue, années géantes |
 | `src/sections/projets.js` | Section 4 : couloir 3D des cartes, survol, clic, page détaillée |
-| `src/sections/stubs.js` | Section 5 en version provisoire |
+| `src/sections/contact.js` | Section 5 : titre géant, message, bouton d'appel à l'action, liens |
 | `public/images/` | Les images (photo, visuels des projets) |
 | `src/styles/main.css` | Styles et variables de couleur |
 
@@ -51,11 +51,12 @@ Le site est alors visible sur http://localhost:5173.
 - [x] Étape 2 — À propos (texte ligne par ligne, parallaxe photo)
 - [x] Étape 3 — Parcours (défilement horizontal épinglé, ligne bleue, années géantes)
 - [x] Étape 4 — Projets (couloir 3D, brume, survol, entrée dans l'image)
-- [ ] Étape 5 — Contact (version finale)
+- [x] Étape 5 — Contact (objet terminé, message, bouton, liens)
 
 ## À compléter dans `content.json`
 
-- `contact.cta.href` et `contact.links[].href` : adresse e-mail, GitHub, LinkedIn
+- `contact.cta.href` et `contact.links[].href` : adresse e-mail (`"mailto:…"`), GitHub, LinkedIn.
+  Tant qu'un champ est vide, le bouton ou le lien s'affiche grisé et n'est pas cliquable.
 - `about.photo.src` : déposer la photo dans `public/images/` (format portrait 4:5 conseillé),
   puis écrire son chemin, par exemple `"/images/portrait.jpg"`. Tant que le champ est vide,
   un fond pointillé « Photo à venir » la remplace.
