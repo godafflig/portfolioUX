@@ -199,10 +199,10 @@
     "headline": ["Une idée ?", "Parlons-en"],
     "invitation": "Un produit à dessiner, à construire ou à faire grandir : écrivez-moi.",
     "backToTop": "Retour en haut ↑",
-    "cta": { "label": "Me contacter", "href": "" },
+    "cta": { "label": "Me contacter", "href": "mailto:tombenat99@hotmail.fr" },
     "links": [
-      { "label": "GitHub", "href": "" },
-      { "label": "LinkedIn", "href": "" }
+      { "label": "GitLab", "href": "https://gitlab.com/tbenat8" },
+      { "label": "LinkedIn", "href": "https://www.linkedin.com/in/tom-benat-764a171a1/" }
     ]
   }
 }

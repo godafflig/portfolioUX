@@ -55,8 +55,6 @@ Le site est alors visible sur http://localhost:5173.
 
 ## À compléter dans `content.json`
 
-- `contact.cta.href` et `contact.links[].href` : adresse e-mail (`"mailto:…"`), GitHub, LinkedIn.
-  Tant qu'un champ est vide, le bouton ou le lien s'affiche grisé et n'est pas cliquable.
 - `about.photo.src` : déposer la photo dans `public/images/` (format portrait 4:5 conseillé),
   puis écrire son chemin, par exemple `"/images/portrait.jpg"`. Tant que le champ est vide,
   un fond pointillé « Photo à venir » la remplace.
