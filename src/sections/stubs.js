@@ -1,5 +1,5 @@
 // ============================================================================
-// SECTIONS PROVISOIRES — À propos, Parcours, Projets, Contact
+// SECTIONS PROVISOIRES — Parcours, Projets, Contact
 //
 // Ces sections affichent déjà le contenu du fichier JSON, sous une forme
 // volontairement simple. Elles donnent à la page sa longueur réelle, ce qui
@@ -32,13 +32,6 @@ function buildItem(badgeClass, title, subtitle) {
 }
 
 export function initStubs(content) {
-  // --- À propos ------------------------------------------------------------
-  const about = buildShell('about', content.about, 'Version provisoire · étape 2')
-  const text = el('div', 'stub__text')
-  // Une ligne du JSON = un paragraphe (plus tard : apparition ligne par ligne)
-  content.about.lines.forEach((line) => text.append(el('p', '', line)))
-  about.append(text)
-
   // --- Parcours ------------------------------------------------------------
   const parcours = buildShell('parcours', content.parcours, 'Version provisoire · étape 3')
   const steps = el('ol', 'stub__list')

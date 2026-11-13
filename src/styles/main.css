@@ -103,8 +103,11 @@ a {
   align-items: center; /* centrés verticalement */
   justify-content: space-between; /* répartis : gauche / centre / droite */
   gap: 16px;
-  padding: 18px var(--gutter);
+  padding: 18px var(--gutter) 28px;
   font-size: 0.875rem;
+  /* Voile blanc qui s'estompe vers le bas : le contenu qui défile s'efface
+     en douceur sous l'en-tête au lieu de se mélanger avec lui */
+  background: linear-gradient(to bottom, var(--white) 45%, rgba(255, 255, 255, 0));
 }
 
 .header__brand {
@@ -262,7 +265,169 @@ a {
   }
 }
 
-/* --- 7. Sections provisoires (à construire aux prochaines étapes) --------- */
+/* --- 7. À propos ---------------------------------------------------------- */
+/* La section empile trois « calques » par rapport au canvas 3D (z-index 2) :
+     - titre géant et photo  : z-index 1 → l'icosaèdre passe DEVANT
+     - texte                 : z-index 3 → l'icosaèdre passe DERRIÈRE
+   Pour que cela fonctionne, la section elle-même n'a PAS de z-index :
+   ses enfants se placent ainsi directement par rapport au canvas. */
+.about {
+  position: relative;
+  padding: 22vh 0 20vh; /* beaucoup d'air au-dessus et en dessous */
+}
+
+.about__head {
+  position: relative;
+  z-index: 1; /* sous le canvas */
+  margin-bottom: clamp(64px, 16vh, 180px); /* grand vide avant le texte */
+}
+
+/* Petite étiquette « 01 — À propos » : c'est le vrai titre <h2> de la section */
+.section-label {
+  margin-bottom: 24px;
+  padding: 0 var(--gutter);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Titre géant sur deux lignes, même principe que le nom dans l'intro */
+.about__headline {
+  font-weight: 800;
+  font-size: clamp(2.75rem, 13.5vw, 17rem);
+  line-height: 0.9;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+}
+
+.about__headline-line {
+  display: block;
+  padding: 0 var(--gutter);
+  white-space: nowrap; /* jamais coupée */
+  will-change: transform; /* la ligne va glisser au scroll */
+}
+
+.about__headline-line:nth-child(2) {
+  text-align: right; /* deuxième ligne calée à droite */
+}
+
+/* Grille de 12 colonnes : texte à gauche, photo à droite */
+.about__grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr); /* 12 colonnes de même largeur */
+  column-gap: 24px;
+  align-items: start; /* chaque bloc garde sa hauteur naturelle */
+  padding: 0 var(--gutter);
+}
+
+.about__text {
+  position: relative;
+  z-index: 3; /* au-dessus du canvas : toujours lisible */
+  grid-column: 1 / span 6; /* colonnes 1 à 6 */
+}
+
+/* La phrase d'accroche, en grand */
+.about__lead {
+  max-width: 18ch;
+  margin-bottom: 0.9em;
+  font-size: clamp(1.75rem, 3.4vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.about__paragraph {
+  max-width: 40ch; /* lignes courtes : plus confortable à lire */
+  font-size: clamp(1.0625rem, 1.3vw, 1.3rem);
+  line-height: 1.45;
+}
+
+.about__paragraph + .about__paragraph {
+  margin-top: 1em;
+}
+
+/* Le double profil : deux lignes séparées par des filets */
+.about__profile {
+  max-width: 30rem;
+  margin-top: 48px;
+  border-top: 1px solid var(--line);
+}
+
+.about__profile li {
+  display: grid;
+  grid-template-columns: 14px 1fr; /* pastille | texte */
+  gap: 2px 12px;
+  align-items: baseline;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.about__profile strong {
+  font-weight: 700;
+}
+
+.about__profile small {
+  display: block;
+  color: var(--ink-soft);
+  font-size: 0.9375rem;
+}
+
+/* La photo */
+.about__photo {
+  position: relative;
+  z-index: 1; /* sous le canvas : l'icosaèdre passe devant la photo */
+  grid-column: 8 / span 5; /* colonnes 8 à 12 */
+  margin: 12vh 0 0; /* décalée vers le bas par rapport au texte */
+}
+
+/* Le cadre : une « fenêtre » de proportions fixes qui coupe ce qui dépasse */
+.about__photo-frame {
+  position: relative;
+  aspect-ratio: 4 / 5; /* format portrait */
+  overflow: hidden;
+  background: #efefef;
+  will-change: transform;
+}
+
+/* L'image est plus haute que le cadre (124 %) : elle a de la marge pour
+   glisser à l'intérieur sans jamais laisser voir un bord. C'est la parallaxe. */
+.about__photo-inner {
+  position: absolute;
+  top: -12%;
+  left: 0;
+  width: 100%;
+  height: 124%;
+  object-fit: cover; /* remplit le cadre sans déformer la photo */
+  will-change: transform;
+}
+
+/* En attendant la vraie photo : un fond pointillé bleu et une mention */
+.about__photo-placeholder {
+  display: grid;
+  place-items: center; /* texte centré dans les deux sens */
+  background: radial-gradient(circle, rgba(15, 30, 175, 0.4) 1px, transparent 1.5px) 0 0 / 28px 28px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+}
+
+.about__photo-placeholder span {
+  padding: 4px 8px;
+  background: var(--white);
+  border: 1px dashed var(--ink-soft);
+}
+
+.about__photo figcaption {
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--ink-soft);
+}
+
+/* --- 8. Sections provisoires (à construire aux prochaines étapes) --------- */
 .stub {
   position: relative;
   z-index: 3; /* le texte passe devant le canvas : toujours lisible */
@@ -332,12 +497,14 @@ a {
   background: var(--ink); /* par défaut (le déclic, les projets) */
 }
 
-.badge--pro {
-  background: var(--orange); /* expériences pro */
+.badge--pro,
+.badge--dev {
+  background: var(--orange); /* expériences pro, développement */
 }
 
-.badge--formation {
-  background: var(--blue); /* formation */
+.badge--formation,
+.badge--ux {
+  background: var(--blue); /* formation, UX/UI */
 }
 
 .stub__list strong {
@@ -386,8 +553,17 @@ a {
   transform: translateY(-2px); /* se soulève légèrement */
 }
 
-/* --- 8. Petits écrans ------------------------------------------------------ */
+/* --- 9. Petits écrans ------------------------------------------------------ */
 @media (max-width: 768px) {
+  .about__text {
+    grid-column: 1 / -1; /* le texte prend toute la largeur */
+  }
+
+  .about__photo {
+    grid-column: 3 / -1; /* la photo passe dessous, décalée à droite */
+    margin-top: 72px;
+  }
+
   .nav {
     display: none; /* pas la place : la navigation complète viendra plus tard */
   }
@@ -402,7 +578,7 @@ a {
   }
 }
 
-/* --- 9. Accessibilité : mouvement réduit ---------------------------------- */
+/* --- 10. Accessibilité : mouvement réduit --------------------------------- */
 /* Si la personne a demandé moins d'animations dans son système,
    on coupe les animations CSS (le JavaScript fait la même chose de son côté). */
 @media (prefers-reduced-motion: reduce) {

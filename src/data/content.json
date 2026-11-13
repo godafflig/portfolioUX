@@ -26,14 +26,30 @@
   "about": {
     "number": "01",
     "title": "À propos",
-    "lines": [
-      "Je ne suis pas arrivé au code par la voie classique.",
-      "Après une reconversion professionnelle, j'ai appris à développer,",
-      "puis à concevoir les interfaces que je développe.",
-      "Aujourd'hui je tiens les deux bouts : .NET/C#, JavaScript et React Native",
-      "d'un côté, UX/UI Design de l'autre."
+    "headline": ["Développeur", "& Designer"],
+    "lead": "Je ne suis pas arrivé au code par la voie classique.",
+    "paragraphs": [
+      "Après une reconversion professionnelle, j'ai appris à développer, puis à concevoir les interfaces que je développe.",
+      "Aujourd'hui je tiens les deux bouts du métier : je dessine le produit, puis je le construis."
     ],
-    "photo": { "src": "", "alt": "Portrait de Tom Benat" }
+    "profile": [
+      {
+        "type": "ux",
+        "label": "UX/UI Design",
+        "detail": "Penser le parcours et dessiner l'interface avant d'écrire la première ligne."
+      },
+      {
+        "type": "dev",
+        "label": "Développement",
+        "detail": ".NET / C# · JavaScript · React Native"
+      }
+    ],
+    "photo": {
+      "src": "",
+      "alt": "Portrait de Tom Benat",
+      "caption": "Tom Benat — Lyon",
+      "placeholder": "Photo à venir"
+    }
   },
   "parcours": {
     "number": "02",

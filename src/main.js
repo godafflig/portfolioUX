@@ -19,7 +19,9 @@ import { createStage } from './three/stage.js' // scène 3D
 import { createSignature } from './three/signature.js' // l'icosaèdre de particules
 import { initHeader } from './sections/header.js' // en-tête
 import { initIntro } from './sections/intro.js' // section 1
-import { initStubs } from './sections/stubs.js' // sections 2 à 5 (provisoires)
+import { initAbout } from './sections/about.js' // section 2
+import { initStubs } from './sections/stubs.js' // sections 3 à 5 (provisoires)
+import { ScrollTrigger } from 'gsap/ScrollTrigger' // pour recalculer les positions de scroll
 import { initObjectTimeline } from './sections/objectTimeline.js' // scénario de l'objet
 
 // 1. Titre de l'onglet et description, tirés du JSON
@@ -27,12 +29,16 @@ document.title = content.meta.title
 document.querySelector('meta[name="description"]').setAttribute('content', content.meta.description)
 
 // 2. Le défilement fluide (Lenis) et les animations liées au scroll (ScrollTrigger)
-initScroll()
+const lenis = initScroll()
+// En développement seulement (jamais sur le site en ligne), on rend Lenis accessible
+// depuis la console du navigateur : pratique pour tester, ex. lenis.scrollTo(1200)
+if (import.meta.env.DEV) window.lenis = lenis
 
 // 3. Le contenu HTML des sections (à faire AVANT de poser les capteurs de scroll,
 //    qui ont besoin de connaître la hauteur réelle de la page)
 const header = initHeader(content)
 initIntro(content)
+initAbout(content)
 initStubs(content)
 
 // 4. La scène 3D et l'objet signature
@@ -44,3 +50,8 @@ initObjectTimeline(stage, signature, header)
 
 // 6. Premier calcul de taille : tout est prêt, on peut dessiner
 stage.start()
+
+// 7. Quand les polices sont chargées, les textes changent légèrement de taille,
+//    donc la hauteur de la page aussi : on demande aux capteurs de scroll
+//    de remesurer leurs positions.
+document.fonts.ready.then(() => ScrollTrigger.refresh())
