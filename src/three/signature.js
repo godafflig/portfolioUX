@@ -388,6 +388,7 @@ export function createSignature(stage) {
     assemble: 0, // 0 = lignes droites détachées, 1 = icosaèdre assemblé
     code: 0, // 0 = forme nue, 1 = faces couvertes de code
     x: 0, // décalage horizontal, en proportion de la largeur visible
+    y: 0, // décalage vertical, en proportion de la hauteur visible (positif = vers le haut)
     scale: 1, // échelle supplémentaire
     spin: 0, // rotation ajoutée par le scroll, en radians
   }
@@ -445,6 +446,7 @@ export function createSignature(stage) {
     const scale = fit * state.scale
     group.scale.setScalar(scale)
     group.position.x = state.x * view.width
+    group.position.y = state.y * view.height
     uniforms.uObjScale.value = scale
 
     // La position lissée rejoint la vraie position de la souris petit à petit.
@@ -484,5 +486,6 @@ export function createSignature(stage) {
 
   // On expose l'état pour que le scroll puisse le piloter
   // (et les uniforms, pour pouvoir régler l'objet depuis la console en développement)
-  return { state, group, uniforms }
+  // baseRadius : le rayon de l'objet en unités 3D quand state.scale vaut 1
+  return { state, group, uniforms, baseRadius: () => RADIUS * fit }
 }

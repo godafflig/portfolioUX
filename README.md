@@ -28,6 +28,15 @@ Si `node_modules` a été copié depuis une autre machine (Windows vers Linux, p
 Le site est alors visible sur http://localhost:5173.
 `npm run build` produit la version à mettre en ligne dans `dist/`.
 
+## Mise en ligne
+
+Le site est publié sur https://tombenat.fr par GitHub Pages. À chaque envoi sur la branche `main`,
+le fichier `.github/workflows/deploy.yml` demande à GitHub de compiler le site et de publier `dist/`.
+Le nom de domaine est indiqué dans `public/CNAME`.
+
+Réglage à faire une seule fois sur GitHub : *Settings → Pages → Build and deployment → Source* :
+choisir **GitHub Actions**.
+
 ## Organisation
 
 | Fichier | Rôle |
@@ -68,13 +77,13 @@ Tout se règle dans `src/data/content.json`.
 ### En place
 
 - La photo (`about.photo.src`), les sept visuels de projets (`projets.items[].image`) et la vidéo d'Aldret
-- L'adresse e-mail et les liens GitHub, GitLab et LinkedIn de la section Contact
+- L'adresse e-mail, le numéro de téléphone (`contact.phone`) et les liens GitHub, GitLab et LinkedIn
+  de la section Contact
 
 ### Reste à compléter
 
-- `parcours.steps[0]` et `[1]` : l'année du déclic et du stage Agence 36 (`year`), ainsi que la période
-  du déclic (`period`). Tant que l'année est vide, le mot du champ `mark` (« Déclic », « Stage »)
-  s'affiche en géant à sa place.
+- `parcours.steps[0]` : l'année du déclic (`year`) et sa période (`period`). Tant que l'année est vide,
+  le mot du champ `mark` (« Déclic ») s'affiche en géant à sa place.
 - `projets.items[].summary` : textes encore trop courts pour Fontenay Restaurants,
   Festival Film Scolaire et Couple & Familles.
 - `about.lead`, `about.paragraphs`, `about.profile` : textes de présentation (brouillons à réécrire)

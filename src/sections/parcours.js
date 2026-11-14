@@ -75,7 +75,7 @@ export function initParcours(content) {
     return { progress: () => sensor.progress }
   }
 
-  const last = steps.length - 1 // numéro de la dernière étape (8 pour 9 étapes)
+  const last = steps.length - 1 // numéro de la dernière étape (7 pour 8 étapes)
 
   // La distance à parcourir : la largeur de la piste moins un écran
   // (le premier panneau est déjà visible au départ)

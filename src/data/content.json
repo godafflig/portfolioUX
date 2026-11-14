@@ -104,14 +104,6 @@
       },
       {
         "type": "pro",
-        "year": null,
-        "mark": "Stage",
-        "title": "Agence 36",
-        "subtitle": "Stage développeur Java / Android",
-        "period": "6 mois"
-      },
-      {
-        "type": "pro",
         "year": 2022,
         "title": "Freelance",
         "subtitle": "Site vitrine Couple & Familles",
@@ -279,6 +271,10 @@
     "cta": {
       "label": "Me contacter",
       "href": "mailto:tombenat99@hotmail.fr"
+    },
+    "phone": {
+      "label": "06 69 91 20 25",
+      "href": "tel:+33669912025"
     },
     "links": [
       {

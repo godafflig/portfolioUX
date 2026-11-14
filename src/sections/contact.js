@@ -47,7 +47,11 @@ export function initContact(content) {
   // --- Le message, le bouton et les liens ----------------------------------
   const foot = el('div', 'contact__foot')
   const main = el('div')
-  main.append(el('p', 'contact__invite', data.invitation), buildLink(data.cta, 'cta'))
+  // Le bouton et, juste à côté, le numéro de téléphone (cliquable : il lance l'appel sur mobile)
+  const actions = el('div', 'contact__actions')
+  actions.append(buildLink(data.cta, 'cta'))
+  if (data.phone) actions.append(buildLink(data.phone, 'contact__phone'))
+  main.append(el('p', 'contact__invite', data.invitation), actions)
   const links = el('div', 'contact__links')
   data.links.forEach((item) => links.append(buildLink(item)))
   foot.append(main, links)

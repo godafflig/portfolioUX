@@ -952,6 +952,20 @@ a {
   font-weight: 500;
 }
 
+/* Le bouton et le numéro de téléphone, côte à côte (le numéro passe dessous si la place manque) */
+.contact__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+}
+
+.contact__phone {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  white-space: nowrap; /* le numéro ne se coupe jamais en deux */
+}
+
 .contact__links {
   display: flex;
   gap: 24px;
