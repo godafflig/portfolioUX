@@ -1,8 +1,8 @@
 {
   "meta": {
     "name": "Tom Benat",
-    "title": "Tom Benat — Développeur Full Stack & UX/UI Designer",
-    "description": "Portfolio de Tom Benat, développeur Full Stack (.NET/C#, JavaScript, React Native) et UX/UI Designer à Lyon."
+    "title": "Tom Benat — Chef de projet & Développeur Full Stack",
+    "description": "Portfolio de Tom Benat, chef de projet et développeur Full Stack (.NET/C#, JavaScript, React Native) à Lyon."
   },
   "nav": [
     {
@@ -49,28 +49,28 @@
       "Tom",
       "Benat"
     ],
-    "role": "Développeur Full Stack & UX/UI Designer",
+    "role": "Chef de projet & Développeur Full Stack",
     "location": "Lyon",
-    "tagline": "Je transforme une idée en produit : je la dessine, je la code, je la fais vivre.",
+    "tagline": "Je transforme une idée en produit : je la cadre, je la code, je la fais vivre.",
     "scrollHint": "Défiler"
   },
   "about": {
     "number": "01",
     "title": "À propos",
     "headline": [
-      "Développeur",
-      "& Designer"
+      "Chef de projet",
+      "& Développeur"
     ],
     "lead": "Je ne suis pas arrivé au code par la voie classique.",
     "paragraphs": [
-      "Après une reconversion professionnelle, j'ai appris à développer, puis à concevoir les interfaces que je développe.",
-      "Aujourd'hui je tiens les deux bouts du métier : je dessine le produit, puis je le construis."
+      "Après une reconversion professionnelle, j'ai appris à développer, puis à piloter les projets que je développe.",
+      "Aujourd'hui je tiens les deux bouts du métier : je cadre le projet, puis je le construis."
     ],
     "profile": [
       {
-        "type": "ux",
-        "label": "UX/UI Design",
-        "detail": "Penser le parcours et dessiner l'interface avant d'écrire la première ligne."
+        "type": "projet",
+        "label": "Gestion de projet",
+        "detail": "Cadrer le besoin, découper le travail et tenir le cap jusqu'à la livraison."
       },
       {
         "type": "dev",
@@ -245,7 +245,9 @@
         "title": "Festival Film Scolaire",
         "status": "Freelance",
         "summary": "Site vitrine pour un client réel.",
-        "stack": [],
+        "stack": [
+          "Wix"
+        ],
         "image": "/images/projets/festival-film-scolaire.png",
         "url": "https://www.generation7art.com/"
       },
@@ -254,7 +256,11 @@
         "title": "Couple & Familles",
         "status": "Freelance",
         "summary": "Site vitrine pour un cabinet de thérapie.",
-        "stack": [],
+        "stack": [
+          "HTML",
+          "CSS",
+          "JavaScript vanilla"
+        ],
         "image": "/images/projets/couple-et-familles.png",
         "url": "https://couples-et-familles69.com/"
       }
@@ -268,7 +274,7 @@
       "Une idée ?",
       "Parlons-en"
     ],
-    "invitation": "Un produit à dessiner, à construire ou à faire grandir : écrivez-moi.",
+    "invitation": "Un projet à cadrer, à construire ou à faire grandir : écrivez-moi.",
     "backToTop": "Retour en haut ↑",
     "cta": {
       "label": "Me contacter",

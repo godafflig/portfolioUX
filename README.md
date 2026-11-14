@@ -22,6 +22,9 @@ npm install
 npm run dev
 ```
 
+Si `node_modules` a été copié depuis une autre machine (Windows vers Linux, par exemple) et que
+`npm run dev` répond « Permission denied », relancer `npm install` puis `npm rebuild`.
+
 Le site est alors visible sur http://localhost:5173.
 `npm run build` produit la version à mettre en ligne dans `dist/`.
 
@@ -32,10 +35,12 @@ Le site est alors visible sur http://localhost:5173.
 | `src/data/content.json` | **Tous les textes** : intro, à propos, parcours, projets, contact |
 | `src/main.js` | Point d'entrée : démarre chaque partie dans l'ordre |
 | `src/core/env.js` | Détection mobile / mouvement réduit, couleurs |
+| `src/core/dom.js` | Petit outil pour créer les éléments HTML |
 | `src/core/scroll.js` | Défilement fluide (Lenis) relié à ScrollTrigger |
 | `src/three/stage.js` | Scène, caméra, renderer, boucle d'animation |
 | `src/three/signature.js` | L'objet : calcul des 5 positions de chaque particule, souris |
 | `src/three/signature.shaders.js` | Les shaders : mouvement, couleur et forme des particules |
+| `src/sections/header.js` | En-tête : nom, étiquette d'état de l'objet 3D, navigation |
 | `src/sections/intro.js` | Section 1 : nom géant découpé sur deux lignes |
 | `src/sections/about.js` | Section 2 : titre géant, texte ligne par ligne, photo en parallaxe |
 | `src/sections/objectTimeline.js` | Quel état de l'objet à quel endroit de la page |
@@ -43,6 +48,9 @@ Le site est alors visible sur http://localhost:5173.
 | `src/sections/projets.js` | Section 4 : couloir 3D des cartes, survol, clic, page détaillée |
 | `src/sections/contact.js` | Section 5 : titre géant, message, bouton d'appel à l'action, liens |
 | `public/images/` | Les images (photo, visuels des projets) |
+| `public/videos/` | Les vidéos de présentation des projets |
+| `public/erosion.html` | Le projet Érosion, page autonome ouverte depuis sa carte |
+| `assets-src/` | Captures d'origine et outil de fabrication des visuels (hors site) |
 | `src/styles/main.css` | Styles et variables de couleur |
 
 ## Avancement
@@ -53,22 +61,40 @@ Le site est alors visible sur http://localhost:5173.
 - [x] Étape 4 — Projets (couloir 3D, brume, survol, entrée dans l'image)
 - [x] Étape 5 — Contact (objet terminé, message, bouton, liens)
 
-## À compléter dans `content.json`
+## Contenus
 
-- `about.photo.src` : déposer la photo dans `public/images/` (format portrait 4:5 conseillé),
-  puis écrire son chemin, par exemple `"/images/portrait.jpg"`. Tant que le champ est vide,
-  un fond pointillé « Photo à venir » la remplace.
-- `projets.items[].image` : les visuels des projets (dans `public/images/projets/`, format 16:10 conseillé).
-  Tant que le champ est vide, la carte affiche le numéro du projet sur un fond pointillé.
-  Manquent encore : Alarme connectée, Fontenay Restaurants, Festi-Event, Érosion.
+Tout se règle dans `src/data/content.json`.
+
+### En place
+
+- La photo (`about.photo.src`), les sept visuels de projets (`projets.items[].image`) et la vidéo d'Aldret
+- L'adresse e-mail et les liens GitHub, GitLab et LinkedIn de la section Contact
+
+### Reste à compléter
+
+- `parcours.steps[0]` et `[1]` : l'année du déclic et du stage Agence 36 (`year`), ainsi que la période
+  du déclic (`period`). Tant que l'année est vide, le mot du champ `mark` (« Déclic », « Stage »)
+  s'affiche en géant à sa place.
+- `projets.items[].summary` : textes encore trop courts pour Fontenay Restaurants,
+  Festival Film Scolaire et Couple & Familles.
+- `about.lead`, `about.paragraphs`, `about.profile` : textes de présentation (brouillons à réécrire)
+
+### Ajouter ou changer un visuel
+
+- `about.photo.src` : la photo, dans `public/images/` (format portrait 4:5 conseillé).
+  Si le champ est vide, un fond pointillé « Photo à venir » la remplace.
+- `projets.items[].image` : le visuel d'un projet, dans `public/images/projets/` (format 16:10 conseillé).
+  Si le champ est vide, la carte affiche le numéro du projet sur un fond pointillé.
   Dans le couloir, chaque image est affichée en deux tons bleu / blanc ; ses vraies couleurs
   reviennent au survol et à l'ouverture. Aucune retouche à faire à la main.
-- `projets.items[].video` et `url` (facultatifs) : une vidéo de présentation et le lien du site en ligne,
-  affichés dans la page détaillée
-- `projets.items[].summary` et `stack` : le texte et les technologies de la page détaillée
-- `parcours.steps[0]` et `[1]` : l'année du déclic et du stage Agence 36 (`year`).
-  Tant qu'elle est vide, le mot du champ `mark` (« Déclic », « Stage ») s'affiche en géant à sa place.
-- `about.lead`, `about.paragraphs`, `about.profile` : textes de présentation (brouillons à réécrire)
+- `projets.items[].tint` : mettre `false` pour un visuel déjà dans la palette du site
+  (téléphones sur fond pointillé, comme PerfPro) ; il échappe alors au traitement deux tons,
+  qui le rendrait presque blanc.
+- `projets.items[].video` et `url` (facultatifs) : une vidéo de présentation (dans `public/videos/`)
+  et le lien du site en ligne, affichés dans la page détaillée
+- `assets-src/compose.html` fabrique un visuel à partir de captures de téléphone : il les aligne
+  dans des cadres sur un fond aux couleurs du site, à photographier ensuite avec Chrome (1600 × 1000 px).
+  Utilisation : `compose.html?img=a.png,b.png&crop=5`.
 
 ## Régler l'objet
 

@@ -80,7 +80,7 @@ export function initAbout(content) {
   const paragraphs = data.paragraphs.map((p) => el('p', 'about__paragraph', p))
 
   // Le double profil : une ligne par métier, avec sa pastille de couleur
-  // (bleu = UX/UI, la maquette ; orange = développement, le code)
+  // (bleu = gestion de projet, le cadrage ; orange = développement, le code)
   const profile = el('ul', 'about__profile')
   data.profile.forEach((item) => {
     const row = el('li')

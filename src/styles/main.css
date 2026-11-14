@@ -315,7 +315,8 @@ a {
 /* Titre géant sur deux lignes, même principe que le nom dans l'intro */
 .about__headline {
   font-weight: 800;
-  font-size: clamp(2.75rem, 13.5vw, 17rem);
+  /* 11.8vw : la ligne la plus longue (« Chef de projet ») tient dans la largeur de l'écran */
+  font-size: clamp(2.75rem, 11.8vw, 15rem);
   line-height: 0.9;
   letter-spacing: -0.045em;
   text-transform: uppercase;
@@ -911,7 +912,11 @@ a {
   position: relative;
   z-index: 1; /* sous le canvas */
   font-weight: 800;
-  font-size: clamp(3rem, 15vw, 19rem);
+  /* La taille suit la largeur de l'écran (15vw), mais aussi sa hauteur : sur un écran peu
+     haut, le titre rétrécit pour tenir entre l'étiquette du haut et le message du bas.
+     340px = la place réservée en haut et en bas ; 1.96 = deux lignes + l'accent du É. */
+  font-size: clamp(3rem, min(15vw, (100vh - 340px) / 1.96), 19rem);
+  font-size: clamp(3rem, min(15vw, (100svh - 340px) / 1.96), 19rem);
   line-height: 0.88;
   letter-spacing: -0.045em;
   text-transform: uppercase;
@@ -987,8 +992,8 @@ a {
 }
 
 .badge--formation,
-.badge--ux {
-  background: var(--blue); /* formation, UX/UI */
+.badge--projet {
+  background: var(--blue); /* formation, gestion de projet */
 }
 
 /* Bouton d'appel à l'action : fond orange, texte NOIR (le blanc sur orange
